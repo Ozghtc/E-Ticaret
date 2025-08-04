@@ -341,126 +341,136 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
           Fiyat & Stok Bilgileri
         </h3>
         
-        {/* Ana Fiyat Bilgileri - Düzgün Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Satış Fiyatı (TL) *
-            </label>
-            <input
-              type="number"
-              required
-              min="0"
-              step="0.01"
-              value={formData.price || ''}
-              onChange={(e) => {
-                const newPrice = parseFloat(e.target.value) || 0;
-                updateFormData('price', newPrice);
-                
-                // Otomatik hesaplamalar
-                if (newPrice > 0) {
-                  // Eski fiyat otomatik doldur (eğer boşsa)
-                  if (!formData.originalPrice || formData.originalPrice === 0) {
-                    const suggestedOriginalPrice = Math.round(newPrice * 1.25); // %25 daha yüksek
-                    updateFormData('originalPrice', suggestedOriginalPrice);
+        {/* Ana Fiyat Bilgileri - Yeşil Kutucuk */}
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+          <h4 className="text-lg font-semibold text-green-800 mb-4 flex items-center">
+            💰 Fiyat Bilgileri
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-green-700 mb-2">
+                Satış Fiyatı (TL) *
+              </label>
+              <input
+                type="number"
+                required
+                min="0"
+                step="0.01"
+                value={formData.price || ''}
+                onChange={(e) => {
+                  const newPrice = parseFloat(e.target.value) || 0;
+                  updateFormData('price', newPrice);
+                  
+                  // Otomatik hesaplamalar
+                  if (newPrice > 0) {
+                    // Eski fiyat otomatik doldur (eğer boşsa)
+                    if (!formData.originalPrice || formData.originalPrice === 0) {
+                      const suggestedOriginalPrice = Math.round(newPrice * 1.25); // %25 daha yüksek
+                      updateFormData('originalPrice', suggestedOriginalPrice);
+                    }
                   }
+                }}
+                className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white"
+                placeholder="0.00"
+              />
+              <p className="text-xs text-green-600 mt-1">Ana satış fiyatınız</p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-green-700 mb-2">
+                Eski Fiyat (TL) <span className="text-green-500">(İndirim için)</span>
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={formData.originalPrice || ''}
+                onChange={(e) => updateFormData('originalPrice', parseFloat(e.target.value) || 0)}
+                className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white"
+                placeholder="Otomatik doldurulur"
+              />
+              <p className="text-xs text-green-600 mt-1">
+                {formData.originalPrice > formData.price && formData.price > 0 
+                  ? `%${Math.round(((formData.originalPrice - formData.price) / formData.originalPrice) * 100)} indirim` 
+                  : 'İndirim göstermek için kullanın'
                 }
-              }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="0.00"
-            />
-            <p className="text-xs text-gray-500 mt-1">Ana satış fiyatınız</p>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Eski Fiyat (TL) <span className="text-gray-400">(İndirim için)</span>
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={formData.originalPrice || ''}
-              onChange={(e) => updateFormData('originalPrice', parseFloat(e.target.value) || 0)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="Otomatik doldurulur"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              {formData.originalPrice > formData.price && formData.price > 0 
-                ? `%${Math.round(((formData.originalPrice - formData.price) / formData.originalPrice) * 100)} indirim` 
-                : 'İndirim göstermek için kullanın'
-              }
-            </p>
-          </div>
+              </p>
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Toplam Stok Adedi *
-            </label>
-            <input
-              type="number"
-              required
-              min="0"
-              value={formData.stock || ''}
-              onChange={(e) => updateFormData('stock', parseInt(e.target.value) || 0)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="Kaç adet stokta"
-            />
-            <p className="text-xs text-gray-500 mt-1">Toplam stok miktarı</p>
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-green-700 mb-2">
+                Toplam Stok Adedi *
+              </label>
+              <input
+                type="number"
+                required
+                min="0"
+                value={formData.stock || ''}
+                onChange={(e) => updateFormData('stock', parseInt(e.target.value) || 0)}
+                className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white"
+                placeholder="Kaç adet stokta"
+              />
+              <p className="text-xs text-green-600 mt-1">Toplam stok miktarı</p>
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              KDV Dahil Fiyat (TL)
-            </label>
-            <input
-              type="number"
-              disabled
-              value={formData.price > 0 ? (formData.price * (formData.vatRate === '%8' ? 1.08 : 1.20)).toFixed(2) : ''}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
-              placeholder="Otomatik hesaplanır"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              {formData.vatRate} KDV dahil fiyat
-            </p>
+            <div>
+              <label className="block text-sm font-medium text-green-700 mb-2">
+                KDV Dahil Fiyat (TL)
+              </label>
+              <input
+                type="number"
+                disabled
+                value={formData.price > 0 ? (formData.price * (formData.vatRate === '%8' ? 1.08 : 1.20)).toFixed(2) : ''}
+                className="w-full px-4 py-3 border border-green-300 rounded-lg bg-green-100 text-green-700"
+                placeholder="Otomatik hesaplanır"
+              />
+              <p className="text-xs text-green-600 mt-1">
+                {formData.vatRate} KDV dahil fiyat
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* KDV ve Hazırlık Süresi - Düzgün Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {vatRates.emoji} {vatRates.name}
-            </label>
-            <select
-              value={formData.vatRate}
-              onChange={(e) => {
-                updateFormData('vatRate', e.target.value);
-                // KDV dahil fiyat otomatik güncellenecek
-              }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            >
-              {vatRates.options.map((rate) => (
-                <option key={rate} value={rate}>{rate}</option>
-              ))}
-            </select>
-            <p className="text-xs text-gray-500 mt-1">Vergi oranı seçimi</p>
-          </div>
+        {/* KDV ve Hazırlık Süresi - Turuncu Kutucuk */}
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-8">
+          <h4 className="text-lg font-semibold text-orange-800 mb-4 flex items-center">
+            ⚙️ Vergi & Hazırlık Ayarları
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-orange-700 mb-2">
+                {vatRates.emoji} {vatRates.name}
+              </label>
+              <select
+                value={formData.vatRate}
+                onChange={(e) => {
+                  updateFormData('vatRate', e.target.value);
+                  // KDV dahil fiyat otomatik güncellenecek
+                }}
+                className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white"
+              >
+                {vatRates.options.map((rate) => (
+                  <option key={rate} value={rate}>{rate}</option>
+                ))}
+              </select>
+              <p className="text-xs text-orange-600 mt-1">Vergi oranı seçimi</p>
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {preparationTimes.emoji} {preparationTimes.name}
-            </label>
-            <select
-              value={formData.preparationTime}
-              onChange={(e) => updateFormData('preparationTime', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            >
-              {preparationTimes.options.map((time) => (
-                <option key={time} value={time}>{time}</option>
-              ))}
-            </select>
-            <p className="text-xs text-gray-500 mt-1">Ürün hazırlama süresi</p>
+            <div>
+              <label className="block text-sm font-medium text-orange-700 mb-2">
+                {preparationTimes.emoji} {preparationTimes.name}
+              </label>
+              <select
+                value={formData.preparationTime}
+                onChange={(e) => updateFormData('preparationTime', e.target.value)}
+                className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white"
+              >
+                {preparationTimes.options.map((time) => (
+                  <option key={time} value={time}>{time}</option>
+                ))}
+              </select>
+              <p className="text-xs text-orange-600 mt-1">Ürün hazırlama süresi</p>
+            </div>
           </div>
         </div>
 
