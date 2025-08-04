@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Palette } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { colors } from '../data/colors';
