@@ -98,7 +98,7 @@ export default function CategorySelection({ formData, updateFormData, updateMult
               )}
               <div className="flex items-center space-x-2">
                 <span className="text-lg">{category.emoji}</span>
-                <span className="text-sm font-medium text-gray-900">{category.name}</span>
+                <span className="text-sm font-medium text-gray-900 notranslate" translate="no" lang="tr">{category.name}</span>
               </div>
             </button>
           ))}
@@ -127,7 +127,7 @@ export default function CategorySelection({ formData, updateFormData, updateMult
                 )}
                 <div className="flex items-center space-x-2">
                   <span className="text-lg">{category.emoji}</span>
-                  <span className="text-sm font-medium text-gray-900">{category.name}</span>
+                  <span className="text-sm font-medium text-gray-900 notranslate" translate="no" lang="tr">{category.name}</span>
                 </div>
               </button>
             ))}
@@ -157,7 +157,7 @@ export default function CategorySelection({ formData, updateFormData, updateMult
                 )}
                 <div className="flex items-center space-x-2">
                   <span className="text-lg">{category.emoji}</span>
-                  <span className="text-sm font-medium text-gray-900">{category.name}</span>
+                  <span className="text-sm font-medium text-gray-900 notranslate" translate="no" lang="tr">{category.name}</span>
                 </div>
               </button>
             ))}

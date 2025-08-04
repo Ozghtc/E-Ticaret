@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 🛡️ Browser Çeviri Koruması */
+.notranslate {
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Google Translate ve diğer otomatik çeviri motorlarını engelle */
+[translate="no"] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Kategori isimlerini koruma */
+span[lang="tr"] {
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
