@@ -2,6 +2,7 @@ import React from 'react';
 import { Globe } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { genders, ageGroups, seasons } from '../data/specs';
+import { countries, getPopularCountries } from '../../shared-data/countries';
 
 interface BasicPropertiesProps {
   formData: FormData;
@@ -75,13 +76,39 @@ export default function BasicProperties({ formData, updateFormData }: BasicPrope
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Menşei (Opsiyonel)
           </label>
-          <input
-            type="text"
+          <select
             value={formData.origin}
             onChange={(e) => updateFormData('origin', e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
-            placeholder="Örn: Türkiye, İtalya, Çin"
-          />
+          >
+            <option value="">Menşei seçin...</option>
+            
+            {/* Popüler Ülkeler */}
+            <optgroup label="🌟 Popüler Ülkeler">
+              {getPopularCountries().map(country => (
+                <option key={country.id} value={country.name}>
+                  {country.flag} {country.name}
+                </option>
+              ))}
+            </optgroup>
+            
+            {/* Tüm Ülkeler (Alfabetik) */}
+            <optgroup label="🌍 Tüm Ülkeler">
+              {countries
+                .filter(country => !country.popular && country.id !== 'diger')
+                .sort((a, b) => a.name.localeCompare(b.name, 'tr'))
+                .map(country => (
+                  <option key={country.id} value={country.name}>
+                    {country.flag} {country.name}
+                  </option>
+                ))}
+            </optgroup>
+            
+            {/* Diğer */}
+            <optgroup label="❓ Diğer">
+              <option value="Diğer">🌍 Diğer</option>
+            </optgroup>
+          </select>
         </div>
       </div>
     </div>

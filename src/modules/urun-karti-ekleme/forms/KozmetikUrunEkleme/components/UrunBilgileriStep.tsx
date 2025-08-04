@@ -3,6 +3,7 @@ import React from 'react';
 import { Package, Tag, DollarSign, Warehouse } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { mainCategories, getSubCategories } from '../data/categories';
+import { countries, getPopularCountries } from '../../shared-data/countries';
 
 interface UrunBilgileriStepProps {
   formData: FormData;
@@ -156,14 +157,33 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
               onChange={(e) => updateFormData('origin', e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="Türkiye">🇹🇷 Türkiye</option>
-              <option value="Fransa">🇫🇷 Fransa</option>
-              <option value="İtalya">🇮🇹 İtalya</option>
-              <option value="Almanya">🇩🇪 Almanya</option>
-              <option value="ABD">🇺🇸 ABD</option>
-              <option value="Güney Kore">🇰🇷 Güney Kore</option>
-              <option value="Japonya">🇯🇵 Japonya</option>
-              <option value="Diğer">🌍 Diğer</option>
+              <option value="">Menşei seçin...</option>
+              
+              {/* Popüler Ülkeler */}
+              <optgroup label="🌟 Popüler Ülkeler">
+                {getPopularCountries().map(country => (
+                  <option key={country.id} value={country.name}>
+                    {country.flag} {country.name}
+                  </option>
+                ))}
+              </optgroup>
+              
+              {/* Tüm Ülkeler (Alfabetik) */}
+              <optgroup label="🌍 Tüm Ülkeler">
+                {countries
+                  .filter(country => !country.popular && country.id !== 'diger')
+                  .sort((a, b) => a.name.localeCompare(b.name, 'tr'))
+                  .map(country => (
+                    <option key={country.id} value={country.name}>
+                      {country.flag} {country.name}
+                    </option>
+                  ))}
+              </optgroup>
+              
+              {/* Diğer */}
+              <optgroup label="❓ Diğer">
+                <option value="Diğer">🌍 Diğer</option>
+              </optgroup>
             </select>
           </div>
         </div>
