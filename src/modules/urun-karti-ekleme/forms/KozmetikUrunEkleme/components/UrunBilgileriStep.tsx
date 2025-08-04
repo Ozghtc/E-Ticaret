@@ -35,7 +35,7 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
           {/* Ana Kategori */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Ana Kategori *
+              Ana Kategori <span className="text-red-500">*</span>
             </label>
             <select
               value={formData.mainCategory}
@@ -55,7 +55,7 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
           {/* Alt Kategori */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Alt Kategori *
+              Alt Kategori <span className="text-red-500">*</span>
             </label>
             <select
               value={formData.subCategory1}
@@ -96,7 +96,7 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Ürün Adı *
+              Ürün Adı <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -110,7 +110,7 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Marka *
+              Marka <span className="text-gray-400 text-xs">(Opsiyonel)</span>
             </label>
             <input
               type="text"
@@ -118,7 +118,6 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
               onChange={(e) => updateFormData('brand', e.target.value)}
               placeholder="Örn: L'Oréal"
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
             />
           </div>
 
@@ -164,7 +163,7 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
         {/* Ürün Açıklaması */}
         <div className="mt-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ürün Açıklaması *
+            Ürün Açıklaması <span className="text-gray-400 text-xs">(Opsiyonel)</span>
           </label>
           <textarea
             value={formData.description}
@@ -172,7 +171,6 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
             placeholder="Ürününüzün detaylı açıklamasını yazın..."
             rows={4}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
           />
         </div>
       </div>
@@ -187,7 +185,7 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Satış Fiyatı (TL) *
+              Satış Fiyatı (TL) <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
@@ -219,7 +217,7 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Toplam Stok *
+              Toplam Stok <span className="text-gray-400 text-xs">(Opsiyonel)</span>
             </label>
             <input
               type="number"
@@ -228,7 +226,6 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
               placeholder="0"
               min="0"
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
             />
           </div>
         </div>

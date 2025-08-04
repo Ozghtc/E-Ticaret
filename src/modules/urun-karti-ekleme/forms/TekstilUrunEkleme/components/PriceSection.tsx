@@ -25,7 +25,7 @@ export default function PriceSection({ formData, updateFormData }: PriceSectionP
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div>
             <label className="block text-sm font-medium text-green-700 mb-2">
-              Satış Fiyatı (TL) *
+              Satış Fiyatı (TL) <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
@@ -75,11 +75,10 @@ export default function PriceSection({ formData, updateFormData }: PriceSectionP
 
           <div>
             <label className="block text-sm font-medium text-green-700 mb-2">
-              Toplam Stok Adedi *
+              Toplam Stok Adedi <span className="text-gray-400 text-xs">(Opsiyonel)</span>
             </label>
             <input
               type="number"
-              required
               min="0"
               value={formData.stock || ''}
               onChange={(e) => updateFormData('stock', parseInt(e.target.value) || 0)}

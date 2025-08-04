@@ -32,9 +32,7 @@ export function validateStep(step: number, formData: FormData): ValidationError[
       if (formData.price <= 0) {
         errors.push({ field: 'price', message: 'Geçerli bir fiyat girilmelidir' });
       }
-      if (formData.stock < 0) {
-        errors.push({ field: 'stock', message: 'Stok adedi 0 veya pozitif olmalıdır' });
-      }
+      // Stok artık tamamen opsiyonel
       break;
 
     case 3: // Ürün Görselleri

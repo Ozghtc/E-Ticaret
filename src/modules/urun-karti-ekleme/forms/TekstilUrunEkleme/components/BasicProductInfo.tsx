@@ -17,7 +17,7 @@ export default function BasicProductInfo({ formData, updateFormData }: BasicProd
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ürün Adı *
+            Ürün Adı <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -71,7 +71,7 @@ export default function BasicProductInfo({ formData, updateFormData }: BasicProd
 
       <div className="mt-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Ürün Açıklaması *
+          Ürün Açıklaması <span className="text-gray-400 text-xs">(Opsiyonel)</span>
         </label>
         <textarea
           value={formData.description}

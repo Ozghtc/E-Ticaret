@@ -24,20 +24,8 @@ export function validateStep(step: number, formData: FormData): ValidationError[
         errors.push({ field: 'subCategory1', message: 'Alt kategori seçilmelidir' });
       }
       
-      if (!formData.brand.trim()) {
-        errors.push({ field: 'brand', message: 'Marka adı gereklidir' });
-      }
-      
       if (!formData.price || formData.price <= 0) {
         errors.push({ field: 'price', message: 'Geçerli bir fiyat girilmelidir' });
-      }
-      
-      if (!formData.stock || formData.stock < 0) {
-        errors.push({ field: 'stock', message: 'Stok adedi gereklidir' });
-      }
-      
-      if (!formData.description.trim()) {
-        errors.push({ field: 'description', message: 'Ürün açıklaması gereklidir' });
       }
       break;
 
