@@ -3,6 +3,11 @@ import { Palette } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { colors } from '../data/colors';
 
+// Debug: Console'da colors array'ini kontrol et
+if (!colors || colors.length === 0) {
+  console.error('🔴 ColorSelection: colors array yüklenemedi veya boş!', colors);
+}
+
 interface ColorSelectionProps {
   formData: FormData;
   onColorToggle: (colorId: string) => void;
@@ -12,8 +17,29 @@ export default function ColorSelection({ formData, onColorToggle }: ColorSelecti
   const [showAllColors, setShowAllColors] = useState(false);
 
   const getColorById = (colorId: string) => {
-    return colors.find(color => color.id === colorId);
+    return (colors || []).find(color => color.id === colorId);
   };
+
+  // Eğer colors yüklenemedi ise error göster
+  if (!colors || colors.length === 0) {
+    return (
+      <div className="bg-red-50 rounded-lg p-6 border border-red-200">
+        <h3 className="text-lg font-semibold text-red-900 mb-4 flex items-center">
+          <Palette className="mr-2" size={20} />
+          Renk Seçimi - Yükleme Hatası
+        </h3>
+        <div className="text-red-700 text-sm">
+          ⚠️ Renk paleti yüklenemedi. Sayfayı yenilemeyi deneyin.
+          <button 
+            onClick={() => window.location.reload()}
+            className="ml-2 text-red-600 underline hover:text-red-800"
+          >
+            Sayfayı Yenile
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
@@ -24,7 +50,7 @@ export default function ColorSelection({ formData, onColorToggle }: ColorSelecti
 
       {/* Kompakt Renk Seçimi - İlk 16 Renk */}
       <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 mb-4">
-        {colors.slice(0, 16).map((color) => (
+        {(colors || []).slice(0, 16).map((color) => (
           <button
             key={color.id}
             onClick={() => onColorToggle(color.id)}
@@ -54,7 +80,7 @@ export default function ColorSelection({ formData, onColorToggle }: ColorSelecti
       {/* Genişletilebilir Renk Alanı */}
       {showAllColors && (
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 mb-4 border-t border-gray-200 pt-4">
-          {colors.slice(16).map((color) => (
+          {(colors || []).slice(16).map((color) => (
             <button
               key={color.id}
               onClick={() => onColorToggle(color.id)}
@@ -82,23 +108,25 @@ export default function ColorSelection({ formData, onColorToggle }: ColorSelecti
         </div>
       )}
       
-      {/* Daha Fazla Renk Butonu - Çalışır Halde */}
-      <div className="text-center">
-        <button 
-          onClick={() => setShowAllColors(!showAllColors)}
-          className="text-pink-600 hover:text-pink-700 text-sm font-medium bg-pink-50 hover:bg-pink-100 px-4 py-2 rounded-lg border border-pink-200 transition-all"
-        >
-          {showAllColors ? (
-            <>
-              ↑ Daha Az Renk Göster
-            </>
-          ) : (
-            <>
-              + Daha Fazla Renk Göster ({colors.length - 16} renk daha)
-            </>
-          )}
-        </button>
-      </div>
+      {/* Daha Fazla Renk Butonu - Güvenli Halde */}
+      {colors && colors.length > 16 && (
+        <div className="text-center">
+          <button 
+            onClick={() => setShowAllColors(!showAllColors)}
+            className="text-pink-600 hover:text-pink-700 text-sm font-medium bg-pink-50 hover:bg-pink-100 px-4 py-2 rounded-lg border border-pink-200 transition-all"
+          >
+            {showAllColors ? (
+              <>
+                ↑ Daha Az Renk Göster
+              </>
+            ) : (
+              <>
+                + Daha Fazla Renk Göster ({colors.length - 16} renk daha)
+              </>
+            )}
+          </button>
+        </div>
+      )}
       
       {/* Seçilen Renkler Özeti */}
       {formData.selectedColors.length > 0 && (
