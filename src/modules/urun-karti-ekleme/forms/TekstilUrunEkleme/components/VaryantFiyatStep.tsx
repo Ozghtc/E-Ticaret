@@ -336,11 +336,13 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
 
       {/* Fiyat & Stok */}
       <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
           <DollarSign className="mr-2" size={20} />
           Fiyat & Stok Bilgileri
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        {/* Ana Fiyat Bilgileri - Düzgün Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Satış Fiyatı (TL) *
@@ -424,8 +426,8 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
           </div>
         </div>
 
-        {/* KDV ve Hazırlık Süresi */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+        {/* KDV ve Hazırlık Süresi - Düzgün Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {vatRates.emoji} {vatRates.name}
@@ -460,35 +462,43 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
             </select>
             <p className="text-xs text-gray-500 mt-1">Ürün hazırlama süresi</p>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              📄 Alış Fatura No
-            </label>
-            <input
-              type="text"
-              value={formData.invoiceNumber}
-              onChange={(e) => updateFormData('invoiceNumber', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Örn: FT-2025-001"
-            />
-            <p className="text-xs text-gray-500 mt-1">Tedarikçi fatura numarası</p>
-          </div>
+        {/* Tedarikçi Bilgileri - Ayrı Mavi Kutucuk */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h4 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+            🏢 Tedarikçi Bilgileri
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-blue-700 mb-2">
+                📄 Alış Fatura No
+              </label>
+              <input
+                type="text"
+                value={formData.invoiceNumber}
+                onChange={(e) => updateFormData('invoiceNumber', e.target.value)}
+                className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                placeholder="Örn: FT-2025-001"
+              />
+              <p className="text-xs text-blue-600 mt-1">Tedarikçi fatura numarası</p>
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              💰 Alış Fiyatı (TL)
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={formData.purchasePrice || ''}
-              onChange={(e) => updateFormData('purchasePrice', parseFloat(e.target.value) || 0)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="0.00"
-            />
-            <p className="text-xs text-gray-500 mt-1">Tedarikçiden aldığınız fiyat</p>
+            <div>
+              <label className="block text-sm font-medium text-blue-700 mb-2">
+                💰 Alış Fiyatı (TL)
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={formData.purchasePrice || ''}
+                onChange={(e) => updateFormData('purchasePrice', parseFloat(e.target.value) || 0)}
+                className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                placeholder="0.00"
+              />
+              <p className="text-xs text-blue-600 mt-1">Tedarikçiden aldığınız fiyat</p>
+            </div>
           </div>
         </div>
 
