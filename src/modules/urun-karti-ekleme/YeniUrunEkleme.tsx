@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Package, Palette, Cpu, Leaf, ShoppingBag, Smartphone, Home, Gamepad2, Baby, Car, Plane, Dumbbell, Heart, BookOpen, PawPrint, Gem } from 'lucide-react';
+import { ArrowLeft, Package, Palette, Cpu, Leaf, ShoppingBag, Smartphone, Home, Gamepad2, Baby, Car, Plane, Dumbbell, Heart, BookOpen, PawPrint, Gem, CheckCircle } from 'lucide-react';
 
 function YeniUrunEkleme() {
   const navigate = useNavigate();
@@ -184,8 +184,15 @@ function YeniUrunEkleme() {
               <button
                 key={category.id}
                 onClick={() => handleCategorySelect(category.id)}
-                className={`${category.color} text-white rounded-xl p-6 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl group`}
+                className={`${category.color} text-white rounded-xl p-6 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl group relative`}
               >
+                {/* Tamamlanma Tiki - Sadece tekstil ve kozmetik için */}
+                {(category.id === 'tekstil' || category.id === 'kozmetik') && (
+                  <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1.5 shadow-lg border-2 border-white z-10">
+                    <CheckCircle size={20} className="text-white" />
+                  </div>
+                )}
+                
                 <div className="text-center">
                   {/* Emoji & Icon */}
                   <div className="flex items-center justify-center mb-4">
@@ -196,16 +203,26 @@ function YeniUrunEkleme() {
                   {/* Category Name */}
                   <h3 className="font-bold text-lg mb-2 group-hover:scale-105 transition-transform">
                     {category.name}
+                    {/* Inline tik için ek gösterge */}
+                    {(category.id === 'tekstil' || category.id === 'kozmetik') && (
+                      <span className="ml-2 text-green-300">✅</span>
+                    )}
                   </h3>
                   
                   {/* Description */}
                   <p className="text-white text-opacity-90 text-sm leading-relaxed">
                     {category.description}
+                    {/* Tamamlandı mesajı */}
+                    {(category.id === 'tekstil' || category.id === 'kozmetik') && (
+                      <span className="block mt-1 text-green-200 font-medium text-xs">
+                        ✨ Modüler sistem hazır!
+                      </span>
+                    )}
                   </p>
                   
                   {/* Action Hint */}
                   <div className="mt-4 text-xs text-white text-opacity-75 font-medium">
-                    Tıklayın →
+                    {(category.id === 'tekstil' || category.id === 'kozmetik') ? 'Hazır! Tıklayın →' : 'Tıklayın →'}
                   </div>
                 </div>
               </button>
@@ -219,15 +236,33 @@ function YeniUrunEkleme() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               🎯 Kategori Bazlı Ürün Ekleme
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-              <div className="bg-pink-50 rounded-lg p-4 border border-pink-200">
-                <h3 className="font-semibold text-pink-800 mb-2">👕 Tekstil & Moda</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-left">
+              <div className="bg-pink-50 rounded-lg p-4 border border-pink-200 relative">
+                <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1 shadow-lg border-2 border-white">
+                  <CheckCircle size={16} className="text-white" />
+                </div>
+                <h3 className="font-semibold text-pink-800 mb-2">👕 Tekstil & Moda ✅</h3>
                 <ul className="text-sm text-pink-700 space-y-1">
                   <li>• Beden seçimi (XS, S, M, L, XL)</li>
                   <li>• Renk seçenekleri</li>
                   <li>• Kumaş bilgileri</li>
                   <li>• Bakım talimatları</li>
                 </ul>
+                <div className="mt-2 text-xs text-green-600 font-medium">✨ 4 adımlı modüler sistem</div>
+              </div>
+              
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-200 relative">
+                <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1 shadow-lg border-2 border-white">
+                  <CheckCircle size={16} className="text-white" />
+                </div>
+                <h3 className="font-semibold text-purple-800 mb-2">🧴 Kozmetik & Bakım ✅</h3>
+                <ul className="text-sm text-purple-700 space-y-1">
+                  <li>• Cilt tipi uygunluğu</li>
+                  <li>• Renk tonları/numaraları</li>
+                  <li>• İçerik listesi (INCI)</li>
+                  <li>• Vegan/organik sertifikası</li>
+                </ul>
+                <div className="mt-2 text-xs text-green-600 font-medium">✨ 4 adımlı akıllı form</div>
               </div>
               
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
@@ -238,6 +273,7 @@ function YeniUrunEkleme() {
                   <li>• Garanti süresi</li>
                   <li>• Performans grafikleri</li>
                 </ul>
+                <div className="mt-2 text-xs text-gray-500 font-medium">🔄 Geliştiriliyor...</div>
               </div>
               
               <div className="bg-green-50 rounded-lg p-4 border border-green-200">
@@ -248,18 +284,34 @@ function YeniUrunEkleme() {
                   <li>• Son kullanma tarihi</li>
                   <li>• Allerjen bilgileri</li>
                 </ul>
+                <div className="mt-2 text-xs text-gray-500 font-medium">🔄 Geliştiriliyor...</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Development Status */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-          <h3 className="font-semibold text-blue-800 mb-2">🚀 Geliştirme Durumu</h3>
-          <p className="text-blue-700 text-sm">
-            Her kategori için özel ürün ekleme formları hazırlanıyor. 
-            Kategori seçtiğinizde o kategoriye özel form açılacak.
+        <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200 rounded-lg p-6 text-center">
+          <h3 className="font-semibold text-green-800 mb-3">🚀 Geliştirme Durumu</h3>
+          <div className="flex justify-center items-center space-x-6 mb-4">
+            <div className="flex items-center space-x-2">
+              <CheckCircle size={20} className="text-green-500" />
+              <span className="text-green-700 font-medium">2 Kategori Hazır</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-5 h-5 rounded-full border-2 border-orange-400 animate-spin"></div>
+              <span className="text-orange-700 font-medium">12 Kategori Geliştiriliyor</span>
+            </div>
+          </div>
+          <p className="text-gray-700 text-sm">
+            <strong>✅ Tekstil & Moda</strong> ve <strong>✅ Kozmetik & Bakım</strong> kategorileri tam modüler sistemle hazır! 
+            Diğer kategoriler için özel formlar geliştiriliyor.
           </p>
+          <div className="mt-3 bg-white rounded-lg p-3 border border-green-200">
+            <div className="text-xs text-green-600 font-medium">
+              🔥 Hazır Özellikler: 4-step forms, Smart country selector, Toast notifications, Professional UI
+            </div>
+          </div>
         </div>
       </div>
     </div>
