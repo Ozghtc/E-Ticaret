@@ -128,7 +128,7 @@ function AdminDashboard() {
           </Link>
 
           {/* Mağaza Açılış Paneli */}
-          <Link to="/admin/magaza-acilis-paneli" className="bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg p-4 sm:p-6 cursor-pointer transition-all transform hover:scale-105 shadow-lg block lg:col-span-2">
+          <Link to="/admin/magaza-acilis-paneli" className="bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg p-4 sm:p-6 cursor-pointer transition-all transform hover:scale-105 shadow-lg block">
             <div className="flex items-center mb-4">
               <PlusCircle className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 flex-shrink-0" />
               <div>
