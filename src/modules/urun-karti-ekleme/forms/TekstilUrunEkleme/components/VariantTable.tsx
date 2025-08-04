@@ -208,8 +208,11 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
               if (price > 0) {
                 formData.selectedSizes.forEach(size => {
                   formData.selectedColors.forEach(colorId => {
-                    const variantId = `${size}-${colorId}`;
-                    updateVariant(variantId, 'price', price);
+                    const color = getColorById(colorId);
+                    if (color) {
+                      const variantId = `${size}-${color.name}`;
+                      updateVariant(variantId, 'price', price);
+                    }
                   });
                 });
                 alert('Tüm varyantlara aynı fiyat uygulandı!');
@@ -223,11 +226,14 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
             onClick={() => {
               formData.selectedSizes.forEach(size => {
                 formData.selectedColors.forEach(colorId => {
-                  const variantId = `${size}-${colorId}`;
-                  const variant = variants.find(v => v.id === variantId);
-                  const currentPrice = variant?.price || formData.price;
-                  const newOriginalPrice = Math.round(currentPrice * 1.25);
-                  updateVariant(variantId, 'originalPrice', newOriginalPrice);
+                  const color = getColorById(colorId);
+                  if (color) {
+                    const variantId = `${size}-${color.name}`;
+                    const variant = variants.find(v => v.id === variantId);
+                    const currentPrice = variant?.price || formData.price;
+                    const newOriginalPrice = Math.round(currentPrice * 1.25);
+                    updateVariant(variantId, 'originalPrice', newOriginalPrice);
+                  }
                 });
               });
               alert('Eski fiyatlar otomatik ayarlandı (%25 fazla)!');
@@ -243,8 +249,11 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
               
               formData.selectedSizes.forEach(size => {
                 formData.selectedColors.forEach(colorId => {
-                  const variantId = `${size}-${colorId}`;
-                  updateVariant(variantId, 'stock', stockPerVariant);
+                  const color = getColorById(colorId);
+                  if (color) {
+                    const variantId = `${size}-${color.name}`;
+                    updateVariant(variantId, 'stock', stockPerVariant);
+                  }
                 });
               });
               alert(`Stok eşit dağıtıldı! Her varyanta ${stockPerVariant} adet.`);
@@ -257,10 +266,12 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
             onClick={() => {
               formData.selectedSizes.forEach(size => {
                 formData.selectedColors.forEach(colorId => {
-                  const variantId = `${size}-${colorId}`;
                   const color = getColorById(colorId);
-                  const newSku = `${formData.name.substring(0,3).toUpperCase()}-${size}-${color?.name.substring(0,3).toUpperCase()}-${Date.now().toString().slice(-4)}`;
-                  updateVariant(variantId, 'sku', newSku);
+                  if (color) {
+                    const variantId = `${size}-${color.name}`;
+                    const newSku = `${formData.name.substring(0,3).toUpperCase()}-${size}-${color.name.substring(0,3).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+                    updateVariant(variantId, 'sku', newSku);
+                  }
                 });
               });
               alert('SKU kodları otomatik oluşturuldu!');
