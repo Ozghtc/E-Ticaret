@@ -378,7 +378,7 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
             
             <div>
               <label className="block text-sm font-medium text-green-700 mb-2">
-                Eski Fiyat (TL) <span className="text-green-500">(İndirim için)</span>
+                Eski Fiyat (TL)
               </label>
               <input
                 type="number"
@@ -389,7 +389,7 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
                 className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white"
                 placeholder="Otomatik doldurulur"
               />
-              <p className="text-xs text-green-600 mt-1">
+              <p className="text-xs text-red-600 mt-1">
                 {formData.originalPrice > formData.price && formData.price > 0 
                   ? `%${Math.round(((formData.originalPrice - formData.price) / formData.originalPrice) * 100)} indirim` 
                   : 'İndirim göstermek için kullanın'
