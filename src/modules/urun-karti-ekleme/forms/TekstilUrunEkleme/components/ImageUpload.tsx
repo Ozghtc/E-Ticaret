@@ -125,17 +125,59 @@ export default function ImageUpload({ formData, variants, onImagesUpdate, onVari
                   <option value="">🔄 Genel ürün fotoğrafı</option>
                   {variants.map((variant) => (
                     <option key={variant.id} value={variant.id}>
-                      🎨 {variant.size} - {variant.color}
+                      🎨 {variant.size} - {variant.color} ({variant.price}₺ • Stok: {variant.stock})
                     </option>
                   ))}
                 </select>
                 
-                {/* Seçili varyant bilgisi */}
-                {formData.imageVariantMapping[index] && (
-                  <div className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
-                    ✓ {variants.find(v => v.id === formData.imageVariantMapping[index])?.size} - {variants.find(v => v.id === formData.imageVariantMapping[index])?.color} varyantına atandı
-                  </div>
-                )}
+                {/* Seçili varyant detay bilgileri */}
+                {formData.imageVariantMapping[index] && (() => {
+                  const selectedVariant = variants.find(v => v.id === formData.imageVariantMapping[index]);
+                  if (!selectedVariant) return null;
+                  
+                  const discount = selectedVariant.originalPrice > selectedVariant.price ? 
+                    Math.round(((selectedVariant.originalPrice - selectedVariant.price) / selectedVariant.originalPrice) * 100) : 0;
+                  
+                  return (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
+                      <div className="flex items-center text-sm font-medium text-blue-800">
+                        ✓ {selectedVariant.size} - {selectedVariant.color} varyantına atandı
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3 text-xs">
+                        <div className="space-y-1">
+                          <div className="text-gray-600">💰 <strong>Satış Fiyatı:</strong></div>
+                          <div className="text-green-600 font-bold">{selectedVariant.price}₺</div>
+                        </div>
+                        
+                        {selectedVariant.originalPrice > selectedVariant.price && (
+                          <div className="space-y-1">
+                            <div className="text-gray-600">🏷️ <strong>Eski Fiyat:</strong></div>
+                            <div className="text-red-500 line-through">{selectedVariant.originalPrice}₺</div>
+                          </div>
+                        )}
+                        
+                        <div className="space-y-1">
+                          <div className="text-gray-600">📦 <strong>Kalan Stok:</strong></div>
+                          <div className={`font-bold ${selectedVariant.stock > 5 ? 'text-green-600' : selectedVariant.stock > 0 ? 'text-orange-600' : 'text-red-600'}`}>
+                            {selectedVariant.stock} adet
+                          </div>
+                        </div>
+                        
+                        {discount > 0 && (
+                          <div className="space-y-1">
+                            <div className="text-gray-600">🎯 <strong>İndirim:</strong></div>
+                            <div className="text-red-600 font-bold">%{discount}</div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                        💡 Bu fotoğraf müşteriye "{selectedVariant.size} - {selectedVariant.color}" varyantı seçildiğinde gösterilecek
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
           ))}
