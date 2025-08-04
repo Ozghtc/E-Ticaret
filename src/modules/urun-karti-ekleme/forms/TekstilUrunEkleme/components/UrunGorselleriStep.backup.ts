@@ -1,28 +1,16 @@
 import React from 'react';
 import { Camera, Plus, Upload, Video, Eye } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
-import { Variant } from '../hooks/useVariants';
 import ImageUpload from './ImageUpload';
 
 interface UrunGorselleriStepProps {
   formData: FormData;
-  variants: Variant[]; // Step 2'den gelen varyant listesi
   updateFormData: (field: keyof FormData, value: any) => void;
 }
 
-export default function UrunGorselleriStep({ formData, variants, updateFormData }: UrunGorselleriStepProps) {
+export default function UrunGorselleriStep({ formData, updateFormData }: UrunGorselleriStepProps) {
   const handleImagesUpdate = (images: File[]) => {
     updateFormData('images', images);
-  };
-
-  const handleVariantMappingUpdate = (imageIndex: number, variantId: string) => {
-    const newMapping = { ...formData.imageVariantMapping };
-    if (variantId) {
-      newMapping[imageIndex] = variantId;
-    } else {
-      delete newMapping[imageIndex]; // Genel fotoğraf seçildi, mapping'i kaldır
-    }
-    updateFormData('imageVariantMapping', newMapping);
   };
 
   return (
@@ -39,9 +27,7 @@ export default function UrunGorselleriStep({ formData, variants, updateFormData 
       {/* Main Image Upload Section */}
       <ImageUpload 
         formData={formData}
-        variants={variants}
         onImagesUpdate={handleImagesUpdate}
-        onVariantMappingUpdate={handleVariantMappingUpdate}
       />
 
       {/* Future Features - Coming Soon */}

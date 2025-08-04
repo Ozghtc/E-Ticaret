@@ -11,11 +11,12 @@ import VariantTable from './VariantTable';
 interface VaryantFiyatStepProps {
   formData: FormData;
   updateFormData: (field: keyof FormData, value: any) => void;
+  variantHook: ReturnType<typeof useVariants>; // Varyant hook'u prop olarak al
 }
 
-export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFiyatStepProps) {
+export default function VaryantFiyatStep({ formData, updateFormData, variantHook }: VaryantFiyatStepProps) {
   const { sizeSystem } = useSizeSystem(formData.subCategory1);
-  const { variants, generateVariants, updateVariant } = useVariants();
+  const { variants, generateVariants, updateVariant } = variantHook; // Prop'tan al
 
   // Generate variants when sizes/colors change
   useEffect(() => {

@@ -43,9 +43,6 @@ export interface FormData {
   // Görseller
   images: File[];
   
-  // Fotoğraf-Varyant Mapping (index-based)
-  imageVariantMapping: { [imageIndex: number]: string }; // imageIndex -> variantId
-  
   // SEO
   seoTitle: string;
   seoDescription: string;
@@ -82,7 +79,6 @@ export const initialFormData: FormData = {
   closureType: '',
   careInstructions: [],
   images: [],
-  imageVariantMapping: {}, // Başlangıçta boş
   seoTitle: '',
   seoDescription: '',
   seoKeywords: []

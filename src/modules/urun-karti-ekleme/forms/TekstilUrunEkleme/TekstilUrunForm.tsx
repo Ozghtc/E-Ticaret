@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { useFormData } from './hooks/useFormData';
+import { useVariants } from './hooks/useVariants';
 import { validateStep, isStepValid } from './utils/validation';
 import { getStepTitle } from './utils/helpers';
 import FormHeader from './components/FormHeader';
@@ -22,6 +23,9 @@ function TekstilUrunForm() {
     resetForm,
     goToStep
   } = useFormData();
+  
+  // Varyant hook'unu ana form'da kullan (state paylaşımı için)
+  const variantHook = useVariants();
 
   const totalSteps = 4; // 4 adımlı sistem
 
@@ -56,12 +60,14 @@ function TekstilUrunForm() {
           <VaryantFiyatStep
             formData={formData}
             updateFormData={updateFormData}
+            variantHook={variantHook}
           />
         );
       case 3:
         return (
           <UrunGorselleriStep
             formData={formData}
+            variants={variantHook.variants}
             updateFormData={updateFormData}
           />
         );

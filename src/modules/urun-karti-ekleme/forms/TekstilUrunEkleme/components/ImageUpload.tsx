@@ -1,14 +1,17 @@
 import React, { useRef } from 'react';
-import { Camera, Upload } from 'lucide-react';
+import { Camera, Upload, Tag } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
+import { Variant } from '../hooks/useVariants';
 import { validateImageFile } from '../utils/helpers';
 
 interface ImageUploadProps {
   formData: FormData;
+  variants: Variant[]; // Varyant listesi (Step 2'den gelecek)
   onImagesUpdate: (images: File[]) => void;
+  onVariantMappingUpdate: (imageIndex: number, variantId: string) => void; // Mapping güncellemesi
 }
 
-export default function ImageUpload({ formData, onImagesUpdate }: ImageUploadProps) {
+export default function ImageUpload({ formData, variants, onImagesUpdate, onVariantMappingUpdate }: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +47,9 @@ export default function ImageUpload({ formData, onImagesUpdate }: ImageUploadPro
   const removeImage = (index: number) => {
     const newImages = formData.images.filter((_, i) => i !== index);
     onImagesUpdate(newImages);
+    
+    // Mapping'i de temizle - silinen fotoğrafın mapping'ini kaldır
+    // NOT: Bu basit implementasyon, daha gelişmiş cleanup Step'te yapılabilir
   };
 
   return (
@@ -82,25 +88,55 @@ export default function ImageUpload({ formData, onImagesUpdate }: ImageUploadPro
 
       {/* Image Preview */}
       {formData.images.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {formData.images.map((image, index) => (
-            <div key={index} className="relative group">
-              <img
-                src={URL.createObjectURL(image)}
-                alt={`Ürün ${index + 1}`}
-                className="w-full h-24 object-cover rounded-lg"
-              />
-              <button
-                onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                ×
-              </button>
-              {index === 0 && (
-                <div className="absolute bottom-1 left-1 bg-green-500 text-white px-2 py-1 rounded text-xs">
-                  Ana
-                </div>
-              )}
+            <div key={index} className="bg-gray-50 rounded-lg p-4">
+              {/* Fotoğraf */}
+              <div className="relative group mb-3">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt={`Ürün ${index + 1}`}
+                  className="w-full h-32 object-cover rounded-lg"
+                />
+                <button
+                  onClick={() => removeImage(index)}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  ×
+                </button>
+                {index === 0 && (
+                  <div className="absolute bottom-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">
+                    Ana Fotoğraf
+                  </div>
+                )}
+              </div>
+
+              {/* Varyant Seçimi */}
+              <div className="space-y-2">
+                <label className="flex items-center text-sm font-medium text-gray-700">
+                  <Tag className="w-4 h-4 mr-1" />
+                  Bu fotoğraf hangi varyant için?
+                </label>
+                <select
+                  value={formData.imageVariantMapping[index] || ''}
+                  onChange={(e) => onVariantMappingUpdate(index, e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">🔄 Genel ürün fotoğrafı</option>
+                  {variants.map((variant) => (
+                    <option key={variant.id} value={variant.id}>
+                      🎨 {variant.size} - {variant.color}
+                    </option>
+                  ))}
+                </select>
+                
+                {/* Seçili varyant bilgisi */}
+                {formData.imageVariantMapping[index] && (
+                  <div className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
+                    ✓ {variants.find(v => v.id === formData.imageVariantMapping[index])?.size} - {variants.find(v => v.id === formData.imageVariantMapping[index])?.color} varyantına atandı
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
