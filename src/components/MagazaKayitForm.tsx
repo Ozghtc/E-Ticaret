@@ -11,6 +11,7 @@ import {
   Globe,
   Link
 } from 'lucide-react';
+import { TURKIYE_ILLERI, getIlById, getPopulerIller } from '../data/il-ilce';
 
 function MagazaKayitForm() {
   const navigate = useNavigate();
@@ -39,8 +40,9 @@ function MagazaKayitForm() {
     
     // Adres Bilgileri
     address: '',
-    city: '',
-    district: '',
+    cityId: 0, // İl ID'si
+    cityName: '', // İl adı
+    district: '', // İlçe adı (şimdilik text, sonra dropdown olacak)
     postalCode: '',
     
     // Paket Seçimi
@@ -89,6 +91,15 @@ function MagazaKayitForm() {
           ...prev.socialMedia,
           [socialField]: value
         }
+      }));
+    } else if (field === 'cityId') {
+      // İl seçildiğinde hem ID hem de adını kaydet
+      const selectedIl = getIlById(parseInt(value));
+      setFormData(prev => ({
+        ...prev,
+        cityId: parseInt(value),
+        cityName: selectedIl?.name || '',
+        district: '' // İl değiştiğinde ilçeyi sıfırla
       }));
     } else {
       setFormData(prev => ({
@@ -397,24 +408,59 @@ function MagazaKayitForm() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">İl</label>
-                  <input
-                    type="text"
-                    value={formData.city}
-                    onChange={(e) => handleInputChange('city', e.target.value)}
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    İl <span className="text-sm text-gray-500">(81 il)</span>
+                  </label>
+                  <select
+                    value={formData.cityId || ''}
+                    onChange={(e) => handleInputChange('cityId', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="İl"
-                  />
+                  >
+                    <option value="">İl seçiniz</option>
+                    
+                    {/* Popüler İller */}
+                    <optgroup label="🏙️ Popüler İller">
+                      {getPopulerIller().map((il) => (
+                        <option key={il.id} value={il.id}>
+                          {il.name} ({il.plateCode})
+                        </option>
+                      ))}
+                    </optgroup>
+                    
+                    {/* Tüm İller Alfabetik */}
+                    <optgroup label="🇹🇷 Tüm İller (A-Z)">
+                      {TURKIYE_ILLERI.map((il) => (
+                        <option key={il.id} value={il.id}>
+                          {il.name} ({il.plateCode}) - {il.region}
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+                  {formData.cityName && (
+                    <p className="text-sm text-green-600 mt-1">
+                      ✓ {formData.cityName} seçildi
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">İlçe</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    İlçe {formData.cityName && <span className="text-sm text-gray-500">({formData.cityName} ilçeleri)</span>}
+                  </label>
                   <input
                     type="text"
                     value={formData.district}
                     onChange={(e) => handleInputChange('district', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="İlçe"
+                    disabled={!formData.cityId}
+                    className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                      !formData.cityId ? 'bg-gray-100 cursor-not-allowed' : ''
+                    }`}
+                    placeholder={formData.cityId ? "İlçe adını yazın" : "Önce il seçiniz"}
                   />
+                  {!formData.cityId && (
+                    <p className="text-sm text-gray-400 mt-1">
+                      ⚠️ İlçe seçimi için önce il seçmelisiniz
+                    </p>
+                  )}
                 </div>
               </div>
               <div>
