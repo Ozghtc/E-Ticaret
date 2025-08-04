@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { useFormData } from './hooks/useFormData';
 import { validateStep, isStepValid } from './utils/validation';
+import { getStepTitle } from './utils/helpers';
 import FormHeader from './components/FormHeader';
 import UrunBilgileriStep from './components/UrunBilgileriStep';
 import VaryantFiyatStep from './components/VaryantFiyatStep';
+import UrunGorselleriStep from './components/UrunGorselleriStep';
 import OnizlemeKaydetStep from './components/OnizlemeKaydetStep';
 
 function TekstilUrunForm() {
@@ -21,7 +23,7 @@ function TekstilUrunForm() {
     goToStep
   } = useFormData();
 
-  const totalSteps = 3; // 3 adıma indirgedik
+  const totalSteps = 4; // 4 adımlı sistem
 
   const handleNext = () => {
     const errors = validateStep(currentStep, formData);
@@ -58,6 +60,13 @@ function TekstilUrunForm() {
         );
       case 3:
         return (
+          <UrunGorselleriStep
+            formData={formData}
+            updateFormData={updateFormData}
+          />
+        );
+      case 4:
+        return (
           <OnizlemeKaydetStep
             formData={formData}
             updateFormData={updateFormData}
@@ -68,14 +77,7 @@ function TekstilUrunForm() {
     }
   };
 
-  const getStepTitle = (step: number): string => {
-    const titles = {
-      1: 'Ürün Bilgileri',
-      2: 'Varyantlar & Fiyat', 
-      3: 'Önizleme & Kaydet'
-    };
-    return titles[step as keyof typeof titles] || 'Bilinmeyen Adım';
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">

@@ -76,7 +76,8 @@ export function getStepTitle(step: number): string {
   const titles = {
     1: 'Ürün Bilgileri',
     2: 'Varyantlar & Fiyat',
-    3: 'Önizleme & Kaydet'
+    3: 'Ürün Görselleri',
+    4: 'Önizleme & Kaydet'
   };
   
   return titles[step as keyof typeof titles] || 'Bilinmeyen Adım';
@@ -85,8 +86,9 @@ export function getStepTitle(step: number): string {
 export function getStepIcon(step: number): string {
   const icons = {
     1: '📝',
-    2: '🎨',
-    3: '✅'
+    2: '🎨', 
+    3: '📸',
+    4: '✅'
   };
   
   return icons[step as keyof typeof icons] || '📋';

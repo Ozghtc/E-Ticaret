@@ -37,7 +37,15 @@ export function validateStep(step: number, formData: FormData): ValidationError[
       }
       break;
 
-    case 3: // Önizleme & Kaydet (SEO opsiyonel)
+    case 3: // Ürün Görselleri
+      // Görseller opsiyonel - kullanıcı isterse ekler
+      // Minimum 1 görsel önerilir ama zorunlu değil
+      if (formData.images && formData.images.length > 10) {
+        errors.push({ field: 'images', message: 'En fazla 10 görsel yükleyebilirsiniz' });
+      }
+      break;
+
+    case 4: // Önizleme & Kaydet (SEO opsiyonel)
       // Tüm SEO alanları opsiyonel
       if (formData.seoTitle.length > 60) {
         errors.push({ field: 'seoTitle', message: 'SEO başlığı 60 karakteri geçmemelidir' });
@@ -51,7 +59,7 @@ export function validateStep(step: number, formData: FormData): ValidationError[
 export function validateForm(formData: FormData): ValidationError[] {
   const allErrors: ValidationError[] = [];
   
-  for (let step = 1; step <= 3; step++) {
+  for (let step = 1; step <= 4; step++) {
     const stepErrors = validateStep(step, formData);
     allErrors.push(...stepErrors);
   }

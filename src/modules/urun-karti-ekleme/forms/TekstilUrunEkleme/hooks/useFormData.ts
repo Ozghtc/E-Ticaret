@@ -108,7 +108,7 @@ export function useFormData() {
   }, []);
 
   const nextStep = useCallback(() => {
-    setCurrentStep(prev => Math.min(prev + 1, 3));
+    setCurrentStep(prev => Math.min(prev + 1, 4));
   }, []);
 
   const prevStep = useCallback(() => {
@@ -116,7 +116,7 @@ export function useFormData() {
   }, []);
 
   const goToStep = useCallback((step: number) => {
-    setCurrentStep(Math.max(1, Math.min(step, 3)));
+    setCurrentStep(Math.max(1, Math.min(step, 4)));
   }, []);
 
   return {

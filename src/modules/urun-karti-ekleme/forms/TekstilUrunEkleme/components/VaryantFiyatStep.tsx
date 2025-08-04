@@ -5,7 +5,6 @@ import { useSizeSystem } from '../hooks/useSizeSystem';
 import { useVariants } from '../hooks/useVariants';
 import SizeSelection from './SizeSelection';
 import ColorSelection from './ColorSelection';
-import ImageUpload from './ImageUpload';
 import PriceSection from './PriceSection';
 import VariantTable from './VariantTable';
 
@@ -41,9 +40,7 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
     updateFormData('selectedColors', newColors);
   };
 
-  const handleImagesUpdate = (images: File[]) => {
-    updateFormData('images', images);
-  };
+
 
   return (
     <div className="space-y-8">
@@ -63,17 +60,12 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
         onSizeToggle={handleSizeToggle}
       />
 
-      <ColorSelection 
-        formData={formData}
-        onColorToggle={handleColorToggle}
-      />
+                <ColorSelection 
+            formData={formData}
+            onColorToggle={handleColorToggle}
+          />
 
-      <ImageUpload 
-        formData={formData}
-        onImagesUpdate={handleImagesUpdate}
-      />
-
-      <PriceSection 
+          <PriceSection 
         formData={formData}
         updateFormData={updateFormData}
       />
