@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Package, CheckCircle, X } from 'lucide-react';
+import React from 'react';
+import { Package } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { colors } from '../data/colors';
 
@@ -11,31 +11,8 @@ interface VariantTableProps {
 }
 
 export default function VariantTable({ formData, sizeSystem, variants, updateVariant }: VariantTableProps) {
-  const [toastMessage, setToastMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
-
   const getColorById = (colorId: string) => {
     return colors.find(color => color.id === colorId);
-  };
-
-  // Toast notification sistemi
-  const showToastNotification = (message: string) => {
-    setToastMessage(message);
-    setShowToast(true);
-  };
-
-  // Toast'ı otomatik kapat
-  useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000); // 3 saniye sonra kaybol
-      return () => clearTimeout(timer);
-    }
-  }, [showToast]);
-
-  const closeToast = () => {
-    setShowToast(false);
   };
 
   if (formData.selectedSizes.length === 0 || formData.selectedColors.length === 0) {
@@ -44,20 +21,6 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
 
   return (
     <div className="space-y-8">
-      {/* Toast Notification */}
-      {showToast && (
-        <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-3 animate-pulse">
-          <CheckCircle size={20} />
-          <span className="font-medium">{toastMessage}</span>
-          <button
-            onClick={closeToast}
-            className="ml-2 text-white hover:text-gray-200"
-          >
-            <X size={16} />
-          </button>
-        </div>
-      )}
-      
       {/* Varyant Özeti - Sadece Özet */}
       <div className="bg-purple-50 rounded-lg p-6 border border-purple-200">
         <h4 className="font-medium text-purple-800 mb-3">Varyant Özeti:</h4>
@@ -252,7 +215,7 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
                     }
                   });
                 });
-                showToastNotification('✅ Tüm varyantlara aynı fiyat uygulandı!');
+                alert('Tüm varyantlara aynı fiyat uygulandı!');
               }
             }}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm"
@@ -273,7 +236,7 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
                   }
                 });
               });
-              showToastNotification('💰 Eski fiyatlar otomatik ayarlandı (%25 fazla)!');
+              alert('Eski fiyatlar otomatik ayarlandı (%25 fazla)!');
             }}
             className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 text-sm"
           >
@@ -281,19 +244,8 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
           </button>
           <button 
             onClick={() => {
-              // Stok kontrolü
-              if (!formData.stock || formData.stock <= 0) {
-                showToastNotification('⚠️ Önce toplam stok adedini girmeniz gerekiyor!');
-                return;
-              }
-              
               const totalVariants = formData.selectedSizes.length * formData.selectedColors.length;
               const stockPerVariant = Math.floor(formData.stock / totalVariants);
-              
-              if (stockPerVariant === 0) {
-                showToastNotification('⚠️ Stok miktarı varyant sayısından az olduğu için dağıtım yapılamıyor!');
-                return;
-              }
               
               formData.selectedSizes.forEach(size => {
                 formData.selectedColors.forEach(colorId => {
@@ -304,7 +256,7 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
                   }
                 });
               });
-              showToastNotification(`📦 Stok eşit dağıtıldı! Her varyanta ${stockPerVariant} adet.`);
+              alert(`Stok eşit dağıtıldı! Her varyanta ${stockPerVariant} adet.`);
             }}
             className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm"
           >
@@ -322,7 +274,7 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
                   }
                 });
               });
-              showToastNotification('🏷️ SKU kodları otomatik oluşturuldu!');
+              alert('SKU kodları otomatik oluşturuldu!');
             }}
             className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 text-sm"
           >
@@ -330,7 +282,7 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
           </button>
           <button 
             onClick={() => {
-              showToastNotification('🔍 SEO oluşturma özelliği 4. adımda (Önizleme & Kaydet) bulunmaktadır.');
+              alert('SEO oluşturma özelliği 3. adımda (Önizleme & Kaydet) bulunmaktadır.');
             }}
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 text-sm"
           >
