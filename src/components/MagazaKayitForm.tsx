@@ -11,7 +11,7 @@ import {
   Globe,
   Link
 } from 'lucide-react';
-import { TURKIYE_ILLERI, getIlById, getPopulerIller } from '../data/il-ilce';
+import IlSelector from './IlSelector';
 
 function MagazaKayitForm() {
   const navigate = useNavigate();
@@ -92,21 +92,22 @@ function MagazaKayitForm() {
           [socialField]: value
         }
       }));
-    } else if (field === 'cityId') {
-      // İl seçildiğinde hem ID hem de adını kaydet
-      const selectedIl = getIlById(parseInt(value));
-      setFormData(prev => ({
-        ...prev,
-        cityId: parseInt(value),
-        cityName: selectedIl?.name || '',
-        district: '' // İl değiştiğinde ilçeyi sıfırla
-      }));
     } else {
       setFormData(prev => ({
         ...prev,
         [field]: value
       }));
     }
+  };
+
+  // İl değişimi için özel handler
+  const handleIlChange = (ilId: number, ilName: string) => {
+    setFormData(prev => ({
+      ...prev,
+      cityId: ilId,
+      cityName: ilName,
+      district: '' // İl değiştiğinde ilçeyi sıfırla
+    }));
   };
 
   const handleNext = () => {
@@ -411,36 +412,11 @@ function MagazaKayitForm() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     İl <span className="text-sm text-gray-500">(81 il)</span>
                   </label>
-                  <select
-                    value={formData.cityId || ''}
-                    onChange={(e) => handleInputChange('cityId', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  >
-                    <option value="">İl seçiniz</option>
-                    
-                    {/* Popüler İller */}
-                    <optgroup label="🏙️ Popüler İller">
-                      {getPopulerIller().map((il) => (
-                        <option key={il.id} value={il.id}>
-                          {il.name} ({il.plateCode})
-                        </option>
-                      ))}
-                    </optgroup>
-                    
-                    {/* Tüm İller Alfabetik */}
-                    <optgroup label="🇹🇷 Tüm İller (A-Z)">
-                      {TURKIYE_ILLERI.map((il) => (
-                        <option key={il.id} value={il.id}>
-                          {il.name} ({il.plateCode}) - {il.region}
-                        </option>
-                      ))}
-                    </optgroup>
-                  </select>
-                  {formData.cityName && (
-                    <p className="text-sm text-green-600 mt-1">
-                      ✓ {formData.cityName} seçildi
-                    </p>
-                  )}
+                  <IlSelector
+                    value={formData.cityId || undefined}
+                    onChange={handleIlChange}
+                    placeholder="İl ara ve seç... (örn: İstanbul, Ankara)"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
