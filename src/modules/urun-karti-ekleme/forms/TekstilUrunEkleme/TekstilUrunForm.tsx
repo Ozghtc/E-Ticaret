@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, CheckCircle, X, AlertTriangle, XCircle } from 'lucide-react';
 import { useFormData } from './hooks/useFormData';
 import { useVariants } from './hooks/useVariants';
 import { validateStep, isStepValid } from './utils/validation';
@@ -13,6 +13,10 @@ import OnizlemeKaydetStep from './components/OnizlemeKaydetStep';
 
 function TekstilUrunForm() {
   const navigate = useNavigate();
+  const [toastMessage, setToastMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState<'success' | 'error' | 'warning'>('success');
+  
   const {
     formData,
     currentStep,
@@ -29,10 +33,32 @@ function TekstilUrunForm() {
 
   const totalSteps = 4; // 4 adımlı sistem
 
+  // Toast notification sistemi
+  const showToastNotification = (message: string, type: 'success' | 'error' | 'warning' = 'success') => {
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+  };
+
+  // Toast'ı otomatik kapat
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 4000); // 4 saniye sonra kaybol
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
+  const closeToast = () => {
+    setShowToast(false);
+  };
+
   const handleNext = () => {
     const errors = validateStep(currentStep, formData);
     if (errors.length > 0) {
-      alert('Lütfen gerekli alanları doldurun:\n' + errors.map(e => e.message).join('\n'));
+      const errorMessages = errors.map(e => e.message).join('\n• ');
+      showToastNotification('⚠️ Eksik Alanlar:\n• ' + errorMessages, 'warning');
       return;
     }
     nextStep();
@@ -40,9 +66,13 @@ function TekstilUrunForm() {
 
   const handleSubmit = () => {
     // Form submission logic here
-    alert('Ürün başarıyla eklendi!');
-    resetForm();
-    navigate('/admin/urun-yonetimi');
+    showToastNotification('🎉 Ürün başarıyla eklendi! Ürün Yönetimi sayfasına yönlendiriliyorsunuz...', 'success');
+    
+    // 2 saniye sonra yönlendir
+    setTimeout(() => {
+      resetForm();
+      navigate('/admin/urun-yonetimi');
+    }, 2000);
   };
 
   const renderCurrentStep = () => {
@@ -88,6 +118,34 @@ function TekstilUrunForm() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+      {/* Toast Notification */}
+      {showToast && (
+        <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg flex items-start space-x-3 max-w-md ${
+          toastType === 'success'
+            ? 'bg-green-500 text-white'
+            : toastType === 'error'
+            ? 'bg-red-500 text-white'
+            : 'bg-orange-500 text-white'
+        } animate-pulse`}>
+          {toastType === 'success' ? (
+            <CheckCircle size={24} className="flex-shrink-0 mt-0.5" />
+          ) : toastType === 'error' ? (
+            <XCircle size={24} className="flex-shrink-0 mt-0.5" />
+          ) : (
+            <AlertTriangle size={24} className="flex-shrink-0 mt-0.5" />
+          )}
+          <div className="flex-1">
+            <div className="font-medium whitespace-pre-line">{toastMessage}</div>
+          </div>
+          <button
+            onClick={closeToast}
+            className="text-white hover:text-gray-200 flex-shrink-0"
+          >
+            <X size={20} />
+          </button>
+        </div>
+      )}
+      
       <FormHeader currentStep={currentStep} totalSteps={totalSteps} />
 
       {/* Main Content */}
