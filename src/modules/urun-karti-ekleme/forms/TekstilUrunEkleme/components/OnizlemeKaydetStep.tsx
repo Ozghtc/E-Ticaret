@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { Check, Search, Globe, Tag, Eye } from 'lucide-react';
+import { Check, Search, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
+import { Variant } from '../hooks/useVariants';
 import { getCategoryById } from '../data/categories';
+import { getColorById } from '../data/colors';
 import { formatPrice, slugify } from '../utils/helpers';
 import { generateSmartSeo } from '../../../../seo/utils/seoHelpers';
 
 interface OnizlemeKaydetStepProps {
   formData: FormData;
+  variants: Variant[];
   updateFormData: (field: keyof FormData, value: any) => void;
 }
 
-export default function OnizlemeKaydetStep({ formData, updateFormData }: OnizlemeKaydetStepProps) {
-  const [seoScore, setSeoScore] = useState<number | null>(null);
-  const [seoSuggestions, setSeoSuggestions] = useState<string[]>([]);
+export default function OnizlemeKaydetStep({ formData, variants, updateFormData }: OnizlemeKaydetStepProps) {
+  const [seoScore] = useState<number | null>(null);
+  const [seoSuggestions] = useState<string[]>([]);
   const [showSeoResult, setShowSeoResult] = useState(false);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
 
   const handleKeywordAdd = (keyword: string) => {
     if (keyword.trim() && !formData.seoKeywords.includes(keyword.trim())) {
@@ -53,6 +57,42 @@ export default function OnizlemeKaydetStep({ formData, updateFormData }: Onizlem
     updateFormData('seoTitle', seoResult.title);
     updateFormData('seoDescription', seoResult.description);
     updateFormData('seoKeywords', seoResult.keywords);
+  };
+
+  // Varyant carousel navigasyon fonksiyonları
+  const currentVariant = variants[selectedVariantIndex];
+  
+  const nextVariant = () => {
+    setSelectedVariantIndex(prev => (prev + 1) % variants.length);
+  };
+  
+  const prevVariant = () => {
+    setSelectedVariantIndex(prev => (prev - 1 + variants.length) % variants.length);
+  };
+  
+  const goToVariant = (index: number) => {
+    setSelectedVariantIndex(index);
+  };
+  
+  // Varyant için atanmış fotoğrafı bul
+  const getVariantImage = (variant: Variant) => {
+    // imageVariantMapping'ten bu varyanta atanmış fotoğrafı bul
+    const mappingEntry = Object.entries(formData.imageVariantMapping).find(([_, variantId]) => variantId === variant.id);
+    if (mappingEntry) {
+      const imageIndex = parseInt(mappingEntry[0]);
+      return formData.images[imageIndex];
+    }
+    // Eğer atanmış fotoğraf yoksa, ilk fotoğrafı göster
+    return formData.images[0];
+  };
+  
+  // Varyant için renk bilgisini al
+  const getVariantColorInfo = (variant: Variant) => {
+    const colorId = formData.selectedColors.find(colorId => {
+      const color = getColorById(colorId);
+      return color?.name === variant.color;
+    });
+    return colorId ? getColorById(colorId) : null;
   };
 
   return (
@@ -196,97 +236,273 @@ export default function OnizlemeKaydetStep({ formData, updateFormData }: Onizlem
         </div>
       )}
 
-      {/* Ürün Önizlemesi */}
+      {/* Varyant Carousel Önizlemesi */}
       <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
           <Eye className="mr-2" size={20} />
-          Ürün Önizlemesi
+          Varyant Önizlemesi
         </h3>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Sol: Ürün Kartı Önizleme */}
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="font-medium text-gray-800 mb-3">Ürün Kartı Görünümü:</h4>
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden max-w-sm">
-              {formData.images.length > 0 ? (
-                <img
-                  src={URL.createObjectURL(formData.images[0])}
-                  alt={formData.name}
-                  className="w-full h-48 object-cover"
-                />
-              ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500">Fotoğraf yok</span>
+        {variants.length > 0 ? (
+          <div className="space-y-6">
+            {/* Varyant Navigasyon Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={prevVariant}
+                  disabled={variants.length <= 1}
+                  className={`p-2 rounded-full ${
+                    variants.length <= 1
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                  }`}
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                
+                <div className="text-center">
+                  <h4 className="font-bold text-xl text-gray-900">
+                    {currentVariant?.size} - {currentVariant?.color}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    Varyant {selectedVariantIndex + 1} / {variants.length}
+                  </p>
                 </div>
-              )}
-              <div className="p-4">
-                <h5 className="font-medium text-gray-900 mb-2">{formData.name || 'Ürün Adı'}</h5>
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-bold text-pink-600">
-                    {formData.price ? formatPrice(formData.price) : '0 TL'}
-                  </span>
-                  {formData.originalPrice > formData.price && (
-                    <span className="text-sm text-gray-500 line-through">
-                      {formatPrice(formData.originalPrice)}
-                    </span>
-                  )}
-                </div>
-                <button className="w-full bg-pink-600 text-white py-2 rounded-md mt-3 text-sm">
-                  Sepete Ekle
+                
+                <button
+                  onClick={nextVariant}
+                  disabled={variants.length <= 1}
+                  className={`p-2 rounded-full ${
+                    variants.length <= 1
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                  }`}
+                >
+                  <ChevronRight size={20} />
                 </button>
               </div>
+              
+              {/* Varyant Indicator Dots */}
+              {variants.length > 1 && (
+                <div className="flex space-x-2">
+                  {variants.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToVariant(index)}
+                      className={`w-3 h-3 rounded-full transition-colors ${
+                        index === selectedVariantIndex
+                          ? 'bg-blue-600'
+                          : 'bg-gray-300 hover:bg-gray-400'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
+            
+            {/* Ana Varyant Kartı */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Sol: Ürün Kartı (Varyanta Özel) */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h4 className="font-medium text-gray-800 mb-3">Ürün Kartı Görünümü:</h4>
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden max-w-sm">
+                  {/* Varyanta özel fotoğraf */}
+                  {(() => {
+                    const variantImage = getVariantImage(currentVariant);
+                    return variantImage ? (
+                      <img
+                        src={URL.createObjectURL(variantImage)}
+                        alt={`${formData.name} - ${currentVariant?.size} ${currentVariant?.color}`}
+                        className="w-full h-48 object-cover"
+                      />
+                    ) : formData.images[0] ? (
+                      <img
+                        src={URL.createObjectURL(formData.images[0])}
+                        alt={formData.name}
+                        className="w-full h-48 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-500">Fotoğraf yok</span>
+                      </div>
+                    );
+                  })()}
+                  
+                  <div className="p-4">
+                    <h5 className="font-medium text-gray-900 mb-2">
+                      {formData.name || 'Ürün Adı'} - {currentVariant?.size}
+                    </h5>
+                    
+                    {/* Renk göstergesi */}
+                    {(() => {
+                      const colorInfo = getVariantColorInfo(currentVariant);
+                      return colorInfo && (
+                        <div className="flex items-center mb-2">
+                          <div
+                            className="w-4 h-4 rounded-full border-2 border-gray-300 mr-2"
+                            style={{ backgroundColor: colorInfo.hex }}
+                          />
+                          <span className="text-sm text-gray-600">{colorInfo.name}</span>
+                        </div>
+                      );
+                    })()}
+                    
+                    {/* Fiyat bilgileri */}
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-lg font-bold text-pink-600">
+                        {currentVariant ? formatPrice(currentVariant.price) : '0 TL'}
+                      </span>
+                      {currentVariant && currentVariant.originalPrice > currentVariant.price && (
+                        <span className="text-sm text-gray-500 line-through">
+                          {formatPrice(currentVariant.originalPrice)}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* İndirim yüzdesi */}
+                    {currentVariant && currentVariant.originalPrice > currentVariant.price && (
+                      <div className="mb-2">
+                        <span className="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded">
+                          %{Math.round(((currentVariant.originalPrice - currentVariant.price) / currentVariant.originalPrice) * 100)} İndirim
+                        </span>
+                      </div>
+                    )}
+                    
+                    {/* Stok durumu */}
+                    <div className="mb-3">
+                      <span className={`text-xs font-medium px-2 py-1 rounded ${
+                        currentVariant && currentVariant.stock > 5
+                          ? 'bg-green-100 text-green-800'
+                          : currentVariant && currentVariant.stock > 0
+                          ? 'bg-orange-100 text-orange-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {currentVariant
+                          ? currentVariant.stock > 0
+                            ? `${currentVariant.stock} adet stokta`
+                            : 'Stokta yok'
+                          : 'Stok bilgisi yok'
+                        }
+                      </span>
+                    </div>
+                    
+                    <button 
+                      className={`w-full py-2 rounded-md text-sm font-medium ${
+                        currentVariant && currentVariant.stock > 0
+                          ? 'bg-pink-600 text-white hover:bg-pink-700'
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
+                      disabled={!currentVariant || currentVariant.stock === 0}
+                    >
+                      {currentVariant && currentVariant.stock > 0 ? 'Sepete Ekle' : 'Stokta Yok'}
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-          {/* Sağ: Ürün Detayları */}
-          <div>
-            <h4 className="font-medium text-gray-800 mb-3">Ürün Detayları:</h4>
-            <div className="space-y-4 text-sm">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <span className="text-gray-600">Kategori:</span>
-                  <div className="font-medium text-gray-900">
-                    {getCategoryById(formData.mainCategory)?.name || 'Seçilmedi'}
+              {/* Sağ: Varyant Detayları */}
+              <div>
+                <h4 className="font-medium text-gray-800 mb-3">Varyant Detayları:</h4>
+                <div className="space-y-4 text-sm">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <span className="text-gray-600">Beden:</span>
+                      <div className="font-medium text-gray-900">{currentVariant?.size || '-'}</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Renk:</span>
+                      <div className="font-medium text-gray-900">{currentVariant?.color || '-'}</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Satış Fiyatı:</span>
+                      <div className="font-medium text-green-600">
+                        {currentVariant ? formatPrice(currentVariant.price) : '0 TL'}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Eski Fiyat:</span>
+                      <div className="font-medium text-gray-900">
+                        {currentVariant && currentVariant.originalPrice > currentVariant.price
+                          ? formatPrice(currentVariant.originalPrice)
+                          : 'Yok'
+                        }
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Stok:</span>
+                      <div className={`font-medium ${
+                        currentVariant && currentVariant.stock > 5
+                          ? 'text-green-600'
+                          : currentVariant && currentVariant.stock > 0
+                          ? 'text-orange-600'
+                          : 'text-red-600'
+                      }`}>
+                        {currentVariant?.stock || 0} adet
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">SKU:</span>
+                      <div className="font-medium text-gray-900">{currentVariant?.sku || 'Belirtilmedi'}</div>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Alt Kategori:</span>
-                  <div className="font-medium text-gray-900">
-                    {getCategoryById(formData.subCategory1)?.name || 'Seçilmedi'}
+                  
+                  {/* Genel ürün bilgileri */}
+                  <div className="border-t pt-4 mt-4">
+                    <h5 className="font-medium text-gray-800 mb-3">Genel Bilgiler:</h5>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <span className="text-gray-600">Kategori:</span>
+                        <div className="font-medium text-gray-900">
+                          {getCategoryById(formData.mainCategory)?.name || 'Seçilmedi'}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Alt Kategori:</span>
+                        <div className="font-medium text-gray-900">
+                          {getCategoryById(formData.subCategory1)?.name || 'Seçilmedi'}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Marka:</span>
+                        <div className="font-medium text-gray-900">{formData.brand || 'Belirtilmedi'}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Cinsiyet:</span>
+                        <div className="font-medium text-gray-900">{formData.gender || 'Belirtilmedi'}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Kumaş:</span>
+                        <div className="font-medium text-gray-900">{formData.fabricType || 'Belirtilmedi'}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Kalıp:</span>
+                        <div className="font-medium text-gray-900">{formData.fitType || 'Belirtilmedi'}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Toplam Varyant:</span>
+                        <div className="font-medium text-gray-900">{variants.length} adet</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Fotoğraf:</span>
+                        <div className="font-medium text-gray-900">
+                          {getVariantImage(currentVariant) ? 'Özel atanmış' : 'Genel fotoğraf'}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Marka:</span>
-                  <div className="font-medium text-gray-900">{formData.brand || 'Belirtilmedi'}</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Cinsiyet:</span>
-                  <div className="font-medium text-gray-900">{formData.gender || 'Belirtilmedi'}</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Kumaş:</span>
-                  <div className="font-medium text-gray-900">{formData.fabricType || 'Belirtilmedi'}</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Kalıp:</span>
-                  <div className="font-medium text-gray-900">{formData.fitType || 'Belirtilmedi'}</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Bedenler:</span>
-                  <div className="font-medium text-gray-900">{formData.selectedSizes.length} adet</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Renkler:</span>
-                  <div className="font-medium text-gray-900">{formData.selectedColors.length} adet</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Toplam Varyant:</span>
-                  <div className="font-medium text-gray-900">{formData.selectedSizes.length * formData.selectedColors.length}</div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-8">
+            <div className="text-gray-400 mb-4">
+              <Eye size={48} className="mx-auto" />
+            </div>
+            <h4 className="text-lg font-medium text-gray-900 mb-2">Henüz varyant yok</h4>
+            <p className="text-gray-600">Önizleme için 2. adımda beden ve renk seçimi yapın.</p>
+          </div>
+        )}
       </div>
 
       {/* SEO Önizleme */}

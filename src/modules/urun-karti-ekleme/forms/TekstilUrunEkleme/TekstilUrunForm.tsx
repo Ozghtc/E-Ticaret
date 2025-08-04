@@ -75,6 +75,7 @@ function TekstilUrunForm() {
         return (
           <OnizlemeKaydetStep
             formData={formData}
+            variants={variantHook.variants}
             updateFormData={updateFormData}
           />
         );
