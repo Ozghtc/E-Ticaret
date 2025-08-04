@@ -28,7 +28,12 @@ export const subCategories: Record<string, CategoryData[]> = {
     { id: 'hirka', name: 'Hırka', emoji: '🧶', sizeSystem: 'letter' },
     { id: 'kazak', name: 'Kazak', emoji: '🧥', sizeSystem: 'letter' },
     { id: 'bluz', name: 'Bluz', emoji: '👚', sizeSystem: 'letter' },
-    { id: 'sort', name: 'Şort', emoji: '🩳', sizeSystem: 'number' }
+    { id: 'sort', name: 'Şort', emoji: '🩳', sizeSystem: 'number' },
+    { id: 'tunik', name: 'Tunik', emoji: '👘', sizeSystem: 'letter' },
+    { id: 'ferace', name: 'Ferace', emoji: '🧥', sizeSystem: 'letter' },
+    { id: 'sal-esarp', name: 'Şal / Eşarp', emoji: '🧕', sizeSystem: 'onesize' },
+    { id: 'kap', name: 'Kap', emoji: '👗', sizeSystem: 'letter' },
+    { id: 'pardosu', name: 'Pardösü', emoji: '🧥', sizeSystem: 'letter' }
   ],
   'erkek-giyim': [
     { id: 'tisort', name: 'Tişört', emoji: '👕', sizeSystem: 'letter' },

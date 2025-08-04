@@ -48,6 +48,56 @@ export const CATEGORY_SPECS_MAP: Record<string, CategorySpecsConfig> = {
     closureType: false,  // ❌ Genelde kapama yok
     careInstructions: true
   },
+
+  'tunik': {
+    fabricType: true,
+    fitType: true,
+    pattern: true,
+    neckType: true,      // ✅ V, yuvarlak, hakim yaka
+    sleeveType: true,    // ✅ Kısa, uzun kol
+    closureType: false,  // ❌ Genelde kapama yok
+    careInstructions: true
+  },
+
+  'ferace': {
+    fabricType: true,
+    fitType: true,
+    pattern: true,
+    neckType: true,      // ✅ Kapüşon, dik yaka
+    sleeveType: true,    // ✅ Uzun kol
+    closureType: true,   // ✅ Fermuar, düğme
+    careInstructions: true
+  },
+
+  'sal-esarp': {
+    fabricType: true,
+    fitType: false,      // ❌ Eşarpın kalıbı yok
+    pattern: true,
+    neckType: false,     // ❌ Yaka yok
+    sleeveType: false,   // ❌ Kol yok
+    closureType: false,  // ❌ Kapama yok
+    careInstructions: true
+  },
+
+  'kap': {
+    fabricType: true,
+    fitType: true,
+    pattern: true,
+    neckType: true,      // ✅ Dik yaka, hakim yaka
+    sleeveType: true,    // ✅ Uzun kol
+    closureType: true,   // ✅ Düğme, fermuar
+    careInstructions: true
+  },
+
+  'pardosu': {
+    fabricType: true,
+    fitType: true,
+    pattern: true,
+    neckType: true,      // ✅ İngiliz yaka, dik yaka
+    sleeveType: true,    // ✅ Uzun kol
+    closureType: true,   // ✅ Düğme
+    careInstructions: true
+  },
   
   'ceket': {
     fabricType: true,
