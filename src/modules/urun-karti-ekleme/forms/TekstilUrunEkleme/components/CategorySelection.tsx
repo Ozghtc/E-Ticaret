@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormData } from '../hooks/useFormData';
 import { mainCategories, getSubCategories, getCategoryById } from '../data/categories';
+import { getCategorySpecsConfig, SPEC_FIELD_NAMES } from '../data/categorySpecsMap';
 
 interface CategorySelectionProps {
   formData: FormData;
@@ -12,20 +13,61 @@ export default function CategorySelection({ formData, updateFormData, updateMult
   const subCategories1 = getSubCategories(formData.mainCategory);
   const subCategories2 = getSubCategories(formData.subCategory1);
 
+  // 🧹 Helper function to clean irrelevant specs based on category
+  const cleanIrrelevantSpecs = (newCategoryId: string): Partial<FormData> => {
+    const specsConfig = getCategorySpecsConfig(newCategoryId);
+    const cleanupUpdates: Partial<FormData> = {};
+
+    // Clear specs that are not relevant for the new category
+    if (!specsConfig.neckType && formData.neckType) {
+      cleanupUpdates.neckType = '';
+    }
+    if (!specsConfig.sleeveType && formData.sleeveType) {
+      cleanupUpdates.sleeveType = '';
+    }
+    if (!specsConfig.closureType && formData.closureType) {
+      cleanupUpdates.closureType = '';
+    }
+    if (!specsConfig.fabricType && formData.fabricType) {
+      cleanupUpdates.fabricType = '';
+    }
+    if (!specsConfig.fitType && formData.fitType) {
+      cleanupUpdates.fitType = '';
+    }
+    if (!specsConfig.pattern && formData.pattern) {
+      cleanupUpdates.pattern = '';
+    }
+
+    return cleanupUpdates;
+  };
+
   const handleMainCategoryChange = (categoryId: string) => {
     const category = getCategoryById(categoryId);
+    
+    // Get first subcategory to determine specs cleanup
+    const subCategories = getSubCategories(categoryId);
+    const firstSubCategory = subCategories.length > 0 ? subCategories[0].id : categoryId;
+    
+    // Clean irrelevant specs based on the category change
+    const specsCleanup = cleanIrrelevantSpecs(firstSubCategory);
+    
     updateMultipleFields({
       mainCategory: categoryId,
       subCategory1: '',
       subCategory2: '',
-      gender: category?.genderAuto || formData.gender
+      gender: category?.genderAuto || formData.gender,
+      ...specsCleanup // 🧹 Clean irrelevant specs
     });
   };
 
   const handleSubCategory1Change = (categoryId: string) => {
+    // Clean irrelevant specs based on the new subcategory
+    const specsCleanup = cleanIrrelevantSpecs(categoryId);
+    
     updateMultipleFields({
       subCategory1: categoryId,
-      subCategory2: ''
+      subCategory2: '',
+      ...specsCleanup // 🧹 Clean irrelevant specs
     });
   };
 
