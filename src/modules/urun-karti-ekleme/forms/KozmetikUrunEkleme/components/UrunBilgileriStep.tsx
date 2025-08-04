@@ -3,7 +3,7 @@ import React from 'react';
 import { Package, Tag, DollarSign, Warehouse } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { mainCategories, getSubCategories } from '../data/categories';
-import { countries, getPopularCountries } from '../../shared-data/countries';
+import CountrySelector from '../../shared-data/CountrySelector';
 
 interface UrunBilgileriStepProps {
   formData: FormData;
@@ -152,39 +152,12 @@ function UrunBilgileriStep({ formData, updateFormData, updateMultipleFields }: U
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Menşei
             </label>
-            <select
+            <CountrySelector
               value={formData.origin}
-              onChange={(e) => updateFormData('origin', e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Menşei seçin...</option>
-              
-              {/* Popüler Ülkeler */}
-              <optgroup label="🌟 Popüler Ülkeler">
-                {getPopularCountries().map(country => (
-                  <option key={country.id} value={country.name}>
-                    {country.flag} {country.name}
-                  </option>
-                ))}
-              </optgroup>
-              
-              {/* Tüm Ülkeler (Alfabetik) */}
-              <optgroup label="🌍 Tüm Ülkeler">
-                {countries
-                  .filter(country => !country.popular && country.id !== 'diger')
-                  .sort((a, b) => a.name.localeCompare(b.name, 'tr'))
-                  .map(country => (
-                    <option key={country.id} value={country.name}>
-                      {country.flag} {country.name}
-                    </option>
-                  ))}
-              </optgroup>
-              
-              {/* Diğer */}
-              <optgroup label="❓ Diğer">
-                <option value="Diğer">🌍 Diğer</option>
-              </optgroup>
-            </select>
+              onChange={(value) => updateFormData('origin', value)}
+              placeholder="Menşei seçin veya yazın... (örn: tur, amer)"
+              className=""
+            />
           </div>
         </div>
 
