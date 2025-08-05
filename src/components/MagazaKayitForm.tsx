@@ -123,8 +123,35 @@ function MagazaKayitForm() {
   };
 
   const handleSubmit = () => {
-    alert('🎉 Mağazanız başarıyla açıldı! Domain ve tüm ayarlar aktifleştirildi. Mağaza panelinize yönlendiriliyorsunuz...');
-    navigate('/admin/magaza-yonetimi');
+    try {
+      // Unique ID oluştur
+      const magazaId = `magaza_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Form verilerini hazırla
+      const magazaData = {
+        id: magazaId,
+        ...formData,
+        createdAt: new Date().toISOString(),
+        status: 'pending' // Varsayılan olarak onay bekliyor
+      };
+
+      // Mevcut mağaza listesini al
+      const existingMagazalar = JSON.parse(localStorage.getItem('magazaListesi') || '[]');
+      
+      // Yeni mağazayı listeye ekle
+      const updatedMagazalar = [...existingMagazalar, magazaData];
+      
+      // localStorage'a kaydet
+      localStorage.setItem('magazaListesi', JSON.stringify(updatedMagazalar));
+
+      // Başarı mesajı ve yönlendirme
+      alert('🎉 Mağaza başvurunuz başarıyla kaydedildi! Mağaza listesinde görüntüleyebilirsiniz.');
+      navigate('/admin/magaza-listesi');
+      
+    } catch (error) {
+      console.error('Mağaza kaydedilirken hata oluştu:', error);
+      alert('❌ Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
   };
 
   const renderStepContent = () => {
@@ -601,7 +628,7 @@ function MagazaKayitForm() {
                 onClick={handleSubmit}
                 className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 flex items-center"
               >
-                🚀 Mağazayı Aç
+💾 Mağazayı Kaydet
                 <Check size={20} className="ml-2" />
               </button>
             )}

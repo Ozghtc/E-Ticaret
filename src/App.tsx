@@ -50,6 +50,7 @@ import Siparislerim from './modules/magaza-paneli/modules/Siparislerim';
 import Faturalarim from './modules/magaza-paneli/modules/Faturalarim';
 import MagazaBilgilerim from './modules/magaza-paneli/modules/MagazaBilgilerim';
 import DestekBildirimler from './modules/magaza-paneli/modules/DestekBildirimler';
+import MagazaListesi from './modules/magaza-listesi/MagazaListesi';
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
         <Route path="/admin/kullanici-yonetimi" element={<KullaniciYonetimi />} />
         <Route path="/admin/magaza-yonetimi" element={<MagazaPaneli />} />
         <Route path="/admin/magaza-acilis-paneli" element={<MagazaAcilisPaneli />} />
+        <Route path="/admin/magaza-listesi" element={<MagazaListesi />} />
         <Route path="/admin/son-kullanici-sitesi" element={<SonKullaniciSitesi />} />
         <Route path="/admin/tema-sistemi" element={<TemaSistemi />} />
         <Route path="/admin/yetkilendirme" element={<Yetkilendirme />} />
