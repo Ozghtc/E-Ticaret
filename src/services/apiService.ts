@@ -5,16 +5,31 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://hzmbackendveritabani-production.up.railway.app/api/v1'
   : 'https://hzmbackendveritabani-production.up.railway.app/api/v1'; // Her iki durumda da production kullan
 
+// 🔐 Environment Variables - Hardcoded credential yasak (KURAL 17)
 const API_CONFIG = {
-  projectId: 23,
-  apiKey: 'hzm_112807dc571043aa83a70df125d6aa53',
+  projectId: process.env.REACT_APP_HZM_PROJECT_ID,
+  apiKey: process.env.REACT_APP_HZM_API_KEY,
   headers: {
-    'X-API-Key': 'hzm_112807dc571043aa83a70df125d6aa53',
-    'X-User-Email': process.env.REACT_APP_HZM_USER_EMAIL || 'demo@altintassoft.com',
-    'X-Project-Password': process.env.REACT_APP_HZM_PROJECT_PASSWORD || 'demo123456',
+    'X-API-Key': process.env.REACT_APP_HZM_API_KEY,
+    'X-User-Email': process.env.REACT_APP_HZM_USER_EMAIL,
+    'X-Project-Password': process.env.REACT_APP_HZM_PROJECT_PASSWORD,
     'Content-Type': 'application/json'
   }
 };
+
+// 🚨 Environment Variables Validation (KURAL 17)
+const requiredEnvVars = [
+  'REACT_APP_HZM_API_KEY',
+  'REACT_APP_HZM_USER_EMAIL', 
+  'REACT_APP_HZM_PROJECT_PASSWORD',
+  'REACT_APP_HZM_PROJECT_ID'
+];
+
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+if (missingVars.length > 0) {
+  console.error('❌ Missing environment variables:', missingVars);
+  throw new Error(`Environment variables eksik: ${missingVars.join(', ')}`);
+}
 
 // 📊 Mağaza Veri Modeli
 export interface MagazaData {
@@ -125,7 +140,7 @@ class APIService {
     return `magaza_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  // 📊 Tüm Mağazaları Getir
+  // 📊 Tüm Mağazaları Getir (KURAL 18: API Hatası = Backend Düzeltmesi)
   async getMagazalar(): Promise<MagazaData[]> {
     try {
       const tableId = await this.ensureTable();
@@ -134,18 +149,16 @@ class APIService {
       const rows = response.data?.rows || [];
       return rows.map((row: any) => this.transformFromAPI(row));
     } catch (error) {
-      console.error('Mağazalar getirilemedi:', error);
-      // Fallback: localStorage'dan yükle
-      const backup = this.getLocalStorageBackup();
-      if (backup.length > 0) {
-        console.warn('API hatası, localStorage backup kullanılıyor');
-        return backup;
-      }
-      throw error;
+      console.error('🚨 KRİTİK API HATASI: Backend düzeltmesi gerekli');
+      console.error('❌ SORUN:', error);
+      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: API connection/authentication');
+      
+      // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
+      throw new Error('API servisi çalışmıyor. Backend düzeltmesi gerekli.');
     }
   }
 
-  // ➕ Yeni Mağaza Oluştur
+  // ➕ Yeni Mağaza Oluştur (KURAL 18: API Hatası = Backend Düzeltmesi)
   async createMagaza(data: Omit<MagazaData, 'id' | 'createdAt' | 'updatedAt'>): Promise<MagazaData> {
     try {
       const tableId = await this.ensureTable();
@@ -162,31 +175,18 @@ class APIService {
         body: JSON.stringify(apiData)
       });
 
-      const createdMagaza = this.transformFromAPI(response.data?.row || apiData);
-      
-      // Başarılı API kaydından sonra localStorage backup'ı güncelle
-      this.updateLocalStorageBackup(createdMagaza, 'create');
-      
-      return createdMagaza;
+      return this.transformFromAPI(response.data?.row || apiData);
     } catch (error) {
-      console.error('Mağaza oluşturulamadı:', error);
+      console.error('🚨 KRİTİK API HATASI: Mağaza oluşturulamadı');
+      console.error('❌ SORUN:', error);
+      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: CREATE operation/table structure');
       
-      // Fallback: localStorage'a kaydet ve sync için işaretle
-      const newMagaza: MagazaData = {
-        ...data,
-        id: this.fallbackId(),
-        createdAt: new Date().toISOString(),
-        status: 'pending'
-      };
-      
-      this.saveForLaterSync(newMagaza);
-      this.updateLocalStorageBackup(newMagaza, 'create');
-      
-      throw error;
+      // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
+      throw new Error('Mağaza oluşturulamadı. Backend düzeltmesi gerekli.');
     }
   }
 
-  // 🔄 Mağaza Güncelle
+  // 🔄 Mağaza Güncelle (KURAL 18: API Hatası = Backend Düzeltmesi)
   async updateMagaza(id: string, data: Partial<MagazaData>): Promise<MagazaData> {
     try {
       const tableId = await this.ensureTable();
@@ -201,19 +201,18 @@ class APIService {
         body: JSON.stringify(apiData)
       });
 
-      const updatedMagaza = this.transformFromAPI(response.data?.row);
-      
-      // localStorage backup'ı güncelle
-      this.updateLocalStorageBackup(updatedMagaza, 'update');
-      
-      return updatedMagaza;
+      return this.transformFromAPI(response.data?.row);
     } catch (error) {
-      console.error('Mağaza güncellenemedi:', error);
-      throw error;
+      console.error('🚨 KRİTİK API HATASI: Mağaza güncellenemedi');
+      console.error('❌ SORUN:', error);
+      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: UPDATE operation');
+      
+      // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
+      throw new Error('Mağaza güncellenemedi. Backend düzeltmesi gerekli.');
     }
   }
 
-  // 🗑️ Mağaza Sil
+  // 🗑️ Mağaza Sil (KURAL 18: API Hatası = Backend Düzeltmesi)
   async deleteMagaza(id: string): Promise<void> {
     try {
       const tableId = await this.ensureTable();
@@ -221,13 +220,13 @@ class APIService {
       await this.request<any>(`/data/table/${tableId}/rows/${id}`, {
         method: 'DELETE'
       });
-
-      // localStorage backup'tan da sil
-      this.updateLocalStorageBackup({ id } as MagazaData, 'delete');
-      
     } catch (error) {
-      console.error('Mağaza silinemedi:', error);
-      throw error;
+      console.error('🚨 KRİTİK API HATASI: Mağaza silinemedi');
+      console.error('❌ SORUN:', error);
+      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: DELETE operation');
+      
+      // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
+      throw new Error('Mağaza silinemedi. Backend düzeltmesi gerekli.');
     }
   }
 
@@ -295,75 +294,9 @@ class APIService {
     };
   }
 
-  // 💾 LocalStorage Backup Management
-  private getLocalStorageBackup(): MagazaData[] {
-    try {
-      const backup = localStorage.getItem('magazaListesi_api_backup') || 
-                    localStorage.getItem('magazaListesi');
-      return backup ? JSON.parse(backup) : [];
-    } catch (error) {
-      console.error('LocalStorage backup okuma hatası:', error);
-      return [];
-    }
-  }
-
-  private updateLocalStorageBackup(magaza: MagazaData, operation: 'create' | 'update' | 'delete') {
-    try {
-      const current = this.getLocalStorageBackup();
-      
-      let updated: MagazaData[];
-      switch (operation) {
-        case 'create':
-          updated = [...current, magaza];
-          break;
-        case 'update':
-          updated = current.map(m => m.id === magaza.id ? { ...m, ...magaza } : m);
-          break;
-        case 'delete':
-          updated = current.filter(m => m.id !== magaza.id);
-          break;
-        default:
-          updated = current;
-      }
-      
-      localStorage.setItem('magazaListesi_api_backup', JSON.stringify(updated));
-    } catch (error) {
-      console.error('LocalStorage backup güncelleme hatası:', error);
-    }
-  }
-
-  private saveForLaterSync(magaza: MagazaData) {
-    try {
-      const pending = localStorage.getItem('pending_sync_magazalar');
-      const pendingList = pending ? JSON.parse(pending) : [];
-      pendingList.push(magaza);
-      localStorage.setItem('pending_sync_magazalar', JSON.stringify(pendingList));
-    } catch (error) {
-      console.error('Sync queue kaydetme hatası:', error);
-    }
-  }
-
-  // 🔄 Offline Sync (Gelecek özellik)
-  async syncPendingData(): Promise<void> {
-    try {
-      const pending = localStorage.getItem('pending_sync_magazalar');
-      if (!pending) return;
-
-      const pendingList: MagazaData[] = JSON.parse(pending);
-      
-      for (const magaza of pendingList) {
-        try {
-          await this.createMagaza(magaza);
-        } catch (error) {
-          console.error(`Sync hatası - Mağaza ID: ${magaza.id}`, error);
-        }
-      }
-      
-      localStorage.removeItem('pending_sync_magazalar');
-    } catch (error) {
-      console.error('Sync işlemi hatası:', error);
-    }
-  }
+  // 🚫 LocalStorage Backup Kaldırıldı (KURAL 18: API Hatası = Backend Düzeltmesi)
+  // Frontend workaround/fallback mekanizmaları yasak
+  // API hatası durumunda backend düzeltmesi beklenir
 
   // 📊 API Health Check
   async healthCheck(): Promise<boolean> {

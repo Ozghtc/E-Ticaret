@@ -9,41 +9,42 @@ BEFORE: localStorage (Prototype)
 AFTER:  HZM Database API (Production Ready)
 ```
 
-### 🔄 GEÇİŞ STRATEJİSİ
+### 🔄 GEÇİŞ STRATEJİSİ (KURAL 16+17+18)
 1. **API Service Layer** oluştur
-2. **Environment Configuration** kur
+2. **Environment Configuration** kur (Hardcoded credential yasak)
 3. **Mağaza API'leri** entegre et  
-4. **Error Handling** sistemi
+4. **Error Handling** sistemi (Backend düzeltmesi)
 5. **Loading States** bağla
-6. **Hybrid Mode** (localStorage backup)
+6. **No Fallback Mode** (localStorage backup yasak)
 
 ---
 
 ## 🔧 API CONFIGURATION
 
-### 🌐 Base URLs
+### 🌐 Base URLs (KURAL 16: Localhost Yasak)
 ```typescript
 const API_CONFIG = {
   production: 'https://hzmbackendveritabani-production.up.railway.app/api/v1',
-  development: 'http://localhost:8080/api/v1'
+  // KURAL 16: Development'da da production URL kullan
+  development: 'https://hzmbackendveritabani-production.up.railway.app/api/v1'
 }
 ```
 
-### 🔐 Authentication Headers
+### 🔐 Authentication Headers (KURAL 17: Hardcoded Credential Yasak)
 ```typescript
 const API_HEADERS = {
-  'X-API-Key': 'hzm_112807dc571043aa83a70df125d6aa53',
+  'X-API-Key': process.env.REACT_APP_HZM_API_KEY,
   'X-User-Email': process.env.REACT_APP_HZM_USER_EMAIL,
   'X-Project-Password': process.env.REACT_APP_HZM_PROJECT_PASSWORD,
   'Content-Type': 'application/json'
 }
 ```
 
-### 📋 Project Info
+### 📋 Project Info (KURAL 17: Environment Variables Zorunlu)
 ```typescript
 const PROJECT_CONFIG = {
-  projectId: 23,
-  apiKey: 'hzm_112807dc571043aa83a70df125d6aa53'
+  projectId: process.env.REACT_APP_HZM_PROJECT_ID,
+  apiKey: process.env.REACT_APP_HZM_API_KEY
 }
 ```
 
@@ -423,28 +424,28 @@ export const useMagazalar = () => {
 
 ## 🌐 ENVIRONMENT CONFIGURATION
 
-### 📄 .env.local
+### 📄 .env.local (KURAL 17: Hardcoded Credential Yasak)
 ```bash
-# HZM API Configuration
+# HZM API Configuration - KENDİ BİLGİLERİNİZİ YAZIN
 REACT_APP_HZM_USER_EMAIL=your_email@domain.com
-REACT_APP_HZM_PROJECT_PASSWORD=your_project_password
-REACT_APP_HZM_API_KEY=hzm_112807dc571043aa83a70df125d6aa53
-REACT_APP_HZM_PROJECT_ID=23
+REACT_APP_HZM_PROJECT_PASSWORD=your_project_password_min_8_chars
+REACT_APP_HZM_API_KEY=your_api_key_here
+REACT_APP_HZM_PROJECT_ID=your_project_id_here
 
-# Environment
-REACT_APP_NODE_ENV=development
+# Environment (KURAL 16: Production URL Zorunlu)
+REACT_APP_NODE_ENV=production
 REACT_APP_API_BASE_URL=https://hzmbackendveritabani-production.up.railway.app/api/v1
 ```
 
-### 📄 .env.production
+### 📄 .env.production (KURAL 16+17: Production + Güvenlik)
 ```bash
-# HZM API Configuration (Production)
-REACT_APP_HZM_USER_EMAIL=production_email@domain.com
-REACT_APP_HZM_PROJECT_PASSWORD=production_password
-REACT_APP_HZM_API_KEY=hzm_112807dc571043aa83a70df125d6aa53
-REACT_APP_HZM_PROJECT_ID=23
+# HZM API Configuration (Production) - NETLIFY ENVIRONMENT VARIABLES'DAN
+REACT_APP_HZM_USER_EMAIL=your_production_email@domain.com
+REACT_APP_HZM_PROJECT_PASSWORD=your_production_password
+REACT_APP_HZM_API_KEY=your_production_api_key
+REACT_APP_HZM_PROJECT_ID=your_production_project_id
 
-# Environment
+# Environment (KURAL 16: Sadece Production URL)
 REACT_APP_NODE_ENV=production
 REACT_APP_API_BASE_URL=https://hzmbackendveritabani-production.up.railway.app/api/v1
 ```

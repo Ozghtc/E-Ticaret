@@ -29,29 +29,10 @@ export const useMagazalar = (): UseMagazalarReturn => {
   const [error, setError] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  // 🌐 Online/Offline Detection  
-  useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      console.log('🌐 Bağlantı restored - syncing data...');
-      loadMagazalar();
-    };
-    
-    const handleOffline = () => {
-      setIsOnline(false);
-      console.log('📴 Offline mode - using localStorage backup');
-    };
+  // 🚫 Online/Offline Detection Kaldırıldı (KURAL 18: API Hatası = Backend Düzeltmesi)
+  // Frontend workaround mekanizmaları yasak
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
-
-  // 📋 Load All Magazalar
+  // 📋 Load All Magazalar (KURAL 18: API Hatası = Backend Düzeltmesi)
   const loadMagazalar = useCallback(async () => {
     try {
       setLoading(true);
@@ -65,22 +46,12 @@ export const useMagazalar = (): UseMagazalarReturn => {
       
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Bilinmeyen hata';
-      console.error('❌ Load mağazalar failed:', errorMessage);
-      setError(`Mağazalar yüklenemedi: ${errorMessage}`);
+      console.error('🚨 KRİTİK API HATASI:', errorMessage);
+      setError(`API Hatası: ${errorMessage}`);
       
-      // Fallback: Try localStorage
-      try {
-        const backup = localStorage.getItem('magazaListesi_api_backup') || 
-                      localStorage.getItem('magazaListesi');
-        if (backup) {
-          const backupData: MagazaData[] = JSON.parse(backup);
-          setMagazalar(backupData);
-          console.log('📦 Loaded from localStorage backup:', backupData.length);
-          setError(`⚠️ Offline mode: ${backupData.length} mağaza localStorage'dan yüklendi`);
-        }
-      } catch (backupError) {
-        console.error('💥 Backup loading failed:', backupError);
-      }
+      // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
+      // LocalStorage fallback kaldırıldı
+      setMagazalar([]); // Boş liste göster
     } finally {
       setLoading(false);
     }
@@ -183,15 +154,8 @@ export const useMagazalar = (): UseMagazalarReturn => {
     loadMagazalar();
   }, [loadMagazalar]);
 
-  // 🔄 Auto-sync when coming back online
-  useEffect(() => {
-    if (isOnline && error) {
-      console.log('🌐 Auto-retrying after coming online...');
-      setTimeout(() => {
-        retry();
-      }, 1000);
-    }
-  }, [isOnline, error, retry]);
+  // 🚫 Auto-retry Kaldırıldı (KURAL 18: API Hatası = Backend Düzeltmesi)
+  // Otomatik retry mekanizmaları yasak
 
   return {
     // Data
