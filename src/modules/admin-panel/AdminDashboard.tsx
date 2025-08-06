@@ -19,7 +19,9 @@ import {
   Search,
   Layout,
   Save,
-  RotateCcw
+  RotateCcw,
+  AlignJustify,
+  Grid3X3
 } from 'lucide-react';
 
 function AdminDashboard() {
@@ -113,9 +115,92 @@ function AdminDashboard() {
     setCardPositions(defaultPositions);
   };
 
+  // Smart Grid Alignment - İnsan gözü yanılmasın diye!
+  const autoAlign = () => {
+    const GRID_SIZE = 20; // 20px grid aralığı
+    const CARD_WIDTH = 300;
+    const CARD_HEIGHT = 180;
+    const MIN_GAP = 24; // Kartlar arası minimum boşluk
+
+    const alignedPositions: {[key: string]: {x: number, y: number}} = {};
+    const occupiedPositions: {x: number, y: number}[] = [];
+
+    // Her kartı en yakın grid noktasına hizala
+    adminCards.forEach((card) => {
+      const currentPos = cardPositions[card.id] || { x: 0, y: 0 };
+      
+      // En yakın grid noktasını bul
+      let alignedX = Math.round(currentPos.x / GRID_SIZE) * GRID_SIZE;
+      let alignedY = Math.round(currentPos.y / GRID_SIZE) * GRID_SIZE;
+
+      // Negatif pozisyonları düzelt
+      alignedX = Math.max(0, alignedX);
+      alignedY = Math.max(0, alignedY);
+
+      // Çakışma kontrolü ve düzeltme
+      let attempts = 0;
+      while (attempts < 50) { // Sonsuz döngü koruması
+        const hasCollision = occupiedPositions.some(pos => {
+          return (
+            Math.abs(pos.x - alignedX) < CARD_WIDTH + MIN_GAP &&
+            Math.abs(pos.y - alignedY) < CARD_HEIGHT + MIN_GAP
+          );
+        });
+
+        if (!hasCollision) {
+          break;
+        }
+
+        // Çakışma varsa yeni pozisyon dene
+        if (attempts % 2 === 0) {
+          alignedX += GRID_SIZE * 4; // Sağa kaydır
+        } else {
+          alignedX = Math.round(currentPos.x / GRID_SIZE) * GRID_SIZE;
+          alignedY += GRID_SIZE * 2; // Aşağı kaydır
+        }
+        
+        attempts++;
+      }
+
+      alignedPositions[card.id] = { x: alignedX, y: alignedY };
+      occupiedPositions.push({ x: alignedX, y: alignedY });
+    });
+
+    // Smooth transition ile hizala
+    setCardPositions(alignedPositions);
+    localStorage.setItem('adminCardPositions', JSON.stringify(alignedPositions));
+
+    // Success toast
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-purple-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform';
+    toast.innerHTML = `<div class="flex items-center space-x-2"><span>🎯</span><span>Kartlar otomatik hizalandı! Perfect!</span></div>`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('translate-x-full', 'opacity-0');
+      setTimeout(() => document.body.removeChild(toast), 300);
+    }, 2000);
+  };
+
+  // Manyetik hizalama - sürüklerken yakın grid noktalarına yapış
+  const snapToGrid = (x: number, y: number, threshold: number = 15) => {
+    const GRID_SIZE = 20;
+    const snappedX = Math.round(x / GRID_SIZE) * GRID_SIZE;
+    const snappedY = Math.round(y / GRID_SIZE) * GRID_SIZE;
+    
+    // Eğer grid noktasına yeterince yakınsa yapıştır
+    if (Math.abs(x - snappedX) <= threshold && Math.abs(y - snappedY) <= threshold) {
+      return { x: snappedX, y: snappedY };
+    }
+    
+    return { x, y };
+  };
+
   const handleDragStop = (cardId: string, e: any, data: any) => {
+    // Manyetik snapping uygula
+    const snapped = snapToGrid(data.x, data.y);
+    
     const newPositions = { ...cardPositions };
-    newPositions[cardId] = { x: data.x, y: data.y };
+    newPositions[cardId] = snapped;
     setCardPositions(newPositions);
     localStorage.setItem('adminCardPositions', JSON.stringify(newPositions));
   };
@@ -335,7 +420,9 @@ function AdminDashboard() {
           <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full">
             <span className="text-blue-700 font-medium">💡 İpucu:</span>
             <span className="text-gray-700">
-              {layoutMode === 'grid' ? 'Sayfa Düzeni ile sürükleyerek taşıyabilirsiniz!' : 'Butonları istediğiniz yere sürükleyin!'}
+              {layoutMode === 'grid' 
+                ? 'Sayfa Düzeni ile sürükleyerek taşıyabilirsiniz!' 
+                : 'Sürükleyin, sonra Otomatik Hizala ile düzgünleştirin! 🎯'}
             </span>
           </div>
 
@@ -376,6 +463,15 @@ function AdminDashboard() {
 
                 {/* Action Buttons */}
                 <button
+                  onClick={autoAlign}
+                  className="flex items-center space-x-1 bg-purple-500/80 hover:bg-purple-600/90 text-white px-3 py-2 rounded-xl backdrop-blur-md border border-purple-400/50 transition-all"
+                  title="Kartları otomatik grid'e hizala - İnsan gözü yanılmasın!"
+                >
+                  <Grid3X3 size={16} />
+                  <span className="hidden sm:inline">Otomatik Hizala</span>
+                </button>
+
+                <button
                   onClick={saveCurrentLayout}
                   className="flex items-center space-x-1 bg-green-500/80 hover:bg-green-600/90 text-white px-3 py-2 rounded-xl backdrop-blur-md border border-green-400/50 transition-all"
                   title="Mevcut düzeni kaydet"
@@ -399,6 +495,19 @@ function AdminDashboard() {
 
         {/* Action Cards Container */}
         <div className={layoutMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8' : 'relative min-h-screen mb-8'}>
+          {/* Grid Overlay - Sadece Free Mode'da göster */}
+          {layoutMode === 'free' && (
+            <div 
+              className="absolute inset-0 pointer-events-none opacity-20 z-0"
+              style={{
+                backgroundImage: `
+                  radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)
+                `,
+                backgroundSize: '20px 20px'
+              }}
+            />
+          )}
+          
           {adminCards.map((card) => {
             const IconComponent = card.icon;
             const position = cardPositions[card.id] || { x: 0, y: 0 };
@@ -411,7 +520,7 @@ function AdminDashboard() {
                 onStop={(e, data) => layoutMode === 'free' && handleDragStop(card.id, e, data)}
               >
                 <div 
-                  className={layoutMode === 'free' ? 'absolute cursor-move w-80' : 'cursor-default'}
+                  className={layoutMode === 'free' ? 'absolute cursor-move w-80 z-10' : 'cursor-default'}
                   style={layoutMode === 'free' ? { width: '300px' } : {}}
                 >
                   <Link
@@ -421,6 +530,9 @@ function AdminDashboard() {
                               transition-all duration-500 transform hover:scale-110 hover:rotate-1
                               shadow-2xl hover:shadow-3xl group relative overflow-hidden
                               ${layoutMode === 'free' ? 'cursor-pointer' : 'cursor-pointer'}`}
+                    style={layoutMode === 'free' ? { 
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' 
+                    } : {}}
                     onClick={(e) => {
                       if (layoutMode === 'free' && e.target !== e.currentTarget) {
                         e.preventDefault();
