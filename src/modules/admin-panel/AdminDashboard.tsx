@@ -115,34 +115,35 @@ function AdminDashboard() {
     setCardPositions(defaultPositions);
   };
 
-  // Smart Grid Alignment - Kartlar yerinden çok oynamadan hassas hizalama!
+  // Perfect Grid Layout - Dağınık düzenden mükemmel 4x3 grid'e!
   const autoAlign = () => {
-    const GRID_SIZE = 20; // 20px hassas grid
+    const CARD_WIDTH = 320; // Kart genişliği + gap
+    const CARD_HEIGHT = 200; // Kart yüksekliği + gap
+    const START_X = 0; // Grid başlangıç X
+    const START_Y = 0; // Grid başlangıç Y
+    const COLS = 4; // 4 sütun
+    
     const alignedPositions: {[key: string]: {x: number, y: number}} = {};
 
-    // Her kartı MEVCUT YERİNDE en yakın grid noktasına hizala
-    adminCards.forEach((card) => {
-      const currentPos = cardPositions[card.id] || { x: 0, y: 0 };
+    // Kartları 4x3 grid düzeninde yerleştir
+    adminCards.forEach((card, index) => {
+      const row = Math.floor(index / COLS); // Hangi satır
+      const col = index % COLS; // Hangi sütun
       
-      // En yakın grid noktasına hizala (minimal hareket)
-      const alignedX = Math.round(currentPos.x / GRID_SIZE) * GRID_SIZE;
-      const alignedY = Math.round(currentPos.y / GRID_SIZE) * GRID_SIZE;
+      const gridX = START_X + (col * CARD_WIDTH);
+      const gridY = START_Y + (row * CARD_HEIGHT);
 
-      // Negatif pozisyonları düzelt
-      const finalX = Math.max(0, alignedX);
-      const finalY = Math.max(0, alignedY);
-
-      alignedPositions[card.id] = { x: finalX, y: finalY };
+      alignedPositions[card.id] = { x: gridX, y: gridY };
     });
 
-    // Pozisyonları güncelle
+    // Perfect grid pozisyonlarını uygula
     setCardPositions(alignedPositions);
     localStorage.setItem('adminCardPositions', JSON.stringify(alignedPositions));
 
     // Success toast
     const toast = document.createElement('div');
     toast.className = 'fixed top-4 right-4 bg-purple-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform';
-    toast.innerHTML = `<div class="flex items-center space-x-2"><span>🎯</span><span>Kartlar hassas hizalandı!</span></div>`;
+    toast.innerHTML = `<div class="flex items-center space-x-2"><span>🎯</span><span>Perfect grid düzeni oluşturuldu!</span></div>`;
     document.body.appendChild(toast);
     setTimeout(() => {
       toast.classList.add('translate-x-full', 'opacity-0');
@@ -391,7 +392,7 @@ function AdminDashboard() {
             <span className="text-gray-700">
               {layoutMode === 'grid' 
                 ? 'Sayfa Düzeni ile sürükleyerek taşıyabilirsiniz!' 
-                : 'Sürükleyin, sonra Hassas Hizala ile grid\'e oturtun! 🎯'}
+                : 'Dağınık yerleştirin, Perfect Hizala ile 4x3 grid yapın! 🎯'}
             </span>
           </div>
 
@@ -434,10 +435,10 @@ function AdminDashboard() {
                 <button
                   onClick={autoAlign}
                   className="flex items-center space-x-1 bg-purple-500/80 hover:bg-purple-600/90 text-white px-3 py-2 rounded-xl backdrop-blur-md border border-purple-400/50 transition-all"
-                  title="Kartları mevcut yerlerinde hassas grid'e hizala - Yerinden çok oynamadan düzelt!"
+                  title="Dağınık düzenden perfect 4x3 grid'e otomatik yerleştir - Kartların içeriği aynı kalır!"
                 >
                   <Grid3X3 size={16} />
-                  <span className="hidden sm:inline">Hassas Hizala</span>
+                  <span className="hidden sm:inline">Perfect Hizala</span>
                 </button>
 
                 <button
