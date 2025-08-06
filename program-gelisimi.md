@@ -132,10 +132,10 @@
 
 ### 🎯 **Akıllı Hizalama Sistemi** 
 - ✅ Smart Grid Alignment (20px grid)
-- ✅ Manyetik Snapping (15px threshold)
-- ✅ Çakışma algılama ve düzeltme
+- ✅ Manyetik Snapping (15px threshold)  
 - ✅ Grid görsel overlay sistemi
-- ✅ "Otomatik Hizala" butonu
+- ✅ "Hassas Hizala" butonu - minimal hareket
+- ✅ Kartlar yerinden oynamadan hizalama
 - ✅ Smooth transition animasyonları
 
 ---
