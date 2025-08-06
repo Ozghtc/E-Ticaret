@@ -224,6 +224,17 @@ function AdminDashboard() {
               </div>
             </div>
           </Link>
+
+          {/* Paket Tanımlama */}
+          <Link to="/admin/paket-tanimlama" className="bg-rose-500 hover:bg-rose-600 text-white rounded-lg p-4 sm:p-6 cursor-pointer transition-all transform hover:scale-105 shadow-lg block">
+            <div className="flex items-center mb-4">
+              <Package className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-base sm:text-lg">Paket Tanımlama</h3>
+                <p className="text-rose-100 text-xs sm:text-sm">Sistem özellikleri yazarak fiyat belirleme ve paket oluşturma</p>
+              </div>
+            </div>
+          </Link>
         </div>
 
         {/* Bottom Section with HZM Partnership */}

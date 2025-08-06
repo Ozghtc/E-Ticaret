@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -57,30 +57,70 @@ function MagazaKayitForm() {
     { id: 5, title: 'Paket Seçimi', icon: CreditCard }
   ];
 
-  const packages = [
-    {
-      id: 'basic',
-      name: 'Temel Paket',
-      price: '99',
-      features: ['100 Ürün', 'Temel Tema', 'E-posta Desteği'],
-      color: 'bg-blue-500'
-    },
-    {
-      id: 'pro',
-      name: 'Profesyonel Paket',
-      price: '199',
-      features: ['500 Ürün', 'Premium Temalar', 'Öncelikli Destek', 'Analitik'],
-      color: 'bg-purple-500',
-      popular: true
-    },
-    {
-      id: 'enterprise',
-      name: 'Kurumsal Paket',
-      price: '399',
-      features: ['Sınırsız Ürün', 'Özel Tema', '7/24 Destek', 'API Erişimi'],
-      color: 'bg-green-500'
-    }
-  ];
+  const [packages, setPackages] = useState<any[]>([]);
+  
+  // Paketleri yükle
+  useEffect(() => {
+    const loadPackages = () => {
+      try {
+        // PaketTanimlama modülünden paketleri yükle
+        const savedPackages = localStorage.getItem('sistemPaketleri');
+        if (savedPackages) {
+          const parsedPackages = JSON.parse(savedPackages);
+          // API formatını form formatına çevir
+          const formattedPackages = parsedPackages.map((pkg: any) => ({
+            id: pkg.id,
+            name: pkg.adi,
+            price: pkg.fiyat.toString(),
+            features: pkg.ozellikler.map((oz: any) => oz.baslik),
+            popular: pkg.populer,
+            color: pkg.populer ? 'bg-purple-500' : 'bg-blue-500'
+          }));
+          setPackages(formattedPackages);
+        } else {
+          // Fallback: Varsayılan paketler
+          setPackages([
+            {
+              id: 'basic',
+              name: 'Temel Paket',
+              price: '99',
+              features: ['100 Ürün', 'Temel Tema', 'E-posta Desteği'],
+              color: 'bg-blue-500'
+            },
+            {
+              id: 'pro',
+              name: 'Profesyonel Paket',
+              price: '199',
+              features: ['500 Ürün', 'Premium Temalar', 'Öncelikli Destek', 'Analitik'],
+              color: 'bg-purple-500',
+              popular: true
+            },
+            {
+              id: 'enterprise',
+              name: 'Kurumsal Paket',
+              price: '399',
+              features: ['Sınırsız Ürün', 'Özel Tema', '7/24 Destek', 'API Erişimi'],
+              color: 'bg-green-500'
+            }
+          ]);
+        }
+      } catch (error) {
+        console.error('Paketler yüklenirken hata:', error);
+        // Varsayılan paketleri yükle
+        setPackages([
+          {
+            id: 'basic',
+            name: 'Temel Paket',
+            price: '99',
+            features: ['100 Ürün', 'Temel Tema', 'E-posta Desteği'],
+            color: 'bg-blue-500'
+          }
+        ]);
+      }
+    };
+
+    loadPackages();
+  }, []);
 
   const handleInputChange = (field: string, value: string) => {
     if (field.startsWith('socialMedia.')) {
