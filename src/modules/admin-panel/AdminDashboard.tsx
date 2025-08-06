@@ -16,12 +16,18 @@ import {
   BarChart3,
   Settings,
   Package,
-  Search
+  Search,
+  Layout,
+  Save,
+  RotateCcw
 } from 'lucide-react';
 
 function AdminDashboard() {
   const navigate = useNavigate();
   const [dragDisabled, setDragDisabled] = useState(false);
+  const [layoutMode, setLayoutMode] = useState<'grid' | 'free'>('grid');
+  const [currentLayout, setCurrentLayout] = useState(1);
+  const [cardPositions, setCardPositions] = useState<{[key: string]: {x: number, y: number}}>({});
 
   useEffect(() => {
     // Check if user is logged in
@@ -29,11 +35,89 @@ function AdminDashboard() {
     if (!isLoggedIn) {
       navigate('/admin/login');
     }
+
+    // Load saved layout
+    const savedLayout = localStorage.getItem('adminLayout');
+    const savedPositions = localStorage.getItem('adminCardPositions');
+    if (savedLayout) {
+      setCurrentLayout(parseInt(savedLayout));
+    }
+    if (savedPositions) {
+      setCardPositions(JSON.parse(savedPositions));
+    }
   }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('adminLoggedIn');
     navigate('/');
+  };
+
+  // Layout Management Functions
+  const toggleLayoutMode = () => {
+    setLayoutMode(layoutMode === 'grid' ? 'free' : 'grid');
+  };
+
+  const saveCurrentLayout = () => {
+    const layoutNumber = currentLayout;
+    localStorage.setItem(`adminLayout_${layoutNumber}`, JSON.stringify(cardPositions));
+    localStorage.setItem('adminLayout', layoutNumber.toString());
+    
+    // Show toast notification
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform';
+    toast.innerHTML = `<div class="flex items-center space-x-2"><span>✅</span><span>Düzen ${layoutNumber} kaydedildi!</span></div>`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('translate-x-full', 'opacity-0');
+      setTimeout(() => document.body.removeChild(toast), 300);
+    }, 2000);
+  };
+
+  const loadLayout = (layoutNumber: number) => {
+    const savedLayout = localStorage.getItem(`adminLayout_${layoutNumber}`);
+    if (savedLayout) {
+      const positions = JSON.parse(savedLayout);
+      setCardPositions(positions);
+      setCurrentLayout(layoutNumber);
+      localStorage.setItem('adminLayout', layoutNumber.toString());
+      
+      // Show toast notification
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-4 right-4 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform';
+      toast.innerHTML = `<div class="flex items-center space-x-2"><span>🏗️</span><span>Düzen ${layoutNumber} yüklendi!</span></div>`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('translate-x-full', 'opacity-0');
+        setTimeout(() => document.body.removeChild(toast), 300);
+      }, 2000);
+    } else {
+      // Default positions for new layouts
+      const defaultPositions: {[key: string]: {x: number, y: number}} = {};
+      adminCards.forEach((card, index) => {
+        const row = Math.floor(index / 4);
+        const col = index % 4;
+        defaultPositions[card.id] = { x: col * 320, y: row * 200 };
+      });
+      setCardPositions(defaultPositions);
+      setCurrentLayout(layoutNumber);
+    }
+  };
+
+  const resetLayout = () => {
+    const defaultPositions: {[key: string]: {x: number, y: number}} = {};
+    adminCards.forEach((card, index) => {
+      const row = Math.floor(index / 4);
+      const col = index % 4;
+      defaultPositions[card.id] = { x: col * 320, y: row * 200 };
+    });
+    setCardPositions(defaultPositions);
+  };
+
+  const handleDragStop = (cardId: string, e: any, data: any) => {
+    const newPositions = { ...cardPositions };
+    newPositions[cardId] = { x: data.x, y: data.y };
+    setCardPositions(newPositions);
+    localStorage.setItem('adminCardPositions', JSON.stringify(newPositions));
   };
 
   const getCurrentDate = () => {
@@ -245,30 +329,113 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Drag & Drop Info */}
-        <div className="mb-6 text-center">
-          <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full">
+        {/* Layout Controls */}
+        <div className="mb-8 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
+          {/* İpucu */}
+          <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full">
             <span className="text-blue-700 font-medium">💡 İpucu:</span>
-            <span className="text-gray-700">Butonları sürükleyerek istediğiniz yere taşıyabilirsiniz!</span>
+            <span className="text-gray-700">
+              {layoutMode === 'grid' ? 'Sayfa Düzeni ile sürükleyerek taşıyabilirsiniz!' : 'Butonları istediğiniz yere sürükleyin!'}
+            </span>
+          </div>
+
+          {/* Layout Control Panel */}
+          <div className="flex items-center space-x-3">
+            {/* Layout Mode Toggle */}
+            <button
+              onClick={toggleLayoutMode}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 border ${
+                layoutMode === 'free'
+                  ? 'bg-green-500/80 hover:bg-green-600/90 text-white border-green-400/50 shadow-lg backdrop-blur-md'
+                  : 'bg-white/20 hover:bg-white/30 text-gray-700 border-white/30 backdrop-blur-md'
+              }`}
+            >
+              <Layout size={18} />
+              <span>{layoutMode === 'grid' ? 'Sayfa Düzeni' : 'Düzen Aktif'}</span>
+            </button>
+
+            {/* Layout Presets */}
+            {layoutMode === 'free' && (
+              <div className="flex items-center space-x-2">
+                {/* Düzen Seçimi */}
+                <div className="flex space-x-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-1">
+                  {[1, 2, 3].map((layout) => (
+                    <button
+                      key={layout}
+                      onClick={() => loadLayout(layout)}
+                      className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                        currentLayout === layout
+                          ? 'bg-blue-500 text-white shadow-lg'
+                          : 'text-gray-700 hover:bg-white/30'
+                      }`}
+                    >
+                      Düzen {layout}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Action Buttons */}
+                <button
+                  onClick={saveCurrentLayout}
+                  className="flex items-center space-x-1 bg-green-500/80 hover:bg-green-600/90 text-white px-3 py-2 rounded-xl backdrop-blur-md border border-green-400/50 transition-all"
+                  title="Mevcut düzeni kaydet"
+                >
+                  <Save size={16} />
+                  <span className="hidden sm:inline">Kaydet</span>
+                </button>
+
+                <button
+                  onClick={resetLayout}
+                  className="flex items-center space-x-1 bg-orange-500/80 hover:bg-orange-600/90 text-white px-3 py-2 rounded-xl backdrop-blur-md border border-orange-400/50 transition-all"
+                  title="Varsayılan düzene sıfırla"
+                >
+                  <RotateCcw size={16} />
+                  <span className="hidden sm:inline">Sıfırla</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Draggable Action Cards - Glassmorphism */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Action Cards Container */}
+        <div className={layoutMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8' : 'relative min-h-screen mb-8'}>
           {adminCards.map((card) => {
             const IconComponent = card.icon;
+            const position = cardPositions[card.id] || { x: 0, y: 0 };
+            
             return (
-              <Draggable key={card.id} disabled={dragDisabled}>
-                <div className="cursor-move">
+              <Draggable
+                key={card.id}
+                disabled={layoutMode === 'grid'}
+                position={layoutMode === 'free' ? position : { x: 0, y: 0 }}
+                onStop={(e, data) => layoutMode === 'free' && handleDragStop(card.id, e, data)}
+              >
+                <div 
+                  className={layoutMode === 'free' ? 'absolute cursor-move w-80' : 'cursor-default'}
+                  style={layoutMode === 'free' ? { width: '300px' } : {}}
+                >
                   <Link
                     to={card.link}
                     className={`block backdrop-blur-lg bg-gradient-to-br ${card.color} ${card.hoverColor} 
-                              border border-white/30 text-white rounded-3xl p-6 cursor-pointer 
+                              border border-white/30 text-white rounded-3xl p-6 
                               transition-all duration-500 transform hover:scale-110 hover:rotate-1
-                              shadow-2xl hover:shadow-3xl group relative overflow-hidden`}
-                    onMouseEnter={() => setDragDisabled(true)}
-                    onMouseLeave={() => setDragDisabled(false)}
+                              shadow-2xl hover:shadow-3xl group relative overflow-hidden
+                              ${layoutMode === 'free' ? 'cursor-pointer' : 'cursor-pointer'}`}
+                    onClick={(e) => {
+                      if (layoutMode === 'free' && e.target !== e.currentTarget) {
+                        e.preventDefault();
+                      }
+                    }}
                   >
+                    {/* Drag Handle - only visible in free mode */}
+                    {layoutMode === 'free' && (
+                      <div className="absolute top-2 right-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <div className="w-6 h-6 flex items-center justify-center bg-white/20 rounded-lg backdrop-blur-sm">
+                          <Layout size={12} className="text-white" />
+                        </div>
+                      </div>
+                    )}
+
                     {/* Floating Particles Effect */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
                       <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
