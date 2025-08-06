@@ -13,8 +13,11 @@ interface Paket {
   id: string;
   adi: string;
   fiyat: number;
+  eskiFiyat?: number;
   donem: 'aylık' | 'yıllık';
   populer: boolean;
+  kampanya?: string;
+  renk: string;
   ozellikler: PaketOzellik[];
   createdAt: string;
 }
@@ -30,8 +33,11 @@ const PaketTanimlama: React.FC = () => {
   const [formData, setFormData] = useState({
     adi: '',
     fiyat: 0,
+    eskiFiyat: 0,
     donem: 'aylık' as const,
-    populer: false
+    populer: false,
+    kampanya: '',
+    renk: 'blue'
   });
   
   const [ozellikler, setOzellikler] = useState<PaketOzellik[]>([]);
@@ -81,57 +87,79 @@ const PaketTanimlama: React.FC = () => {
     
     return [
       {
-        id: 'temel-paket',
-        adi: 'Temel Paket',
-        fiyat: 99,
+        id: 'advantage-paket',
+        adi: 'Advantage',
+        fiyat: 2499,
+        eskiFiyat: 3490,
         donem: 'aylık',
         populer: false,
+        kampanya: 'Yıllık alımlarda 58.166₺ yerine 34.900₺',
+        renk: 'green',
         createdAt: now,
         ozellikler: [
-          { id: '1', baslik: '100 Ürün', aciklama: 'Ürün ekleme limiti', dahil: true },
-          { id: '2', baslik: 'Temel Tema', aciklama: 'Hazır tema seçenekleri', dahil: true },
-          { id: '3', baslik: 'E-posta Desteği', aciklama: 'Email ile müşteri desteği', dahil: true },
-          { id: '4', baslik: 'SSL Güvenlik', aciklama: 'Güvenli bağlantı', dahil: true },
-          { id: '5', baslik: 'Mobil Uyumlu', aciklama: 'Responsive tasarım', dahil: true },
-          { id: '6', baslik: 'Temel SEO', aciklama: 'Arama motoru optimizasyonu', dahil: true }
+          { id: '1', baslik: '%0 Ertesi Gün Sanal Pos Oranı', aciklama: '', dahil: true },
+          { id: '2', baslik: 'Ücretsiz E-Ticaret Eğitimleri', aciklama: '', dahil: true },
+          { id: '3', baslik: '7/24 Canlı Destek', aciklama: '', dahil: true },
+          { id: '4', baslik: '20.000₺ Kargo Bakiyesi Hediye!', aciklama: '', dahil: true },
+          { id: '5', baslik: 'Ultra Güvenlik ve Hız', aciklama: '', dahil: true },
+          { id: '6', baslik: 'Sınırsız Web Alanı ve Ürün', aciklama: '', dahil: true }
         ]
       },
       {
-        id: 'profesyonel-paket',
-        adi: 'Profesyonel Paket',
-        fiyat: 199,
+        id: 'premier-paket',
+        adi: 'Premier',
+        fiyat: 3499,
+        eskiFiyat: 4990,
         donem: 'aylık',
         populer: true,
+        kampanya: 'Advantage pakete ek olarak',
+        renk: 'blue',
         createdAt: now,
         ozellikler: [
-          { id: '1', baslik: '500 Ürün', aciklama: 'Genişletilmiş ürün limiti', dahil: true },
-          { id: '2', baslik: 'Premium Temalar', aciklama: 'Özel tasarım seçenekleri', dahil: true },
-          { id: '3', baslik: 'Öncelikli Destek', aciklama: '24 saat içinde yanıt', dahil: true },
-          { id: '4', baslik: 'Analitik', aciklama: 'Detaylı satış raporları', dahil: true },
-          { id: '5', baslik: 'WhatsApp Entegrasyonu', aciklama: 'Müşteri iletişimi', dahil: true },
-          { id: '6', baslik: 'Gelişmiş SEO', aciklama: 'Meta tag yönetimi', dahil: true },
-          { id: '7', baslik: 'Kargo Entegrasyonu', aciklama: 'Otomatik kargo hesaplama', dahil: true },
-          { id: '8', baslik: 'SMS Bildirimleri', aciklama: 'Sipariş durumu SMS', dahil: true }
+          { id: '1', baslik: '30.000₺ Kargo Bakiyesi Hediye!', aciklama: '', dahil: true },
+          { id: '2', baslik: '2 Kargo Entegrasyonu', aciklama: '', dahil: true },
+          { id: '3', baslik: 'Otomatik Sepet Hatırlatma', aciklama: '', dahil: true },
+          { id: '4', baslik: 'Güvenilir Logo Sistemi', aciklama: '', dahil: true },
+          { id: '5', baslik: 'Ticaret Entegrasyonları', aciklama: '', dahil: true },
+          { id: '6', baslik: 'Google Araçları Entegrasyonu', aciklama: '', dahil: true }
         ]
       },
       {
-        id: 'kurumsal-paket',
-        adi: 'Kurumsal Paket',
-        fiyat: 399,
+        id: 'advance-paket',
+        adi: 'Advance',
+        fiyat: 5499,
+        eskiFiyat: 7490,
         donem: 'aylık',
         populer: false,
+        kampanya: 'Premier pakete ek olarak',
+        renk: 'purple',
         createdAt: now,
         ozellikler: [
-          { id: '1', baslik: 'Sınırsız Ürün', aciklama: 'Ürün sayısı limiti yok', dahil: true },
-          { id: '2', baslik: 'Özel Tema', aciklama: 'Size özel tasarım', dahil: true },
-          { id: '3', baslik: '7/24 Destek', aciklama: 'Kesintisiz teknik destek', dahil: true },
-          { id: '4', baslik: 'API Erişimi', aciklama: 'Özel entegrasyonlar', dahil: true },
-          { id: '5', baslik: 'Çoklu Dil Desteği', aciklama: 'Uluslararası satış', dahil: true },
-          { id: '6', baslik: 'Gelişmiş Raporlama', aciklama: 'İş zekası raporları', dahil: true },
-          { id: '7', baslik: 'E-Fatura Entegrasyonu', aciklama: 'Yasal uyumluluk', dahil: true },
-          { id: '8', baslik: 'Pazaryeri Entegrasyonu', aciklama: 'Trendyol, Hepsiburada', dahil: true },
-          { id: '9', baslik: 'Muhasebe Entegrasyonu', aciklama: 'Logo, Nebim bağlantısı', dahil: true },
-          { id: '10', baslik: 'Özel Eğitim', aciklama: 'Birebir kullanım eğitimi', dahil: true }
+          { id: '1', baslik: '3 Yurt İçi Pazaryeri Entegrasyonu', aciklama: '', dahil: true },
+          { id: '2', baslik: 'Ticimax AI (Yapay Zeka Özellikleri) Hediye', aciklama: '', dahil: true },
+          { id: '3', baslik: 'İleri Seviye Çapraz Satış', aciklama: '', dahil: true },
+          { id: '4', baslik: '100.000₺ Faizsiz Kredi', aciklama: '', dahil: true },
+          { id: '5', baslik: 'İndirimli Kargo Gönderimi', aciklama: '', dahil: true },
+          { id: '6', baslik: '100.000₺ Faizsiz Kredi', aciklama: '', dahil: true }
+        ]
+      },
+      {
+        id: 'advance-plus-paket',
+        adi: 'Advance Plus',
+        fiyat: 6499,
+        eskiFiyat: 8990,
+        donem: 'aylık',
+        populer: false,
+        kampanya: 'Advance pakete ek olarak',
+        renk: 'orange',
+        createdAt: now,
+        ozellikler: [
+          { id: '1', baslik: '5 Yurt İçi Pazaryeri Entegrasyonu', aciklama: '', dahil: true },
+          { id: '2', baslik: 'E-İhracat Modülü', aciklama: '', dahil: true },
+          { id: '3', baslik: 'IOS & Android Mobil Uygulama', aciklama: '', dahil: true },
+          { id: '4', baslik: '100.000₺ Faizsiz Kredi & Destek', aciklama: '', dahil: true },
+          { id: '5', baslik: 'Gelişmiş Kargo Entegrasyonu', aciklama: '', dahil: true },
+          { id: '6', baslik: 'Premium Özellikler', aciklama: '', dahil: true }
         ]
       }
     ];
@@ -164,8 +192,11 @@ const PaketTanimlama: React.FC = () => {
         id: paketId,
         adi: formData.adi,
         fiyat: formData.fiyat,
+        eskiFiyat: formData.eskiFiyat || undefined,
         donem: formData.donem,
         populer: formData.populer,
+        kampanya: formData.kampanya || undefined,
+        renk: formData.renk,
         ozellikler: ozellikler,
         createdAt: editingPaket?.createdAt || new Date().toISOString()
       };
@@ -183,7 +214,7 @@ const PaketTanimlama: React.FC = () => {
       // TODO: HZM API'ye kaydet
       
       // Form'u temizle
-      setFormData({ adi: '', fiyat: 0, donem: 'aylık', populer: false });
+      setFormData({ adi: '', fiyat: 0, eskiFiyat: 0, donem: 'aylık', populer: false, kampanya: '', renk: 'blue' });
       setOzellikler([]);
       setEditingPaket(null);
       setShowForm(false);
@@ -197,8 +228,11 @@ const PaketTanimlama: React.FC = () => {
     setFormData({
       adi: paket.adi,
       fiyat: paket.fiyat,
+      eskiFiyat: paket.eskiFiyat || 0,
       donem: paket.donem,
-      populer: paket.populer
+      populer: paket.populer,
+      kampanya: paket.kampanya || '',
+      renk: paket.renk
     });
     setOzellikler(paket.ozellikler);
     setShowForm(true);
@@ -216,7 +250,7 @@ const PaketTanimlama: React.FC = () => {
   const handleFormKapat = () => {
     setShowForm(false);
     setEditingPaket(null);
-    setFormData({ adi: '', fiyat: 0, donem: 'aylık', populer: false });
+    setFormData({ adi: '', fiyat: 0, eskiFiyat: 0, donem: 'aylık', populer: false, kampanya: '', renk: 'blue' });
     setOzellikler([]);
   };
 
@@ -299,20 +333,33 @@ const PaketTanimlama: React.FC = () => {
                     value={formData.adi}
                     onChange={(e) => setFormData({ ...formData, adi: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-                    placeholder="Örn: Temel Paket, Premium Paket"
+                    placeholder="Örn: Advantage, Premier, Advance"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Fiyat (₺) *
+                    Güncel Fiyat (₺) *
                   </label>
                   <input
                     type="number"
                     value={formData.fiyat}
                     onChange={(e) => setFormData({ ...formData, fiyat: Number(e.target.value) })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-                    placeholder="99"
+                    placeholder="2499"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Eski Fiyat (₺) <span className="text-gray-500">- İndirim gösterimi için</span>
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.eskiFiyat}
+                    onChange={(e) => setFormData({ ...formData, eskiFiyat: Number(e.target.value) })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
+                    placeholder="3490"
                   />
                 </div>
 
@@ -327,6 +374,37 @@ const PaketTanimlama: React.FC = () => {
                   >
                     <option value="aylık">Aylık</option>
                     <option value="yıllık">Yıllık</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Kampanya Metni
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.kampanya}
+                    onChange={(e) => setFormData({ ...formData, kampanya: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
+                    placeholder="Temel pakete ek olarak"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Paket Rengi
+                  </label>
+                  <select
+                    value={formData.renk}
+                    onChange={(e) => setFormData({ ...formData, renk: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
+                  >
+                    <option value="blue">Mavi</option>
+                    <option value="green">Yeşil</option>
+                    <option value="purple">Mor</option>
+                    <option value="orange">Turuncu</option>
+                    <option value="red">Kırmızı</option>
+                    <option value="indigo">İndigo</option>
                   </select>
                 </div>
 
@@ -433,72 +511,139 @@ const PaketTanimlama: React.FC = () => {
             </div>
           </div>
         ) : (
-          /* Paket Listesi */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          /* Paket Listesi - TiciMax Tarzı Profesyonel Tasarım */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {paketler.length === 0 ? (
-              <div className="col-span-full text-center py-12">
-                <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Henüz paket yok</h3>
-                <p className="text-gray-500 mb-4">İlk paketinizi oluşturmak için butona tıklayın</p>
+              <div className="col-span-full text-center py-16">
+                <Package className="w-20 h-20 text-gray-300 mx-auto mb-6" />
+                <h3 className="text-2xl font-semibold text-gray-900 mb-3">Henüz paket yok</h3>
+                <p className="text-gray-500 mb-6">İlk profesyonel paketinizi oluşturmak için butona tıklayın</p>
                 <button
                   onClick={() => setShowForm(true)}
-                  className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-lg inline-flex items-center space-x-2"
+                  className="bg-rose-500 hover:bg-rose-600 text-white px-8 py-4 rounded-xl inline-flex items-center space-x-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
                 >
-                  <Plus size={20} />
+                  <Plus size={24} />
                   <span>İlk Paketi Oluştur</span>
                 </button>
               </div>
             ) : (
-              paketler.map((paket) => (
-                <div key={paket.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-semibold text-gray-900">{paket.adi}</h3>
-                      {paket.populer && (
-                        <div className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-medium flex items-center">
-                          <Star size={12} className="mr-1" />
-                          Popüler
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="text-center mb-6">
-                      <div className="text-3xl font-bold text-gray-900">₺{paket.fiyat}</div>
-                      <div className="text-gray-500">/{paket.donem}</div>
-                    </div>
-
-                    <div className="space-y-3 mb-6">
-                      {paket.ozellikler.map((ozellik) => (
-                        <div key={ozellik.id} className="flex items-start space-x-2">
-                          <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <span className="text-sm font-medium text-gray-900">{ozellik.baslik}</span>
-                            {ozellik.aciklama && (
-                              <p className="text-xs text-gray-500">{ozellik.aciklama}</p>
-                            )}
+              paketler.map((paket, index) => {
+                const colorClasses = {
+                  blue: 'from-blue-500 to-blue-600 border-blue-200',
+                  green: 'from-green-500 to-green-600 border-green-200', 
+                  purple: 'from-purple-500 to-purple-600 border-purple-200',
+                  orange: 'from-orange-500 to-orange-600 border-orange-200',
+                  red: 'from-red-500 to-red-600 border-red-200',
+                  indigo: 'from-indigo-500 to-indigo-600 border-indigo-200'
+                };
+                
+                const borderColor = colorClasses[paket.renk as keyof typeof colorClasses] || colorClasses.blue;
+                const indirimYuzdesi = paket.eskiFiyat ? Math.round((1 - paket.fiyat / paket.eskiFiyat) * 100) : 0;
+                
+                return (
+                  <div 
+                    key={paket.id} 
+                    className={`relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border-2 ${borderColor.split(' ')[2]} overflow-hidden`}
+                  >
+                    {/* Popüler Badge */}
+                    {paket.populer && (
+                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                        <div className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                          <div className="flex items-center space-x-1">
+                            <Star size={14} fill="white" />
+                            <span>Popüler</span>
                           </div>
                         </div>
-                      ))}
+                      </div>
+                    )}
+
+                    {/* Kampanya Metni */}
+                    {paket.kampanya && (
+                      <div className="bg-gradient-to-r from-emerald-50 to-blue-50 px-4 py-3 text-center">
+                        <p className="text-sm font-semibold text-emerald-700">{paket.kampanya}</p>
+                      </div>
+                    )}
+
+                    <div className="p-8">
+                      {/* Paket Başlığı */}
+                      <div className="text-center mb-8">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{paket.adi}</h3>
+                        
+                        {/* Fiyat Alanı */}
+                        <div className="space-y-2">
+                          {/* İndirim Yüzdesi */}
+                          {indirimYuzdesi > 0 && (
+                            <div className="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold">
+                              %{indirimYuzdesi} İndirim
+                            </div>
+                          )}
+                          
+                          <div className="flex items-center justify-center space-x-2">
+                            <div className="text-4xl font-bold text-gray-900">₺{paket.fiyat.toLocaleString()}</div>
+                            <div className="text-gray-500">
+                              <div className="text-sm">/{paket.donem}</div>
+                              <div className="text-xs">+KDV</div>
+                            </div>
+                          </div>
+                          
+                          {/* Eski Fiyat */}
+                          {paket.eskiFiyat && (
+                            <div className="text-center">
+                              <span className="text-lg text-gray-400 line-through">₺{paket.eskiFiyat.toLocaleString()}</span>
+                              <div className="text-xs text-gray-500 mt-1">Yıllık alımlarda daha avantajlı</div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Özellikler */}
+                      <div className="space-y-4 mb-8">
+                        {paket.ozellikler.map((ozellik) => (
+                          <div key={ozellik.id} className="flex items-start space-x-3">
+                            <div className="flex-shrink-0">
+                              <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                                <CheckCircle className="w-4 h-4 text-green-600" />
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-gray-900 leading-relaxed">{ozellik.baslik}</p>
+                              {ozellik.aciklama && (
+                                <p className="text-xs text-gray-500 mt-1">{ozellik.aciklama}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="space-y-3">
+                        <button className={`w-full bg-gradient-to-r ${borderColor.split(' ')[0]} ${borderColor.split(' ')[1]} text-white px-6 py-4 rounded-xl font-semibold text-lg hover:shadow-lg transition-all transform hover:scale-105`}>
+                          Ücretsiz Dene
+                        </button>
+                        
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handlePaketEdit(paket)}
+                            className="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-3 rounded-lg flex items-center justify-center space-x-2 transition-all hover:shadow-md font-medium"
+                          >
+                            <Edit size={18} />
+                            <span>Düzenle</span>
+                          </button>
+                          <button
+                            onClick={() => handlePaketSil(paket.id)}
+                            className="bg-red-50 hover:bg-red-100 text-red-700 px-4 py-3 rounded-lg transition-all hover:shadow-md"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handlePaketEdit(paket)}
-                        className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-colors"
-                      >
-                        <Edit size={16} />
-                        <span>Düzenle</span>
-                      </button>
-                      <button
-                        onClick={() => handlePaketSil(paket.id)}
-                        className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg transition-colors"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
+                    {/* Gradient Bottom Border */}
+                    <div className={`h-2 bg-gradient-to-r ${borderColor.split(' ')[0]} ${borderColor.split(' ')[1]}`}></div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         )}
