@@ -49,12 +49,90 @@ const PaketTanimlama: React.FC = () => {
       const storedPaketler = localStorage.getItem('sistemPaketleri');
       if (storedPaketler) {
         setPaketler(JSON.parse(storedPaketler));
+      } else {
+        // Varsayılan profesyonel paketleri oluştur (Kolay Sipariş standartlarına göre)
+        const defaultPaketler = await createDefaultPackages();
+        setPaketler(defaultPaketler);
+        localStorage.setItem('sistemPaketleri', JSON.stringify(defaultPaketler));
       }
     } catch (error) {
       console.error('Paketler yüklenirken hata:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const createDefaultPackages = async (): Promise<Paket[]> => {
+    const now = new Date().toISOString();
+    
+    return [
+      {
+        id: 'girisimci-1450',
+        adi: 'Girişimci',
+        fiyat: 121,  // 1450/12 = aylık fiyat
+        donem: 'aylık',
+        populer: false,
+        createdAt: now,
+        ozellikler: [
+          { id: '1', baslik: 'Sanal Pos Altyapıları', aciklama: 'Güvenli ödeme sistemi', dahil: true },
+          { id: '2', baslik: 'ChatGPT İle Ürün Açıklaması', aciklama: 'AI destekli içerik üretimi', dahil: true },
+          { id: '3', baslik: 'Sınırsız Web Alanı', aciklama: 'Hosting limiti yok', dahil: true },
+          { id: '4', baslik: 'Sınırsız Ürün Ekleme', aciklama: 'Ürün sayısı sınırı yok', dahil: true },
+          { id: '5', baslik: 'Sınırsız Kategori Oluşturma', aciklama: 'Kategori limiti yok', dahil: true },
+          { id: '6', baslik: 'Site Bazlı SEO Altyapısı', aciklama: 'Arama motoru optimizasyonu', dahil: true },
+          { id: '7', baslik: 'Responsive Tasarımlar', aciklama: 'Mobil uyumlu arayüz', dahil: true },
+          { id: '8', baslik: 'WhatsApp Entegrasyonu', aciklama: 'Müşteri iletişimi', dahil: true },
+          { id: '9', baslik: '256 Bit SSL ile Güvenlik', aciklama: 'Veri şifreleme', dahil: true },
+          { id: '10', baslik: 'Günlük Veri Yedekleme', aciklama: 'Otomatik backup', dahil: true },
+          { id: '11', baslik: 'Blog Yönetimi', aciklama: 'İçerik yönetim sistemi', dahil: true },
+          { id: '12', baslik: 'Mobil Yönetim Paneli', aciklama: 'Mobil admin panel', dahil: true }
+        ]
+      },
+      {
+        id: 'profesyonel-2430',
+        adi: 'Profesyonel',
+        fiyat: 203,  // 2430/12 = aylık fiyat
+        donem: 'aylık',
+        populer: true,
+        createdAt: now,
+        ozellikler: [
+          { id: '1', baslik: 'Girişimci Paketinin Tüm Özellikleri', aciklama: '+ Ek profesyonel özellikler', dahil: true },
+          { id: '2', baslik: 'Dijital Pazarlama Eğitimi', aciklama: 'Kısa süreliğine hediye', dahil: true },
+          { id: '3', baslik: 'İndirimli Kargo Fiyatları', aciklama: 'Özel kargo anlaşmaları', dahil: true },
+          { id: '4', baslik: 'Muhasebe Entegrasyonu Altyapısı', aciklama: 'Muhasebe yazılımı bağlantısı', dahil: true },
+          { id: '5', baslik: 'Satış Ortaklığı', aciklama: 'Affiliate program', dahil: true },
+          { id: '6', baslik: 'E-Ticaret Danışmanlığı', aciklama: 'Uzman destek', dahil: true },
+          { id: '7', baslik: 'Ürün XML Feed', aciklama: 'Pazaryeri entegrasyonu', dahil: true },
+          { id: '8', baslik: 'Excel ile Toplu Ürün Yükleme', aciklama: 'Bulk upload özelliği', dahil: true },
+          { id: '9', baslik: 'SMS Entegrasyonu', aciklama: 'Müşteri bilgilendirme', dahil: true },
+          { id: '10', baslik: 'Kur Bazlı Fiyatlandırma', aciklama: 'Döviz kuru entegrasyonu', dahil: true },
+          { id: '11', baslik: 'Farklı Dil Altyapısı', aciklama: 'Çoklu dil desteği', dahil: true },
+          { id: '12', baslik: 'Google Araçları Altyapısı', aciklama: 'Analytics ve SEO araçları', dahil: true }
+        ]
+      },
+      {
+        id: 'premium-4430',
+        adi: 'Premium',
+        fiyat: 369,  // 4430/12 = aylık fiyat
+        donem: 'aylık',
+        populer: false,
+        createdAt: now,
+        ozellikler: [
+          { id: '1', baslik: 'Profesyonel Paketinin Tüm Özellikleri', aciklama: '+ Premium ek özellikler', dahil: true },
+          { id: '2', baslik: 'Yurtiçi Pazaryeri Entegrasyonları', aciklama: 'Hepsiburada, Trendyol vb.', dahil: true },
+          { id: '3', baslik: 'Dijital Pazarlama Eğitimi', aciklama: 'Uzun süreli eğitim paketi', dahil: true },
+          { id: '4', baslik: 'ChatGPT Destekli Ürün Açıklaması', aciklama: 'Gelişmiş AI özellikleri', dahil: true },
+          { id: '5', baslik: 'Kargo Entegrasyonu', aciklama: 'Otomatik kargo işlemleri', dahil: true },
+          { id: '6', baslik: 'E-Fatura Entegrasyonu', aciklama: 'Yasal uyumluluk', dahil: true },
+          { id: '7', baslik: 'Özel Tasarım Altyapısı', aciklama: 'Kişiye özel theme', dahil: true },
+          { id: '8', baslik: 'Site XML Çıktısı Oluşturma', aciklama: 'SEO optimizasyonu', dahil: true },
+          { id: '9', baslik: 'Farklı Para Birimi Altyapısı', aciklama: 'Multi-currency support', dahil: true },
+          { id: '10', baslik: 'E-İhracaat Altyapısı', aciklama: 'Uluslararası satış', dahil: true },
+          { id: '11', baslik: '7/24 Premium Destek', aciklama: 'Öncelikli müşteri hizmetleri', dahil: true },
+          { id: '12', baslik: 'Gelişmiş Analitik Raporlar', aciklama: 'Detaylı satış analizleri', dahil: true }
+        ]
+      }
+    ];
   };
 
   const handleOzellikEkle = () => {
