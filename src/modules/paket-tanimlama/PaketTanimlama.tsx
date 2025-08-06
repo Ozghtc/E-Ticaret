@@ -18,6 +18,7 @@ interface Paket {
   populer: boolean;
   kampanya?: string;
   renk: string;
+  kategori: 'eticaret' | 'premium';
   ozellikler: PaketOzellik[];
   createdAt: string;
 }
@@ -28,6 +29,7 @@ const PaketTanimlama: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingPaket, setEditingPaket] = useState<Paket | null>(null);
+  const [activeTab, setActiveTab] = useState<'eticaret' | 'premium'>('eticaret');
 
   // Form state
   const [formData, setFormData] = useState({
@@ -37,7 +39,8 @@ const PaketTanimlama: React.FC = () => {
     donem: 'aylık' as const,
     populer: false,
     kampanya: '',
-    renk: 'blue'
+    renk: 'blue',
+    kategori: 'eticaret' as const
   });
   
   const [ozellikler, setOzellikler] = useState<PaketOzellik[]>([]);
@@ -86,6 +89,7 @@ const PaketTanimlama: React.FC = () => {
     console.log('createDefaultPackages çalışıyor...');
     
     return [
+      // E-TİCARET PAKETLERİ
       {
         id: 'advantage-paket',
         adi: 'Advantage',
@@ -95,6 +99,7 @@ const PaketTanimlama: React.FC = () => {
         populer: false,
         kampanya: 'Yıllık alımlarda 58.166₺ yerine 34.900₺',
         renk: 'green',
+        kategori: 'eticaret' as const,
         createdAt: now,
         ozellikler: [
           { id: '1', baslik: '%0 Ertesi Gün Sanal Pos Oranı', aciklama: '', dahil: true },
@@ -114,6 +119,7 @@ const PaketTanimlama: React.FC = () => {
         populer: true,
         kampanya: 'Advantage pakete ek olarak',
         renk: 'blue',
+        kategori: 'eticaret' as const,
         createdAt: now,
         ozellikler: [
           { id: '1', baslik: '30.000₺ Kargo Bakiyesi Hediye!', aciklama: '', dahil: true },
@@ -133,14 +139,15 @@ const PaketTanimlama: React.FC = () => {
         populer: false,
         kampanya: 'Premier pakete ek olarak',
         renk: 'purple',
+        kategori: 'eticaret' as const,
         createdAt: now,
         ozellikler: [
           { id: '1', baslik: '3 Yurt İçi Pazaryeri Entegrasyonu', aciklama: '', dahil: true },
-          { id: '2', baslik: 'Ticimax AI (Yapay Zeka Özellikleri) Hediye', aciklama: '', dahil: true },
+          { id: '2', baslik: 'AI Destekli Ürün Açıklaması', aciklama: '', dahil: true },
           { id: '3', baslik: 'İleri Seviye Çapraz Satış', aciklama: '', dahil: true },
           { id: '4', baslik: '100.000₺ Faizsiz Kredi', aciklama: '', dahil: true },
           { id: '5', baslik: 'İndirimli Kargo Gönderimi', aciklama: '', dahil: true },
-          { id: '6', baslik: '100.000₺ Faizsiz Kredi', aciklama: '', dahil: true }
+          { id: '6', baslik: 'Pazaryeri Otomasyonu', aciklama: '', dahil: true }
         ]
       },
       {
@@ -152,6 +159,7 @@ const PaketTanimlama: React.FC = () => {
         populer: false,
         kampanya: 'Advance pakete ek olarak',
         renk: 'orange',
+        kategori: 'eticaret' as const,
         createdAt: now,
         ozellikler: [
           { id: '1', baslik: '5 Yurt İçi Pazaryeri Entegrasyonu', aciklama: '', dahil: true },
@@ -160,6 +168,75 @@ const PaketTanimlama: React.FC = () => {
           { id: '4', baslik: '100.000₺ Faizsiz Kredi & Destek', aciklama: '', dahil: true },
           { id: '5', baslik: 'Gelişmiş Kargo Entegrasyonu', aciklama: '', dahil: true },
           { id: '6', baslik: 'Premium Özellikler', aciklama: '', dahil: true }
+        ]
+      },
+
+      // PREMIUM PAKETLERİ
+      {
+        id: 'prestige-premium',
+        adi: 'Prestige',
+        fiyat: 139000,
+        eskiFiyat: 463333,
+        donem: 'yıllık',
+        populer: false,
+        kampanya: '%70 İndirim - Responsive Özel Tasarım Hediye!',
+        renk: 'indigo',
+        kategori: 'premium' as const,
+        createdAt: now,
+        ozellikler: [
+          { id: '1', baslik: 'Responsive Özel Tasarım Hediye!', aciklama: '', dahil: true },
+          { id: '2', baslik: 'Nova Özel Tasarım', aciklama: '', dahil: true },
+          { id: '3', baslik: 'Gelişmiş E-ihracat Özellikleri', aciklama: '', dahil: true },
+          { id: '4', baslik: 'IOS&Android Mobil Uygulama', aciklama: '', dahil: true },
+          { id: '5', baslik: 'Yapay Zeka Destekli Pazarlama Otomasyonu', aciklama: '', dahil: true },
+          { id: '6', baslik: 'Sınırsız Yurt Dışı Pazaryeri Entegrasyonu', aciklama: '', dahil: true },
+          { id: '7', baslik: 'Sınırsız Yurt İçi Pazaryeri Entegrasyonu', aciklama: '', dahil: true },
+          { id: '8', baslik: '100.000₺ Kargo Bakiyesi Hediye!', aciklama: '', dahil: true }
+        ]
+      },
+      {
+        id: 'royal-premium',
+        adi: 'Royal',
+        fiyat: 599000,
+        eskiFiyat: 799000,
+        donem: 'yıllık',
+        populer: true,
+        kampanya: 'Yeni - Prestige pakete ek olarak',
+        renk: 'blue',
+        kategori: 'premium' as const,
+        createdAt: now,
+        ozellikler: [
+          { id: '1', baslik: 'Markanıza Özel Tasarım Çözümleri', aciklama: '', dahil: true },
+          { id: '2', baslik: 'Ücretsiz ERP Entegrasyonu', aciklama: '', dahil: true },
+          { id: '3', baslik: 'Native Mobil Uygulama', aciklama: '', dahil: true },
+          { id: '4', baslik: 'Öncelikli Destek Hizmeti', aciklama: '', dahil: true },
+          { id: '5', baslik: 'Mağazadan Teslimat', aciklama: '', dahil: true },
+          { id: '6', baslik: 'Mağazada Ödeme', aciklama: '', dahil: true },
+          { id: '7', baslik: 'Gelişmiş Arama Sistemi', aciklama: '', dahil: true },
+          { id: '8', baslik: '3 Ay V.I.P Hizmet', aciklama: '', dahil: true },
+          { id: '9', baslik: 'Tüm Premium Modülleri', aciklama: '', dahil: true },
+          { id: '10', baslik: 'Özel Native Premium Mobil Uygulama', aciklama: '', dahil: true }
+        ]
+      },
+      {
+        id: 'exclusive-premium',
+        adi: 'Exclusive',
+        fiyat: 0,
+        donem: 'yıllık',
+        populer: false,
+        kampanya: 'Royal pakete ek olarak',
+        renk: 'purple',
+        kategori: 'premium' as const,
+        createdAt: now,
+        ozellikler: [
+          { id: '1', baslik: '3 Ay V.I.P Hizmet', aciklama: '', dahil: true },
+          { id: '2', baslik: 'Tüm Premium Modülleri', aciklama: '', dahil: true },
+          { id: '3', baslik: 'Depo Yönetim Sistemi', aciklama: '', dahil: true },
+          { id: '4', baslik: 'Konsinye Ürün Satışı', aciklama: '', dahil: true },
+          { id: '5', baslik: 'Canlı Yayın Özelliği', aciklama: '', dahil: true },
+          { id: '6', baslik: 'Omni Channel Modülü', aciklama: '', dahil: true },
+          { id: '7', baslik: 'Tedarikçi Modülü', aciklama: '', dahil: true },
+          { id: '8', baslik: 'Ürün Grubu & Özelleştirme', aciklama: '', dahil: true }
         ]
       }
     ];
@@ -197,6 +274,7 @@ const PaketTanimlama: React.FC = () => {
         populer: formData.populer,
         kampanya: formData.kampanya || undefined,
         renk: formData.renk,
+        kategori: formData.kategori,
         ozellikler: ozellikler,
         createdAt: editingPaket?.createdAt || new Date().toISOString()
       };
@@ -214,7 +292,7 @@ const PaketTanimlama: React.FC = () => {
       // TODO: HZM API'ye kaydet
       
       // Form'u temizle
-      setFormData({ adi: '', fiyat: 0, eskiFiyat: 0, donem: 'aylık', populer: false, kampanya: '', renk: 'blue' });
+      setFormData({ adi: '', fiyat: 0, eskiFiyat: 0, donem: 'aylık', populer: false, kampanya: '', renk: 'blue', kategori: 'eticaret' });
       setOzellikler([]);
       setEditingPaket(null);
       setShowForm(false);
@@ -232,7 +310,8 @@ const PaketTanimlama: React.FC = () => {
       donem: paket.donem,
       populer: paket.populer,
       kampanya: paket.kampanya || '',
-      renk: paket.renk
+      renk: paket.renk,
+      kategori: paket.kategori
     });
     setOzellikler(paket.ozellikler);
     setShowForm(true);
@@ -250,7 +329,7 @@ const PaketTanimlama: React.FC = () => {
   const handleFormKapat = () => {
     setShowForm(false);
     setEditingPaket(null);
-    setFormData({ adi: '', fiyat: 0, eskiFiyat: 0, donem: 'aylık', populer: false, kampanya: '', renk: 'blue' });
+    setFormData({ adi: '', fiyat: 0, eskiFiyat: 0, donem: 'aylık', populer: false, kampanya: '', renk: 'blue', kategori: 'eticaret' });
     setOzellikler([]);
   };
 
@@ -299,8 +378,38 @@ const PaketTanimlama: React.FC = () => {
         </div>
       </header>
 
+      {/* Tab Navigation */}
+      <div className="border-b border-gray-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('eticaret')}
+              className={`py-4 px-6 border-b-2 font-medium text-lg transition-all duration-300 ${
+                activeTab === 'eticaret'
+                  ? 'border-blue-500 text-blue-600 bg-blue-50'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+              }`}
+            >
+              🛍️ E-Ticaret Sitesi Paketleri
+            </button>
+            <button
+              onClick={() => setActiveTab('premium')}
+              className={`py-4 px-6 border-b-2 font-medium text-lg transition-all duration-300 ${
+                activeTab === 'premium'
+                  ? 'border-purple-500 text-purple-600 bg-purple-50'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+              }`}
+            >
+              💎 Premium E-Ticaret Paketleri
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all duration-500 ${
+        activeTab === 'eticaret' ? 'bg-gradient-to-br from-blue-50 to-cyan-50' : 'bg-gradient-to-br from-purple-50 to-indigo-50'
+      }`}>
         {loading ? (
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
@@ -388,6 +497,20 @@ const PaketTanimlama: React.FC = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
                     placeholder="Temel pakete ek olarak"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Paket Kategorisi *
+                  </label>
+                  <select
+                    value={formData.kategori}
+                    onChange={(e) => setFormData({ ...formData, kategori: e.target.value as 'eticaret' | 'premium' })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
+                  >
+                    <option value="eticaret">E-Ticaret Paketleri</option>
+                    <option value="premium">Premium Paketleri</option>
+                  </select>
                 </div>
 
                 <div>
@@ -512,8 +635,8 @@ const PaketTanimlama: React.FC = () => {
           </div>
         ) : (
           /* Paket Listesi - TiciMax Tarzı Profesyonel Tasarım */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {paketler.length === 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {paketler.filter(p => p.kategori === activeTab).length === 0 ? (
               <div className="col-span-full text-center py-16">
                 <Package className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-semibold text-gray-900 mb-3">Henüz paket yok</h3>
@@ -527,7 +650,7 @@ const PaketTanimlama: React.FC = () => {
                 </button>
               </div>
             ) : (
-              paketler.map((paket, index) => {
+              paketler.filter(p => p.kategori === activeTab).map((paket, index) => {
                 const colorClasses = {
                   blue: 'from-blue-500 to-blue-600 border-blue-200',
                   green: 'from-green-500 to-green-600 border-green-200', 
@@ -564,7 +687,7 @@ const PaketTanimlama: React.FC = () => {
                       </div>
                     )}
 
-                    <div className="p-8">
+                    <div className="p-10">
                       {/* Paket Başlığı */}
                       <div className="text-center mb-8">
                         <h3 className="text-2xl font-bold text-gray-900 mb-2">{paket.adi}</h3>
@@ -579,11 +702,19 @@ const PaketTanimlama: React.FC = () => {
                           )}
                           
                           <div className="flex items-center justify-center space-x-2">
-                            <div className="text-4xl font-bold text-gray-900">₺{paket.fiyat.toLocaleString()}</div>
-                            <div className="text-gray-500">
-                              <div className="text-sm">/{paket.donem}</div>
-                              <div className="text-xs">+KDV</div>
-                            </div>
+                            {paket.fiyat === 0 ? (
+                              <div className="text-2xl font-bold text-purple-600 bg-purple-100 px-4 py-2 rounded-lg">
+                                Fiyat Teklifi Al
+                              </div>
+                            ) : (
+                              <>
+                                <div className="text-4xl font-bold text-gray-900">₺{paket.fiyat.toLocaleString()}</div>
+                                <div className="text-gray-500">
+                                  <div className="text-sm">/{paket.donem}</div>
+                                  <div className="text-xs">+KDV</div>
+                                </div>
+                              </>
+                            )}
                           </div>
                           
                           {/* Eski Fiyat */}
