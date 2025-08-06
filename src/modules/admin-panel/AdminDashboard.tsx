@@ -115,65 +115,34 @@ function AdminDashboard() {
     setCardPositions(defaultPositions);
   };
 
-  // Smart Grid Alignment - İnsan gözü yanılmasın diye!
+  // Smart Grid Alignment - Kartlar yerinden çok oynamadan hassas hizalama!
   const autoAlign = () => {
-    const GRID_SIZE = 20; // 20px grid aralığı
-    const CARD_WIDTH = 300;
-    const CARD_HEIGHT = 180;
-    const MIN_GAP = 24; // Kartlar arası minimum boşluk
-
+    const GRID_SIZE = 20; // 20px hassas grid
     const alignedPositions: {[key: string]: {x: number, y: number}} = {};
-    const occupiedPositions: {x: number, y: number}[] = [];
 
-    // Her kartı en yakın grid noktasına hizala
+    // Her kartı MEVCUT YERİNDE en yakın grid noktasına hizala
     adminCards.forEach((card) => {
       const currentPos = cardPositions[card.id] || { x: 0, y: 0 };
       
-      // En yakın grid noktasını bul
-      let alignedX = Math.round(currentPos.x / GRID_SIZE) * GRID_SIZE;
-      let alignedY = Math.round(currentPos.y / GRID_SIZE) * GRID_SIZE;
+      // En yakın grid noktasına hizala (minimal hareket)
+      const alignedX = Math.round(currentPos.x / GRID_SIZE) * GRID_SIZE;
+      const alignedY = Math.round(currentPos.y / GRID_SIZE) * GRID_SIZE;
 
       // Negatif pozisyonları düzelt
-      alignedX = Math.max(0, alignedX);
-      alignedY = Math.max(0, alignedY);
+      const finalX = Math.max(0, alignedX);
+      const finalY = Math.max(0, alignedY);
 
-      // Çakışma kontrolü ve düzeltme
-      let attempts = 0;
-      while (attempts < 50) { // Sonsuz döngü koruması
-        const hasCollision = occupiedPositions.some(pos => {
-          return (
-            Math.abs(pos.x - alignedX) < CARD_WIDTH + MIN_GAP &&
-            Math.abs(pos.y - alignedY) < CARD_HEIGHT + MIN_GAP
-          );
-        });
-
-        if (!hasCollision) {
-          break;
-        }
-
-        // Çakışma varsa yeni pozisyon dene
-        if (attempts % 2 === 0) {
-          alignedX += GRID_SIZE * 4; // Sağa kaydır
-        } else {
-          alignedX = Math.round(currentPos.x / GRID_SIZE) * GRID_SIZE;
-          alignedY += GRID_SIZE * 2; // Aşağı kaydır
-        }
-        
-        attempts++;
-      }
-
-      alignedPositions[card.id] = { x: alignedX, y: alignedY };
-      occupiedPositions.push({ x: alignedX, y: alignedY });
+      alignedPositions[card.id] = { x: finalX, y: finalY };
     });
 
-    // Smooth transition ile hizala
+    // Pozisyonları güncelle
     setCardPositions(alignedPositions);
     localStorage.setItem('adminCardPositions', JSON.stringify(alignedPositions));
 
     // Success toast
     const toast = document.createElement('div');
     toast.className = 'fixed top-4 right-4 bg-purple-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform';
-    toast.innerHTML = `<div class="flex items-center space-x-2"><span>🎯</span><span>Kartlar otomatik hizalandı! Perfect!</span></div>`;
+    toast.innerHTML = `<div class="flex items-center space-x-2"><span>🎯</span><span>Kartlar hassas hizalandı!</span></div>`;
     document.body.appendChild(toast);
     setTimeout(() => {
       toast.classList.add('translate-x-full', 'opacity-0');
@@ -422,7 +391,7 @@ function AdminDashboard() {
             <span className="text-gray-700">
               {layoutMode === 'grid' 
                 ? 'Sayfa Düzeni ile sürükleyerek taşıyabilirsiniz!' 
-                : 'Sürükleyin, sonra Otomatik Hizala ile düzgünleştirin! 🎯'}
+                : 'Sürükleyin, sonra Hassas Hizala ile grid\'e oturtun! 🎯'}
             </span>
           </div>
 
@@ -465,10 +434,10 @@ function AdminDashboard() {
                 <button
                   onClick={autoAlign}
                   className="flex items-center space-x-1 bg-purple-500/80 hover:bg-purple-600/90 text-white px-3 py-2 rounded-xl backdrop-blur-md border border-purple-400/50 transition-all"
-                  title="Kartları otomatik grid'e hizala - İnsan gözü yanılmasın!"
+                  title="Kartları mevcut yerlerinde hassas grid'e hizala - Yerinden çok oynamadan düzelt!"
                 >
                   <Grid3X3 size={16} />
-                  <span className="hidden sm:inline">Otomatik Hizala</span>
+                  <span className="hidden sm:inline">Hassas Hizala</span>
                 </button>
 
                 <button
