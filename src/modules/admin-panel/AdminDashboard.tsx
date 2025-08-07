@@ -22,7 +22,11 @@ import {
   RotateCcw,
   AlignJustify,
   Grid3X3,
-  MessageCircle
+  MessageCircle,
+  ChevronDown,
+  CheckCircle,
+  XCircle,
+  Loader
 } from 'lucide-react';
 
 function AdminDashboard() {
@@ -31,6 +35,10 @@ function AdminDashboard() {
   const [layoutMode, setLayoutMode] = useState<'grid' | 'free'>('grid');
   const [currentLayout, setCurrentLayout] = useState(1);
   const [cardPositions, setCardPositions] = useState<{[key: string]: {x: number, y: number}}>({});
+  
+  // Durum takip sistemi state'leri
+  const [moduleStatuses, setModuleStatuses] = useState<{[key: string]: 'in-progress' | 'not-started' | 'completed'}>({});
+  const [openDropdowns, setOpenDropdowns] = useState<{[key: string]: boolean}>({});
 
   useEffect(() => {
     // Check if user is logged in
@@ -48,6 +56,25 @@ function AdminDashboard() {
     if (savedPositions) {
       setCardPositions(JSON.parse(savedPositions));
     }
+
+    // Load saved module statuses
+    const savedStatuses = localStorage.getItem('moduleStatuses');
+    if (savedStatuses) {
+      setModuleStatuses(JSON.parse(savedStatuses));
+    }
+
+    // Close dropdowns when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.dropdown-container')) {
+        setOpenDropdowns({});
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [navigate]);
 
   const handleLogout = () => {
@@ -186,6 +213,68 @@ function AdminDashboard() {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  // Durum yönetimi fonksiyonları
+  const toggleDropdown = (cardId: string) => {
+    setOpenDropdowns(prev => ({
+      ...prev,
+      [cardId]: !prev[cardId]
+    }));
+  };
+
+  const updateModuleStatus = (cardId: string, status: 'in-progress' | 'not-started' | 'completed') => {
+    const newStatuses = { ...moduleStatuses, [cardId]: status };
+    setModuleStatuses(newStatuses);
+    localStorage.setItem('moduleStatuses', JSON.stringify(newStatuses));
+    
+    // Close dropdown
+    setOpenDropdowns(prev => ({
+      ...prev,
+      [cardId]: false
+    }));
+
+    // Show toast notification
+    const statusText = {
+      'in-progress': 'Yapım Aşamasında',
+      'not-started': 'Henüz Başlanmadı',
+      'completed': 'Hazır'
+    };
+    
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform';
+    toast.innerHTML = `<div class="flex items-center space-x-2"><span>📝</span><span>${statusText[status]} olarak işaretlendi!</span></div>`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('translate-x-full', 'opacity-0');
+      setTimeout(() => document.body.removeChild(toast), 300);
+    }, 2000);
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'in-progress':
+        return <Loader className="w-4 h-4 animate-spin text-blue-600" />;
+      case 'not-started':
+        return <XCircle className="w-4 h-4 text-red-600" />;
+      case 'completed':
+        return <CheckCircle className="w-4 h-4 text-green-600" />;
+      default:
+        return null;
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'in-progress':
+        return 'Yapım Aşamasında';
+      case 'not-started':
+        return 'Henüz Başlanmadı';
+      case 'completed':
+        return 'Hazır';
+      default:
+        return 'Durum Seçin';
+    }
   };
 
   // Admin Panel Butonları
@@ -547,9 +636,80 @@ function AdminDashboard() {
                           </h3>
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm leading-relaxed group-hover:text-white transition-colors">
+                      <p className="text-white/90 text-sm leading-relaxed group-hover:text-white transition-colors mb-4">
                         {card.description}
                       </p>
+
+                      {/* Status Section */}
+                      <div className="mt-4 pt-4 border-t border-white/20">
+                        {/* Current Status Display */}
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center space-x-2">
+                            {getStatusIcon(moduleStatuses[card.id])}
+                            <span className="text-white/80 text-sm font-medium">
+                              {getStatusText(moduleStatuses[card.id])}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Status Dropdown */}
+                        <div className="relative dropdown-container">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleDropdown(card.id);
+                            }}
+                            className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 text-white text-sm px-3 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm border border-white/20"
+                          >
+                            <span>Durum Değiştir</span>
+                            <ChevronDown 
+                              className={`w-4 h-4 transition-transform duration-200 ${openDropdowns[card.id] ? 'rotate-180' : ''}`} 
+                            />
+                          </button>
+
+                          {/* Dropdown Menu */}
+                          {openDropdowns[card.id] && (
+                            <div className="absolute bottom-full left-0 right-0 mb-2 bg-white/95 backdrop-blur-md border border-white/30 rounded-lg shadow-xl overflow-hidden z-20">
+                              <div className="py-1">
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    updateModuleStatus(card.id, 'in-progress');
+                                  }}
+                                  className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-blue-50 transition-colors"
+                                >
+                                  <Loader className="w-4 h-4 animate-spin text-blue-600" />
+                                  <span className="text-gray-700">Yapım Aşamasında</span>
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    updateModuleStatus(card.id, 'not-started');
+                                  }}
+                                  className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-red-50 transition-colors"
+                                >
+                                  <XCircle className="w-4 h-4 text-red-600" />
+                                  <span className="text-gray-700">Henüz Başlanmadı</span>
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    updateModuleStatus(card.id, 'completed');
+                                  }}
+                                  className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-green-50 transition-colors"
+                                >
+                                  <CheckCircle className="w-4 h-4 text-green-600" />
+                                  <span className="text-gray-700">Hazır</span>
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
 
                     {/* Glassmorphism border effect */}
