@@ -94,6 +94,7 @@ function AdminDashboard() {
   // YENİ: Gruplandırma modunu değiştirme
   const toggleLayoutMode = () => {
     setUseGroupedLayout(!useGroupedLayout);
+    localStorage.setItem('useGroupedLayout', (!useGroupedLayout).toString());
   };
 
   useEffect(() => {
@@ -117,6 +118,12 @@ function AdminDashboard() {
     const savedStatuses = localStorage.getItem('moduleStatuses');
     if (savedStatuses) {
       setModuleStatuses(JSON.parse(savedStatuses));
+    }
+
+    // Load saved layout mode
+    const savedLayoutMode = localStorage.getItem('useGroupedLayout');
+    if (savedLayoutMode) {
+      setUseGroupedLayout(savedLayoutMode === 'true');
     }
 
     // Close dropdowns when clicking outside
