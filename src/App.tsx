@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LandingPage from './components/LandingPage';
 import AdminLogin from './components/AdminLogin';
 import UnifiedDemo from './components/UnifiedDemo';
+import WhatsAppButton from './components/WhatsAppButton';
 
 // Import modules
 import AdminDashboard from './modules/admin-panel/AdminDashboard';
@@ -56,6 +57,11 @@ import PaketTanimlama from './modules/paket-tanimlama/PaketTanimlama';
 function App() {
   return (
     <Router>
+      <WhatsAppButton 
+        phoneNumber="905555555555"
+        message="Merhaba! E-ticaret sistemimiz hakkında bilgi almak ister misiniz?"
+        theme="default"
+      />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin/login" element={<AdminLogin />} />
