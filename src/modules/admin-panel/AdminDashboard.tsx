@@ -565,6 +565,15 @@ function AdminDashboard() {
               <span>{layoutMode === 'grid' ? 'Sayfa Düzeni' : 'Düzen Aktif'}</span>
             </button>
 
+            {/* Status Settings Button */}
+            <button
+              onClick={toggleStatusPanel}
+              className="flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 border bg-blue-500/80 hover:bg-blue-600/90 text-white border-blue-400/50 shadow-lg backdrop-blur-md"
+            >
+              <Settings size={18} />
+              <span>Durum Ayarları</span>
+            </button>
+
             {/* Layout Presets */}
             {layoutMode === 'free' && (
               <div className="flex items-center space-x-2">
@@ -694,6 +703,15 @@ function AdminDashboard() {
                         {card.description}
                       </p>
 
+                      {/* Status Indicator - Sağ Alt Köşe */}
+                      <div className="absolute bottom-4 right-4">
+                        <div className="w-8 h-8 bg-gray-800/80 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                          <span className="text-sm">
+                            {getStatusEmoji(moduleStatuses[card.id] || 'none')}
+                          </span>
+                        </div>
+                      </div>
+
                       {/* Status Section - Hidden for new system */}
                       <div className="mt-4 pt-4 border-t border-white/20 hidden">
                         {/* Current Status Display */}
@@ -785,8 +803,8 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Sağ Alt Köşe Durum Göstergesi */}
-        <div className="fixed bottom-6 right-6 z-[10000] status-panel-container">
+        {/* Sağ Alt Köşe Durum Göstergesi - Hidden */}
+        <div className="fixed bottom-6 right-6 z-[10000] status-panel-container hidden">
           {/* Ana Durum Butonu */}
           <button
             onClick={toggleStatusPanel}
