@@ -233,15 +233,18 @@ function AdminDashboard() {
   };
 
   const updateModuleStatus = (cardId: string, status: 'in-progress' | 'not-started' | 'completed') => {
+    console.log('🔄 updateModuleStatus çağrıldı:', cardId, status);
+    
     const newStatuses = { ...moduleStatuses, [cardId]: status };
+    console.log('📊 Yeni statuses:', newStatuses);
+    
     setModuleStatuses(newStatuses);
     localStorage.setItem('moduleStatuses', JSON.stringify(newStatuses));
     
-    // Close dropdown
-    setOpenDropdowns(prev => ({
-      ...prev,
-      [cardId]: false
-    }));
+    // Force re-render için state'i zorla güncelle
+    setTimeout(() => {
+      setModuleStatuses(prev => ({ ...prev }));
+    }, 100);
 
     // Show toast notification
     const statusText = {
@@ -326,11 +329,16 @@ function AdminDashboard() {
   };
 
   const updateModuleStatusFromPanel = (status: 'in-progress' | 'not-started' | 'completed') => {
+    console.log('🎯 updateModuleStatusFromPanel çağrıldı:', selectedModule, status);
+    
     if (selectedModule) {
+      console.log('✅ selectedModule mevcut, updateModuleStatus çağrılıyor');
       updateModuleStatus(selectedModule, status);
       setSelectedModule(''); // Modül seçimini temizle
       setShowStatusPanel(false); // Ana paneli de kapat
       setClickedPosition(null); // Pozisyonu temizle
+    } else {
+      console.log('❌ selectedModule yok!');
     }
   };
 
