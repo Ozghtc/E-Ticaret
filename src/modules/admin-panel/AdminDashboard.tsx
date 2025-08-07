@@ -322,13 +322,13 @@ function AdminDashboard() {
 
   const selectModuleForStatus = (moduleId: string) => {
     setSelectedModule(moduleId);
-    setShowStatusPanel(false);
+    // Panel açık kalacak, sadece içerik değişecek
   };
 
   const updateModuleStatusFromPanel = (status: 'in-progress' | 'not-started' | 'completed') => {
     if (selectedModule) {
       updateModuleStatus(selectedModule, status);
-      setSelectedModule('');
+      setSelectedModule(''); // Modül seçimini temizle, panel listeye geri döner
     }
   };
 
@@ -839,11 +839,20 @@ function AdminDashboard() {
         {/* Seçili Modül Durum Güncelleme Paneli - Üstte Açılacak */}
         {selectedModule && (
           <div className="fixed top-20 right-4 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]">
-            <div className="mb-4">
-              <h3 className="text-lg font-bold text-gray-800 mb-2">
-                {adminCards.find(card => card.id === selectedModule)?.title}
-              </h3>
-              <p className="text-sm text-gray-600">Durum seçin</p>
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  {adminCards.find(card => card.id === selectedModule)?.title}
+                </h3>
+                <p className="text-sm text-gray-600">Durum seçin</p>
+              </div>
+              <button
+                onClick={() => setSelectedModule('')}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+                title="Geri dön"
+              >
+                ←
+              </button>
             </div>
             
             <div className="space-y-2">
