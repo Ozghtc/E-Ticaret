@@ -39,6 +39,10 @@ function AdminDashboard() {
   // Durum takip sistemi state'leri
   const [moduleStatuses, setModuleStatuses] = useState<{[key: string]: 'in-progress' | 'not-started' | 'completed'}>({});
   const [openDropdowns, setOpenDropdowns] = useState<{[key: string]: boolean}>({});
+  
+  // Sağ alt köşe durum göstergesi state'leri
+  const [showStatusPanel, setShowStatusPanel] = useState(false);
+  const [selectedModule, setSelectedModule] = useState<string>('');
 
   useEffect(() => {
     // Check if user is logged in
@@ -68,6 +72,10 @@ function AdminDashboard() {
       const target = event.target as HTMLElement;
       if (!target.closest('.dropdown-container')) {
         setOpenDropdowns({});
+      }
+      if (!target.closest('.status-panel-container')) {
+        setShowStatusPanel(false);
+        setSelectedModule('');
       }
     };
 
@@ -274,6 +282,52 @@ function AdminDashboard() {
         return 'Hazır';
       default:
         return 'Durum Seçin';
+    }
+  };
+
+  // Sağ alt köşe durum göstergesi fonksiyonları
+  const getOverallStatus = () => {
+    const statuses = Object.values(moduleStatuses);
+    if (statuses.length === 0) return 'none';
+    
+    const completed = statuses.filter(s => s === 'completed').length;
+    const inProgress = statuses.filter(s => s === 'in-progress').length;
+    const notStarted = statuses.filter(s => s === 'not-started').length;
+    
+    if (completed === statuses.length) return 'completed';
+    if (inProgress > 0) return 'in-progress';
+    if (notStarted === statuses.length) return 'not-started';
+    return 'mixed';
+  };
+
+  const getStatusEmoji = (status: string) => {
+    switch (status) {
+      case 'in-progress':
+        return '⚙️';
+      case 'not-started':
+        return '❌';
+      case 'completed':
+        return '✅';
+      case 'mixed':
+        return '🔄';
+      default:
+        return '⭕';
+    }
+  };
+
+  const toggleStatusPanel = () => {
+    setShowStatusPanel(!showStatusPanel);
+  };
+
+  const selectModuleForStatus = (moduleId: string) => {
+    setSelectedModule(moduleId);
+    setShowStatusPanel(false);
+  };
+
+  const updateModuleStatusFromPanel = (status: 'in-progress' | 'not-started' | 'completed') => {
+    if (selectedModule) {
+      updateModuleStatus(selectedModule, status);
+      setSelectedModule('');
     }
   };
 
@@ -640,8 +694,8 @@ function AdminDashboard() {
                         {card.description}
                       </p>
 
-                      {/* Status Section */}
-                      <div className="mt-4 pt-4 border-t border-white/20">
+                      {/* Status Section - Hidden for new system */}
+                      <div className="mt-4 pt-4 border-t border-white/20 hidden">
                         {/* Current Status Display */}
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-2">
@@ -729,6 +783,87 @@ function AdminDashboard() {
               <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></div>
             </div>
           </div>
+        </div>
+
+        {/* Sağ Alt Köşe Durum Göstergesi */}
+        <div className="fixed bottom-6 right-6 z-50 status-panel-container">
+          {/* Ana Durum Butonu */}
+          <button
+            onClick={toggleStatusPanel}
+            className="w-16 h-16 bg-white/90 backdrop-blur-md border-2 border-white/30 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center"
+          >
+            <span className="text-3xl animate-pulse">
+              {getStatusEmoji(getOverallStatus())}
+            </span>
+          </button>
+
+          {/* Durum Paneli */}
+          {showStatusPanel && (
+            <div className="absolute bottom-20 right-0 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64">
+              <div className="mb-4">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Modül Durumları</h3>
+                <p className="text-sm text-gray-600">Modül seçin ve durumunu güncelleyin</p>
+              </div>
+              
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {adminCards.map((card) => (
+                  <button
+                    key={card.id}
+                    onClick={() => selectModuleForStatus(card.id)}
+                    className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">
+                        {getStatusEmoji(moduleStatuses[card.id] || 'none')}
+                      </span>
+                      <span className="text-sm font-medium text-gray-700">
+                        {card.title}
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      {getStatusText(moduleStatuses[card.id] || 'none')}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Seçili Modül Durum Güncelleme Paneli */}
+          {selectedModule && (
+            <div className="absolute bottom-20 right-0 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64">
+              <div className="mb-4">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  {adminCards.find(card => card.id === selectedModule)?.title}
+                </h3>
+                <p className="text-sm text-gray-600">Durum seçin</p>
+              </div>
+              
+              <div className="space-y-2">
+                <button
+                  onClick={() => updateModuleStatusFromPanel('in-progress')}
+                  className="w-full flex items-center space-x-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                >
+                  <span className="text-2xl">⚙️</span>
+                  <span className="text-sm font-medium text-gray-700">Yapım Aşamasında</span>
+                </button>
+                <button
+                  onClick={() => updateModuleStatusFromPanel('not-started')}
+                  className="w-full flex items-center space-x-3 p-3 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                >
+                  <span className="text-2xl">❌</span>
+                  <span className="text-sm font-medium text-gray-700">Henüz Başlanmadı</span>
+                </button>
+                <button
+                  onClick={() => updateModuleStatusFromPanel('completed')}
+                  className="w-full flex items-center space-x-3 p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
+                >
+                  <span className="text-2xl">✅</span>
+                  <span className="text-sm font-medium text-gray-700">Hazır</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
