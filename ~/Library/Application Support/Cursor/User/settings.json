@@ -1,0 +1,25 @@
+{
+    "editor.accessibilitySupport": "off",
+    "window.commandCenter": true,
+    "cursor.cpp.disabledLanguages": [
+        "plaintext",
+        "markdown",
+        "scminput"
+    ],
+    "workbench.colorTheme": "Cursor Dark High Contrast",
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "workbench.editor.enablePreview": false,
+    "git.autofetch": true,
+    "editor.largeFileOptimizations": false,
+    "workbench.editorLargeFileConfirmation": 5000,
+    "diffEditor.maxComputationTime": 0,
+    "editor.selectionClipboard": true,
+    "editor.multiCursorModifier": "alt",
+    "editor.wordWrap": "on"
+}
+

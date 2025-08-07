@@ -1,0 +1,31 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "cmd+i",
+        "command": "composerMode.agent"
+    },
+    {
+        "key": "cmd+e",
+        "command": "composerMode.background"
+    },
+    {
+        "key": "shift+up",
+        "command": "cursorUp",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "shift+down",
+        "command": "cursorDown",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "shift+left",
+        "command": "cursorLeft",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "shift+right",
+        "command": "cursorRight",
+        "when": "textInputFocus"
+    }
+]
