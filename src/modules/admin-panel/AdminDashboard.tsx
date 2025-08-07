@@ -786,13 +786,13 @@ function AdminDashboard() {
         </div>
 
         {/* Sağ Alt Köşe Durum Göstergesi */}
-        <div className="fixed bottom-6 right-6 z-50 status-panel-container">
+        <div className="fixed bottom-6 right-6 z-[10000] status-panel-container">
           {/* Ana Durum Butonu */}
           <button
             onClick={toggleStatusPanel}
-            className="w-16 h-16 bg-white/90 backdrop-blur-md border-2 border-white/30 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center"
+            className="w-20 h-20 bg-blue-500/90 backdrop-blur-md border-4 border-white/50 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center"
           >
-            <span className="text-3xl animate-pulse">
+            <span className="text-4xl animate-pulse text-white">
               {getStatusEmoji(getOverallStatus())}
             </span>
           </button>
