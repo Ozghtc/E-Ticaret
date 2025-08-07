@@ -57,11 +57,14 @@ import PaketTanimlama from './modules/paket-tanimlama/PaketTanimlama';
 function App() {
   return (
     <Router>
-      <WhatsAppButton 
-        phoneNumber="905555555555"
-        message="Merhaba! E-ticaret sistemimiz hakkında bilgi almak ister misiniz?"
-        theme="default"
-      />
+      {/* WhatsApp Button - Her zaman görünür olmalı */}
+      <div style={{ position: 'fixed', zIndex: 9999, bottom: 0, right: 0 }}>
+        <WhatsAppButton 
+          phoneNumber="905555555555"
+          message="Merhaba! E-ticaret sistemimiz hakkında bilgi almak ister misiniz?"
+          theme="default"
+        />
+      </div>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin/login" element={<AdminLogin />} />

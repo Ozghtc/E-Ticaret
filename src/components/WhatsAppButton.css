@@ -12,13 +12,15 @@
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 9999;
   color: white;
+  transform: translateZ(0);
 }
 
 .whatsapp-button:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+  z-index: 10000;
 }
 
 .whatsapp-button:active {
@@ -93,4 +95,21 @@
   .whatsapp-tooltip {
     display: none;
   }
+}
+
+/* Sayfa kaydırma sırasında görünür kalma */
+.whatsapp-button {
+  position: fixed !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+  transform: none !important;
+}
+
+/* Tüm sayfalarda görünür olması için */
+.whatsapp-button {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  will-change: transform;
 }

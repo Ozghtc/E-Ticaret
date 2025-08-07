@@ -27,6 +27,17 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       title="WhatsApp'tan Yaz"
+      style={{
+        position: 'fixed',
+        zIndex: 9999,
+        bottom: '20px',
+        right: '20px',
+        display: 'flex',
+        visibility: 'visible',
+        opacity: 1,
+        pointerEvents: 'auto',
+        willChange: 'transform'
+      }}
     >
       <div className="whatsapp-icon">
         <svg 
