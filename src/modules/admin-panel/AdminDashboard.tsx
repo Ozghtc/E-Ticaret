@@ -26,7 +26,7 @@ import {
   CheckCircle,
   XCircle,
   Loader,
-  ChevronRight,
+
   Users,
   Store,
   Wrench,
@@ -35,7 +35,7 @@ import {
 
 function AdminDashboard() {
   const navigate = useNavigate();
-  const [layoutMode, setLayoutMode] = useState<'grid' | 'free'>('grid');
+  const [layoutMode] = useState<'grid' | 'free'>('grid');
   const [currentLayout, setCurrentLayout] = useState(1);
   const [cardPositions, setCardPositions] = useState<{[key: string]: {x: number, y: number}}>({});
   
@@ -250,7 +250,7 @@ function AdminDashboard() {
     return { x, y };
   };
 
-  const handleDragStop = (cardId: string, e: any, data: any) => {
+  const handleDragStop = (cardId: string, _e: any, data: any) => {
     // Manyetik snapping uygula
     const snapped = snapToGrid(data.x, data.y);
     
@@ -338,6 +338,7 @@ function AdminDashboard() {
   };
 
   // Sağ alt köşe durum göstergesi fonksiyonları
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getOverallStatus = () => {
     const statuses = Object.values(moduleStatuses);
     if (statuses.length === 0) return 'none';
@@ -367,10 +368,12 @@ function AdminDashboard() {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const toggleStatusPanel = () => {
     setShowStatusPanel(!showStatusPanel);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const selectModuleForStatus = (moduleId: string) => {
     setSelectedModule(moduleId);
     // Panel açık kalacak, sadece içerik değişecek
@@ -635,7 +638,7 @@ function AdminDashboard() {
                 }`}
               >
                 <AlignJustify size={18} />
-                <span>{useGroupedLayout ? 'Gruplandırılmış' : 'Sayfa Düzeni'}</span>
+                <span>{useGroupedLayout ? 'Yatay Satır' : 'Sayfa Düzeni'}</span>
               </button>
 
 
@@ -708,182 +711,143 @@ function AdminDashboard() {
           )}
           
           {useGroupedLayout ? (
-            Object.entries(groupedModules).map(([groupId, group]) => (
-              <div key={groupId} className="group">
-                <div 
-                  className="flex items-center justify-between bg-white/10 hover:bg-white/20 text-white text-sm px-3 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm border border-white/20 mb-2"
-                  onClick={() => toggleGroup(groupId)}
-                >
-                  <span>{group.title}</span>
-                  <ChevronRight 
-                    className={`w-4 h-4 transition-transform duration-200 ${expandedGroups[groupId] ? 'rotate-90' : ''}`} 
-                  />
-                </div>
-                {expandedGroups[groupId] && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-                                         {group.modules.map((moduleId) => {
-                       const card = adminCards.find(c => c.id === moduleId);
-                       if (!card) return null;
-                       const IconComponent = card.icon;
-                       const position = cardPositions[moduleId] || { x: 0, y: 0 };
-                       return (
-                         <Draggable
-                           key={moduleId}
-                           disabled={layoutMode === 'grid'}
-                           position={layoutMode === 'free' ? position : { x: 0, y: 0 }}
-                           onStop={(e, data) => layoutMode === 'free' && handleDragStop(moduleId, e, data)}
-                         >
-                           <div 
-                             className={layoutMode === 'free' ? 'absolute cursor-move w-80 z-10' : 'cursor-default'}
-                             style={layoutMode === 'free' ? { width: '300px' } : {}}
-                           >
-                             <Link
-                               to={card.link}
-                               className={`block backdrop-blur-lg bg-gradient-to-br ${card.color} ${card.hoverColor} 
-                                 border border-white/30 text-white rounded-3xl p-6 
-                                 transition-all duration-500 transform hover:scale-110 hover:rotate-1
-                                 shadow-2xl hover:shadow-3xl group relative overflow-hidden
-                                 ${layoutMode === 'free' ? 'cursor-pointer' : 'cursor-pointer'}`}
-                               style={layoutMode === 'free' ? { 
-                                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' 
-                               } : {}}
-                               onClick={(e) => {
-                                 if (layoutMode === 'free' && e.target !== e.currentTarget) {
-                                   e.preventDefault();
-                                 }
-                               }}
-                             >
-                               {/* Drag Handle - only visible in free mode */}
-                               {layoutMode === 'free' && (
-                                 <div className="absolute top-2 right-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                                   <div className="w-6 h-6 flex items-center justify-center bg-white/20 rounded-lg backdrop-blur-sm">
-                                     <Layout size={12} className="text-white" />
-                                   </div>
-                                 </div>
-                               )}
+            <div className="space-y-6">
+              {Object.entries(groupedModules).map(([groupId, group]) => {
+                const GroupIcon = group.icon;
+                return (
+                  <div key={groupId} className="group-row">
+                    {/* Yatay Satır Yapısı */}
+                    <div className="backdrop-blur-md bg-white/10 border border-white/30 rounded-2xl p-4 hover:bg-white/15 transition-all duration-300">
+                      <div className="flex items-center justify-between flex-wrap lg:flex-nowrap gap-4">
+                        {/* Sol: Grup İsmi + İkon */}
+                        <div className="flex items-center space-x-3 lg:space-x-4 min-w-0 flex-shrink-0">
+                          <div className={`p-2 lg:p-3 bg-gradient-to-br ${group.color} rounded-xl shadow-lg`}>
+                            <GroupIcon className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-lg lg:text-xl font-bold text-white mb-1">
+                              {group.title}
+                            </h3>
+                            <p className="text-white/70 text-xs lg:text-sm hidden sm:block">
+                              {group.modules.length} modül
+                            </p>
+                          </div>
+                        </div>
 
-                               {/* Floating Particles Effect */}
-                               <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                                 <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                 <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-white/5 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                               </div>
-
-                               {/* Content */}
-                               <div className="relative z-10">
-                                 <div className="flex items-center mb-4">
-                                   <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm mr-4 group-hover:bg-white/30 transition-all duration-300">
-                                     <IconComponent className="w-8 h-8 text-white drop-shadow-lg" />
-                                   </div>
-                                  <div className="flex-1">
-                                    <h3 className="font-bold text-lg mb-1 text-white drop-shadow-md group-hover:text-white/90 transition-colors">
-                                      {card.title}
-                                    </h3>
-                                  </div>
-                                </div>
-                                <p className="text-white/90 text-sm leading-relaxed group-hover:text-white transition-colors mb-4">
-                                  {card.description}
-                                </p>
-
-                                {/* Status Indicator - Sağ Alt Köşe */}
-                                <div className="absolute bottom-2 right-2">
-                                  <div 
-                                    key={`${moduleId}-${moduleStatuses[moduleId] || 'none'}`}
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      handleStatusIndicatorClick(moduleId, e);
-                                    }}
-                                    className="w-8 h-8 bg-pink-400/90 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50 shadow-lg cursor-pointer hover:scale-110 transition-transform duration-200 z-10"
-                                  >
-                                    <span className="text-sm">
-                                      {getStatusEmoji(moduleStatuses[moduleId] || 'none')}
-                                    </span>
-                                  </div>
-                                </div>
-
-                                {/* Status Section - Hidden for new system */}
-                                <div className="mt-4 pt-4 border-t border-white/20 hidden">
-                                  {/* Current Status Display */}
-                                  <div className="flex items-center justify-between mb-2">
+                        {/* Orta: Modül Butonları */}
+                        <div className="flex-1 mx-6 min-w-0 lg:mx-6 md:mx-4 sm:mx-2">
+                          <div className="flex items-center space-x-2 overflow-x-auto pb-2">
+                            {group.modules.map((moduleId) => {
+                              const card = adminCards.find(c => c.id === moduleId);
+                              if (!card) return null;
+                              
+                              return (
+                                <Link
+                                  key={moduleId}
+                                  to={card.link}
+                                  className="flex-shrink-0 group relative"
+                                >
+                                  <div className="px-3 lg:px-4 py-2 bg-white/20 hover:bg-white/30 border border-white/30 rounded-lg text-white text-xs lg:text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-lg backdrop-blur-sm min-w-max">
                                     <div className="flex items-center space-x-2">
-                                      {getStatusIcon(moduleStatuses[moduleId])}
-                                      <span className="text-white/80 text-sm font-medium">
-                                        {getStatusText(moduleStatuses[moduleId])}
+                                      <span className="truncate max-w-24 lg:max-w-none">{card.title}</span>
+                                      {/* Status Emoji */}
+                                      <span className="text-xs flex-shrink-0">
+                                        {getStatusEmoji(moduleStatuses[moduleId] || 'none')}
                                       </span>
                                     </div>
                                   </div>
+                                  
+                                  {/* Hover Tooltip - Hidden on mobile */}
+                                  <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-900/95 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 hidden lg:block">
+                                    {card.description}
+                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900/95"></div>
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
 
-                                  {/* Status Dropdown */}
-                                  <div className="relative dropdown-container">
-                                    <button
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        toggleDropdown(moduleId);
-                                      }}
-                                      className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 text-white text-sm px-3 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm border border-white/20"
-                                    >
-                                      <span>Durum Değiştir</span>
-                                      <ChevronDown 
-                                        className={`w-4 h-4 transition-transform duration-200 ${openDropdowns[moduleId] ? 'rotate-180' : ''}`} 
-                                      />
-                                    </button>
+                        {/* Sağ: Açılır/Kapanır Ok */}
+                        <div className="flex-shrink-0">
+                          <button
+                            onClick={() => toggleGroup(groupId)}
+                            className="p-2 lg:p-3 bg-white/20 hover:bg-white/30 border border-white/30 rounded-xl transition-all duration-200 group touch-manipulation"
+                            title={expandedGroups[groupId] ? 'Detayları Gizle' : 'Detayları Göster'}
+                          >
+                            <ChevronDown 
+                              className={`w-4 h-4 lg:w-5 lg:h-5 text-white transition-transform duration-300 ${
+                                expandedGroups[groupId] ? 'rotate-180' : ''
+                              }`} 
+                            />
+                          </button>
+                        </div>
+                      </div>
 
-                                    {/* Dropdown Menu */}
-                                    {openDropdowns[moduleId] && (
-                                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-white/95 backdrop-blur-md border border-white/30 rounded-lg shadow-xl overflow-hidden z-20">
-                                        <div className="py-1">
-                                          <button
-                                            onClick={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                              updateModuleStatus(moduleId, 'in-progress');
-                                            }}
-                                            className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-blue-50 transition-colors"
-                                          >
-                                            <Loader className="w-4 h-4 animate-spin text-blue-600" />
-                                            <span className="text-gray-700">Yapım Aşamasında</span>
-                                          </button>
-                                          <button
-                                            onClick={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                              updateModuleStatus(moduleId, 'not-started');
-                                            }}
-                                            className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-red-50 transition-colors"
-                                          >
-                                            <XCircle className="w-4 h-4 text-red-600" />
-                                            <span className="text-gray-700">Henüz Başlanmadı</span>
-                                          </button>
-                                          <button
-                                            onClick={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                              updateModuleStatus(moduleId, 'completed');
-                                            }}
-                                            className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-green-50 transition-colors"
-                                          >
-                                            <CheckCircle className="w-4 h-4 text-green-600" />
-                                            <span className="text-gray-700">Hazır</span>
-                                          </button>
+                      {/* Açılır İçerik - Alt Detaylar */}
+                      {expandedGroups[groupId] && (
+                        <div className="mt-6 pt-6 border-t border-white/20">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+                            {group.modules.map((moduleId) => {
+                              const card = adminCards.find(c => c.id === moduleId);
+                              if (!card) return null;
+                              const IconComponent = card.icon;
+                              
+                              return (
+                                <Link
+                                  key={moduleId}
+                                  to={card.link}
+                                  className="group relative"
+                                >
+                                  <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl p-3 lg:p-4 hover:bg-white/20 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                                    <div className="flex items-start space-x-2 lg:space-x-3">
+                                      <div className={`p-2 bg-gradient-to-br ${card.color} rounded-lg flex-shrink-0`}>
+                                        <IconComponent className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <h4 className="font-semibold text-white mb-1 truncate text-sm lg:text-base">
+                                          {card.title}
+                                        </h4>
+                                        <p className="text-white/70 text-xs leading-relaxed line-clamp-2">
+                                          {card.description}
+                                        </p>
+                                        
+                                        {/* Status Badge */}
+                                        <div className="mt-2 flex items-center space-x-2">
+                                          {getStatusIcon(moduleStatuses[moduleId])}
+                                          <span className="text-white/60 text-xs">
+                                            {getStatusText(moduleStatuses[moduleId])}
+                                          </span>
                                         </div>
                                       </div>
-                                    )}
+                                      
+                                      {/* Status Click Area */}
+                                      <button
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          handleStatusIndicatorClick(moduleId, e);
+                                        }}
+                                        className="flex-shrink-0 w-7 h-7 lg:w-8 lg:h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center border border-white/30 transition-all duration-200 hover:scale-110 touch-manipulation"
+                                        title="Durum Değiştir"
+                                      >
+                                        <span className="text-xs lg:text-sm">
+                                          {getStatusEmoji(moduleStatuses[moduleId] || 'none')}
+                                        </span>
+                                      </button>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
-
-                              {/* Glassmorphism border effect */}
-                              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            </Link>
+                                </Link>
+                              );
+                            })}
                           </div>
-                        </Draggable>
-                      );
-                    })}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-            ))
+                );
+              })}
+            </div>
           ) : (
             adminCards.map((card) => {
               const IconComponent = card.icon;
