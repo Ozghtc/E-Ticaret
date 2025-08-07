@@ -115,7 +115,7 @@ function Iletisim() {
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate('/admin')}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -123,13 +123,13 @@ function Iletisim() {
               >
                 <ArrowLeft className="w-6 h-6 text-gray-600" />
               </button>
-              <div className="p-3 bg-blue-100 rounded-xl">
-                <MessageCircle className="w-8 h-8 text-blue-600" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">İletişim Yönetimi</h1>
-                <p className="text-gray-600 mt-1">Müşteri iletişimi ve destek sistemi</p>
-              </div>
+            <div className="p-3 bg-blue-100 rounded-xl">
+              <MessageCircle className="w-8 h-8 text-blue-600" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">İletişim Yönetimi</h1>
+              <p className="text-gray-600 mt-1">Müşteri iletişimi ve destek sistemi</p>
+            </div>
             </div>
             <button
               onClick={() => setShowSettings(!showSettings)}
@@ -406,8 +406,8 @@ function Iletisim() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="info@example.com"
                       />
-                    </div>
-                    
+            </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Şifre
@@ -485,8 +485,8 @@ function Iletisim() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         placeholder="Kullanıcı adı"
                       />
-                    </div>
-                    
+              </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Şifre
@@ -555,8 +555,8 @@ function Iletisim() {
                             <Trash2 className="w-4 h-4 text-red-600" />
                           </button>
                         </div>
-                      </div>
-                      
+              </div>
+
                       <h4 className="font-semibold text-gray-900 mb-2">{template.name}</h4>
                       {template.subject && (
                         <p className="text-sm text-gray-600 mb-2">Konu: {template.subject}</p>
@@ -574,8 +574,8 @@ function Iletisim() {
                   <div className="flex items-center space-x-3 mb-4">
                     <Bell className="w-6 h-6 text-yellow-600" />
                     <h3 className="font-semibold text-yellow-800">Bildirim Ayarları</h3>
-                  </div>
-                  
+            </div>
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-yellow-200">
                       <div>
@@ -676,7 +676,7 @@ function Iletisim() {
                     </div>
                   </div>
                 </div>
-              </div>
+            </div>
             )}
           </div>
         </div>
