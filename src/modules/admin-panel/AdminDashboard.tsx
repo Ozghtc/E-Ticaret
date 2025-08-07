@@ -73,7 +73,8 @@ function AdminDashboard() {
       if (!target.closest('.dropdown-container')) {
         setOpenDropdowns({});
       }
-      if (!target.closest('.status-panel-container')) {
+      // Status panel'i sadece panel dışına tıklandığında kapat
+      if (!target.closest('.status-panel-container') && !target.closest('.status-settings-button')) {
         setShowStatusPanel(false);
         setSelectedModule('');
       }
@@ -568,7 +569,7 @@ function AdminDashboard() {
             {/* Status Settings Button */}
             <button
               onClick={toggleStatusPanel}
-              className="flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 border bg-blue-500/80 hover:bg-blue-600/90 text-white border-blue-400/50 shadow-lg backdrop-blur-md"
+              className="flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 border bg-blue-500/80 hover:bg-blue-600/90 text-white border-blue-400/50 shadow-lg backdrop-blur-md status-settings-button"
             >
               <Settings size={18} />
               <span>Durum Ayarları</span>
@@ -704,8 +705,8 @@ function AdminDashboard() {
                       </p>
 
                       {/* Status Indicator - Sağ Alt Köşe */}
-                      <div className="absolute bottom-4 right-4">
-                        <div className="w-8 h-8 bg-gray-800/80 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                      <div className="absolute bottom-2 right-2">
+                        <div className="w-8 h-8 bg-pink-400/90 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50 shadow-lg">
                           <span className="text-sm">
                             {getStatusEmoji(moduleStatuses[card.id] || 'none')}
                           </span>
@@ -803,8 +804,8 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Sağ Alt Köşe Durum Göstergesi - Hidden */}
-        <div className="fixed bottom-6 right-6 z-[10000] status-panel-container hidden">
+        {/* Sağ Alt Köşe Durum Göstergesi */}
+        <div className="fixed bottom-6 right-6 z-[10000] status-panel-container">
           {/* Ana Durum Butonu */}
           <button
             onClick={toggleStatusPanel}
@@ -817,7 +818,7 @@ function AdminDashboard() {
 
           {/* Durum Paneli */}
           {showStatusPanel && (
-            <div className="absolute bottom-20 right-0 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64">
+            <div className="absolute bottom-20 right-0 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]">
               <div className="mb-4">
                 <h3 className="text-lg font-bold text-gray-800 mb-2">Modül Durumları</h3>
                 <p className="text-sm text-gray-600">Modül seçin ve durumunu güncelleyin</p>
@@ -849,7 +850,7 @@ function AdminDashboard() {
 
           {/* Seçili Modül Durum Güncelleme Paneli */}
           {selectedModule && (
-            <div className="absolute bottom-20 right-0 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64">
+            <div className="absolute bottom-20 right-0 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]">
               <div className="mb-4">
                 <h3 className="text-lg font-bold text-gray-800 mb-2">
                   {adminCards.find(card => card.id === selectedModule)?.title}
