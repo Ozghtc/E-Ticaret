@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Draggable from 'react-draggable';
 import { 
-  Shield, 
   LogOut, 
   Bell,
   Globe,
@@ -36,7 +35,6 @@ import {
 
 function AdminDashboard() {
   const navigate = useNavigate();
-  const [dragDisabled, setDragDisabled] = useState(false);
   const [layoutMode, setLayoutMode] = useState<'grid' | 'free'>('grid');
   const [currentLayout, setCurrentLayout] = useState(1);
   const [cardPositions, setCardPositions] = useState<{[key: string]: {x: number, y: number}}>({});
@@ -395,11 +393,11 @@ function AdminDashboard() {
   // Yuvarlak durum göstergesine tıklama fonksiyonu
   const [clickedPosition, setClickedPosition] = useState<{ x: number; y: number } | null>(null);
   
-  const handleStatusIndicatorClick = (cardId: string, event: React.MouseEvent) => {
+  const handleStatusIndicatorClick = (cardId: string, _event: React.MouseEvent) => {
     setSelectedModule(cardId);
     
     // Tıklanan pozisyonu kaydet
-    const rect = event.currentTarget.getBoundingClientRect();
+    const rect = _event.currentTarget.getBoundingClientRect();
     setClickedPosition({
       x: rect.left - 280, // Panel genişliği kadar sola
       y: rect.top - 50    // Panel yüksekliği kadar yukarı
