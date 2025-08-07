@@ -333,6 +333,11 @@ function AdminDashboard() {
     }
   };
 
+  // Yuvarlak durum göstergesine tıklama fonksiyonu
+  const handleStatusIndicatorClick = (cardId: string) => {
+    setSelectedModule(cardId);
+  };
+
   // Admin Panel Butonları
   const adminCards = [
     {
@@ -567,14 +572,7 @@ function AdminDashboard() {
               <span>{layoutMode === 'grid' ? 'Sayfa Düzeni' : 'Düzen Aktif'}</span>
             </button>
 
-            {/* Status Settings Button */}
-            <button
-              onClick={toggleStatusPanel}
-              className="flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 border bg-blue-500/80 hover:bg-blue-600/90 text-white border-blue-400/50 shadow-lg backdrop-blur-md status-settings-button"
-            >
-              <Settings size={18} />
-              <span>Durum Ayarları</span>
-            </button>
+
 
             {/* Layout Presets */}
             {layoutMode === 'free' && (
@@ -707,7 +705,14 @@ function AdminDashboard() {
 
                       {/* Status Indicator - Sağ Alt Köşe */}
                       <div className="absolute bottom-2 right-2">
-                        <div className="w-8 h-8 bg-pink-400/90 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50 shadow-lg">
+                        <div 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleStatusIndicatorClick(card.id);
+                          }}
+                          className="w-8 h-8 bg-pink-400/90 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50 shadow-lg cursor-pointer hover:scale-110 transition-transform duration-200 z-10"
+                        >
                           <span className="text-sm">
                             {getStatusEmoji(moduleStatuses[card.id] || 'none')}
                           </span>
@@ -805,39 +810,7 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Durum Ayarları Paneli - Üstte Açılacak */}
-        {showStatusPanel && !selectedModule && (
-          <div className="fixed top-20 right-4 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]">
-            <div className="mb-4">
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Modül Durumları</h3>
-              <p className="text-sm text-gray-600">Modül seçin ve durumunu güncelleyin</p>
-            </div>
-            
-            <div className="space-y-2 max-h-64 overflow-y-auto">
-              {adminCards.map((card) => (
-                <button
-                  key={card.id}
-                  onClick={() => selectModuleForStatus(card.id)}
-                  className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">
-                      {getStatusEmoji(moduleStatuses[card.id] || 'none')}
-                    </span>
-                    <span className="text-sm font-medium text-gray-700">
-                      {card.title}
-                    </span>
-                  </div>
-                  <span className="text-xs text-gray-500">
-                    {getStatusText(moduleStatuses[card.id] || 'none')}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Seçili Modül Durum Güncelleme Paneli - Üstte Açılacak */}
+        {/* Seçili Modül Durum Güncelleme Paneli - Sadece Yuvarlak Tıklaması İçin */}
         {selectedModule && (
           <div className="fixed top-20 right-4 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]">
             <div className="mb-4 flex items-center justify-between">
