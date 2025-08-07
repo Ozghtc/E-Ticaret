@@ -328,7 +328,8 @@ function AdminDashboard() {
   const updateModuleStatusFromPanel = (status: 'in-progress' | 'not-started' | 'completed') => {
     if (selectedModule) {
       updateModuleStatus(selectedModule, status);
-      setSelectedModule(''); // Modül seçimini temizle, panel listeye geri döner
+      setSelectedModule(''); // Modül seçimini temizle
+      setShowStatusPanel(false); // Ana paneli de kapat
     }
   };
 
@@ -805,7 +806,7 @@ function AdminDashboard() {
         </div>
 
         {/* Durum Ayarları Paneli - Üstte Açılacak */}
-        {showStatusPanel && (
+        {showStatusPanel && !selectedModule && (
           <div className="fixed top-20 right-4 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]">
             <div className="mb-4">
               <h3 className="text-lg font-bold text-gray-800 mb-2">Modül Durumları</h3>
