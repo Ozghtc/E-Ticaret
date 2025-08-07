@@ -21,7 +21,8 @@ import {
   Save,
   RotateCcw,
   AlignJustify,
-  Grid3X3
+  Grid3X3,
+  MessageCircle
 } from 'lucide-react';
 
 function AdminDashboard() {
@@ -307,6 +308,16 @@ function AdminDashboard() {
       icon: Package,
       color: 'from-rose-500/80 to-rose-600/80',
       hoverColor: 'hover:from-rose-600/90 hover:to-rose-700/90',
+      iconColor: 'text-white'
+    },
+    {
+      id: 'iletisim',
+      title: 'İletişim',
+      description: 'Müşteri iletişimi, destek sistemi ve mesaj yönetimi',
+      link: '/admin/iletisim',
+      icon: MessageCircle,
+      color: 'from-violet-500/80 to-violet-600/80',
+      hoverColor: 'hover:from-violet-600/90 hover:to-violet-700/90',
       iconColor: 'text-white'
     }
   ];

@@ -53,6 +53,7 @@ import MagazaBilgilerim from './modules/magaza-paneli/modules/MagazaBilgilerim';
 import DestekBildirimler from './modules/magaza-paneli/modules/DestekBildirimler';
 import MagazaListesi from './modules/magaza-listesi/MagazaListesi';
 import PaketTanimlama from './modules/paket-tanimlama/PaketTanimlama';
+import Iletisim from './modules/iletisim/Iletisim';
 
 function App() {
   return (
@@ -83,6 +84,7 @@ function App() {
         <Route path="/admin/urun-ekleme-yeni" element={<YeniUrunEkleme />} />
         <Route path="/admin/seo" element={<SEO />} />
         <Route path="/admin/paket-tanimlama" element={<PaketTanimlama />} />
+        <Route path="/admin/iletisim" element={<Iletisim />} />
         <Route path="/admin/urun-ekleme/tekstil" element={<TekstilUrunForm />} />
         <Route path="/admin/urun-ekleme/teknoloji" element={<TeknolojUrunForm />} />
         <Route path="/admin/urun-ekleme/gida" element={<GidaUrunForm />} />
