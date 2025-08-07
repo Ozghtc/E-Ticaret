@@ -95,16 +95,27 @@ const PaketForm: React.FC<PaketFormProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Dönem
+              {formData.kategori === 'sms' ? 'Paket Türü' : 'Dönem'}
             </label>
             <select
               value={formData.donem}
-              onChange={(e) => setFormData({ ...formData, donem: e.target.value as 'aylık' | 'yıllık' })}
+              onChange={(e) => setFormData({ ...formData, donem: e.target.value as 'aylık' | 'yıllık' | 'adet' })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
             >
-              <option value="aylık">Aylık</option>
-              <option value="yıllık">Yıllık</option>
+              {formData.kategori === 'sms' ? (
+                <option value="adet">Adet Bazlı</option>
+              ) : (
+                <>
+                  <option value="aylık">Aylık</option>
+                  <option value="yıllık">Yıllık</option>
+                </>
+              )}
             </select>
+            {formData.kategori === 'sms' && (
+              <div className="mt-1 text-sm text-gray-500">
+                SMS paketleri adet bazlı satılır
+              </div>
+            )}
           </div>
 
           <div>
@@ -126,7 +137,14 @@ const PaketForm: React.FC<PaketFormProps> = ({
             </label>
             <select
               value={formData.kategori}
-              onChange={(e) => setFormData({ ...formData, kategori: e.target.value as 'eticaret' | 'premium' | 'sms' })}
+              onChange={(e) => {
+                const newKategori = e.target.value as 'eticaret' | 'premium' | 'sms';
+                setFormData({ 
+                  ...formData, 
+                  kategori: newKategori,
+                  donem: newKategori === 'sms' ? 'adet' : 'aylık' // SMS seçildiğinde otomatik 'adet' yap
+                });
+              }}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
             >
               <option value="eticaret">E-Ticaret Paketleri</option>
@@ -135,23 +153,59 @@ const PaketForm: React.FC<PaketFormProps> = ({
             </select>
           </div>
 
-          {/* SMS Miktarı - Sadece SMS paketleri için göster */}
+          {/* SMS Özellikleri - Sadece SMS paketleri için göster */}
           {formData.kategori === 'sms' && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                SMS Miktarı (Adet) *
-              </label>
-              <input
-                type="number"
-                value={formData.smsMiktari}
-                onChange={(e) => setFormData({ ...formData, smsMiktari: Number(e.target.value) })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-                placeholder="1000"
-              />
-              <div className="mt-1 text-sm text-gray-500">
-                Bu pakette aylık gönderebilecek SMS adedi
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  SMS Miktarı (Adet) *
+                </label>
+                <input
+                  type="number"
+                  value={formData.smsMiktari}
+                  onChange={(e) => setFormData({ ...formData, smsMiktari: Number(e.target.value) })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
+                  placeholder="1000"
+                />
+                <div className="mt-1 text-sm text-gray-500">
+                  Bu pakette toplam gönderebilecek SMS adedi
+                </div>
               </div>
-            </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Geçerlilik Süresi (Gün) *
+                </label>
+                <input
+                  type="number"
+                  value={formData.smsGeçerlilikGunu}
+                  onChange={(e) => setFormData({ ...formData, smsGeçerlilikGunu: Number(e.target.value) })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
+                  placeholder="30"
+                />
+                <div className="mt-1 text-sm text-gray-500">
+                  SMS kredilerinin geçerlilik süresi
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  SMS Türü
+                </label>
+                <select
+                  value={formData.smsTipi}
+                  onChange={(e) => setFormData({ ...formData, smsTipi: e.target.value as 'standart' | 'toplu' | 'otomatik' })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
+                >
+                  <option value="standart">Standart SMS</option>
+                  <option value="toplu">Toplu SMS</option>
+                  <option value="otomatik">Otomatik SMS</option>
+                </select>
+                <div className="mt-1 text-sm text-gray-500">
+                  SMS gönderim türü ve özellikler
+                </div>
+              </div>
+            </>
           )}
 
           <div>

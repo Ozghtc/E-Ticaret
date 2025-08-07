@@ -12,7 +12,9 @@ const initialFormData: PaketFormData = {
   renk: 'blue',
   kategori: 'eticaret',
   smsMiktari: 0,
-  smsOzellikler: []
+  smsOzellikler: [],
+  smsGeçerlilikGunu: 30, // Varsayılan 30 gün
+  smsTipi: 'standart' // Varsayılan standart SMS
 };
 
 const initialYeniOzellik: YeniOzellik = { 
@@ -50,7 +52,9 @@ export const usePaketForm = () => {
       renk: paket.renk,
       kategori: paket.kategori,
       smsMiktari: paket.smsMiktari || 0,
-      smsOzellikler: paket.smsOzellikler || []
+      smsOzellikler: paket.smsOzellikler || [],
+      smsGeçerlilikGunu: paket.smsGeçerlilikGunu || 30,
+      smsTipi: paket.smsTipi || 'standart'
     });
     setOzellikler(paket.ozellikler);
     setShowForm(true);
@@ -96,7 +100,9 @@ export const usePaketForm = () => {
       ozellikler: ozellikler,
       createdAt: editingPaket?.createdAt || new Date().toISOString(),
       smsMiktari: formData.smsMiktari || undefined,
-      smsOzellikler: formData.smsOzellikler || undefined
+      smsOzellikler: formData.smsOzellikler || undefined,
+      smsGeçerlilikGunu: formData.smsGeçerlilikGunu || undefined,
+      smsTipi: formData.smsTipi || undefined
     };
   };
 
@@ -110,6 +116,19 @@ export const usePaketForm = () => {
     if (formData.fiyat <= 0) {
       alert('Geçerli bir fiyat giriniz!');
       return false;
+    }
+    
+    // SMS paketleri için özel validasyon
+    if (formData.kategori === 'sms') {
+      if (!formData.smsMiktari || formData.smsMiktari <= 0) {
+        alert('SMS paketleri için SMS miktarı zorunludur ve 0\'dan büyük olmalıdır!');
+        return false;
+      }
+      
+      if (formData.smsGeçerlilikGunu <= 0) {
+        alert('SMS geçerlilik günü 0\'dan büyük olmalıdır!');
+        return false;
+      }
     }
     
     if (ozellikler.length === 0) {

@@ -12,7 +12,7 @@ export interface Paket {
   adi: string;
   fiyat: number;
   eskiFiyat?: number;
-  donem: 'aylık' | 'yıllık';
+  donem: 'aylık' | 'yıllık' | 'adet'; // SMS için 'adet' seçeneği eklendi
   populer: boolean;
   kampanya?: string;
   renk: string;
@@ -22,11 +22,13 @@ export interface Paket {
   // SMS paketleri için ek alanlar
   smsMiktari?: number; // SMS adedi
   smsOzellikler?: string[]; // SMS özel özellikleri
+  smsGeçerlilikGunu?: number; // SMS geçerlilik (gün)
+  smsTipi?: 'standart' | 'toplu' | 'otomatik'; // SMS türü
 }
 
 export type PaketKategori = 'eticaret' | 'premium' | 'sms';
 
-export type PaketDonem = 'aylık' | 'yıllık';
+export type PaketDonem = 'aylık' | 'yıllık' | 'adet'; // SMS paketleri için 'adet' eklendi
 
 export interface PaketFormData {
   adi: string;
@@ -39,6 +41,8 @@ export interface PaketFormData {
   kategori: PaketKategori;
   smsMiktari: number;
   smsOzellikler: string[];
+  smsGeçerlilikGunu: number; // SMS geçerlilik süresi (gün)
+  smsTipi: 'standart' | 'toplu' | 'otomatik'; // SMS türü
 }
 
 export interface YeniOzellik {

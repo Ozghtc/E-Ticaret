@@ -2,8 +2,13 @@
 import React from 'react';
 import { Edit, Trash2, Star, CheckCircle } from 'lucide-react';
 import { PaketCardProps } from '../types';
+import SMSPaketCard from './SMSPaketCard';
 
 const PaketCard: React.FC<PaketCardProps> = ({ paket, onEdit, onDelete }) => {
+  // SMS paketleri için özel kart kullan
+  if (paket.kategori === 'sms') {
+    return <SMSPaketCard paket={paket} onEdit={onEdit} onDelete={onDelete} />;
+  }
   const colorClasses = {
     blue: 'from-blue-500 to-blue-600 border-blue-200',
     green: 'from-green-500 to-green-600 border-green-200',

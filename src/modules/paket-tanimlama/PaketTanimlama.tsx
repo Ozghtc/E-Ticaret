@@ -9,7 +9,7 @@ import { PaketForm, PaketCard, PaketTabs, PaketHeader } from './components';
 import { usePaketler, usePaketForm } from './hooks';
 
 // Utils
-import { getTabBackgroundClass, validatePaketForm } from './utils';
+import { getTabBackgroundClass } from './utils';
 
 const PaketTanimlama: React.FC = () => {
   // Custom hooks
@@ -35,21 +35,27 @@ const PaketTanimlama: React.FC = () => {
     openForm,
     closeForm,
     handlePaketEdit,
-    createPaketFromForm
+    createPaketFromForm,
+    validateForm
   } = usePaketForm();
 
   // Form kaydetme işlemi
   const handleFormSave = () => {
-    const validation = validatePaketForm(formData, ozellikler);
+    console.log('Form kaydediliyor...', { formData, ozellikler });
     
-    if (!validation.isValid) {
-      alert(validation.message);
+    // Validasyon kontrolü
+    if (!validateForm()) {
+      console.log('Validasyon başarısız');
       return;
     }
 
+    console.log('Validasyon başarılı, paket oluşturuluyor...');
     const yeniPaket = createPaketFromForm();
+    console.log('Oluşturulan paket:', yeniPaket);
+    
     handlePaketKaydet(editingPaket, yeniPaket);
     closeForm();
+    console.log('Paket başarıyla kaydedildi ve form kapatıldı');
   };
 
   // Filtered paketler
