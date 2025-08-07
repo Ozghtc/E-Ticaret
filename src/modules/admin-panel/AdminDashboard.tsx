@@ -716,6 +716,7 @@ function AdminDashboard() {
                       {/* Status Indicator - Sağ Alt Köşe */}
                       <div className="absolute bottom-2 right-2">
                         <div 
+                          key={`${card.id}-${moduleStatuses[card.id] || 'none'}`}
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
