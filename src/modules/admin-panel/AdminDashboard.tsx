@@ -330,12 +330,22 @@ function AdminDashboard() {
       updateModuleStatus(selectedModule, status);
       setSelectedModule(''); // Modül seçimini temizle
       setShowStatusPanel(false); // Ana paneli de kapat
+      setClickedPosition(null); // Pozisyonu temizle
     }
   };
 
   // Yuvarlak durum göstergesine tıklama fonksiyonu
-  const handleStatusIndicatorClick = (cardId: string) => {
+  const [clickedPosition, setClickedPosition] = useState<{ x: number; y: number } | null>(null);
+  
+  const handleStatusIndicatorClick = (cardId: string, event: React.MouseEvent) => {
     setSelectedModule(cardId);
+    
+    // Tıklanan pozisyonu kaydet
+    const rect = event.currentTarget.getBoundingClientRect();
+    setClickedPosition({
+      x: rect.left - 280, // Panel genişliği kadar sola
+      y: rect.top - 50    // Panel yüksekliği kadar yukarı
+    });
   };
 
   // Admin Panel Butonları
@@ -709,7 +719,7 @@ function AdminDashboard() {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            handleStatusIndicatorClick(card.id);
+                            handleStatusIndicatorClick(card.id, e);
                           }}
                           className="w-8 h-8 bg-pink-400/90 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50 shadow-lg cursor-pointer hover:scale-110 transition-transform duration-200 z-10"
                         >
@@ -810,9 +820,15 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Seçili Modül Durum Güncelleme Paneli - Sadece Yuvarlak Tıklaması İçin */}
-        {selectedModule && (
-          <div className="fixed top-20 right-4 bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]">
+        {/* Seçili Modül Durum Güncelleme Paneli - Dinamik Konum */}
+        {selectedModule && clickedPosition && (
+          <div 
+            className="fixed bg-white/95 backdrop-blur-md border border-white/30 rounded-2xl shadow-2xl p-4 min-w-64 z-[10001]"
+            style={{
+              left: `${clickedPosition.x}px`,
+              top: `${clickedPosition.y}px`
+            }}
+          >
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-gray-800 mb-2">
@@ -821,7 +837,10 @@ function AdminDashboard() {
                 <p className="text-sm text-gray-600">Durum seçin</p>
               </div>
               <button
-                onClick={() => setSelectedModule('')}
+                onClick={() => {
+                  setSelectedModule('');
+                  setClickedPosition(null);
+                }}
                 className="text-gray-500 hover:text-gray-700 transition-colors"
                 title="Geri dön"
               >
