@@ -378,7 +378,7 @@ function OrganicMarketDemo() {
           </div>
           
           <div className="border-t border-green-700 mt-8 pt-8 text-center">
-            <p className="text-green-200">{t("common.2025_organic_market_bu_demo_altıntassoft_tarafından_oluşturulmuştur")}</p>
+            <p className="text-green-200">© 2025 Organic Market - Bu demo Altıntassoft tarafından oluşturulmuştur</p>
           </div>
         </div>
       </footer>
