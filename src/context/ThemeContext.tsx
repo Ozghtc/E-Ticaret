@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useTranslation } from "react-i18next";
 export interface Product {
   id: string;
   name: string;
@@ -53,7 +52,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const sampleProducts: Product[] = [{
   id: '1',
   name: 'Vintage Denim Ceket',
-  description: t("common.klasik_vintage_tarzı_denim_ceket"),
+  description: "Klasik vintage tarzı denim ceket",
   price: 899,
   originalPrice: 1299,
   image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=300',
@@ -69,7 +68,7 @@ const sampleProducts: Product[] = [{
 }, {
   id: '2',
   name: 'Gaming Laptop RTX 4070',
-  description: t("common.yüksek_performanslı_gaming_laptop"),
+  description: "Yüksek performanslı gaming laptop",
   price: 45999,
   originalPrice: 52999,
   image: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=300',
@@ -83,8 +82,8 @@ const sampleProducts: Product[] = [{
   warranty: '2 yıl'
 }, {
   id: '3',
-  name: t("common.organik_zeytinyağı_500ml"),
-  description: t("common.soğuk_sıkım_organik_zeytinyağı"),
+  name: "Organik Zeytinyağı 500ml",
+  description: "Soğuk sıkım organik zeytinyağı",
   price: 89,
   originalPrice: 109,
   image: 'https://images.pexels.com/photos/33783/olive-oil-salad-dressing-cooking-olive.jpg?auto=compress&cs=tinysrgb&w=300',
@@ -116,7 +115,7 @@ const sampleProducts: Product[] = [{
 }, {
   id: '5',
   name: 'Minimalist Desk Lamp',
-  description: t("common.sade_ve_şık_masa_lambası"),
+  description: "Sade ve şık masa lambası",
   price: 299,
   originalPrice: 399,
   image: 'https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=300',
