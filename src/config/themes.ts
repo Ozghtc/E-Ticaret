@@ -236,7 +236,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-pink-50",
-  features: [t("common.zarif_tasarım"), "Pastel Renkler", t("common.yumuşak_kenarlar")],
+  features: ["Zarif Tasarım", "Pastel Renkler", "Yumuşak Kenarlar"],
   cardConfig: {
     layout: 'grid-2',
     cardClass: 'bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden',
@@ -272,7 +272,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-yellow-100",
-  features: [t("common.premium_tasarım"), "Gold Detaylar", t("common.yüksek_kontrast")],
+  features: ["Premium Tasarım", "Gold Detaylar", "Yüksek Kontrast"],
   cardConfig: {
     layout: 'grid-3',
     cardClass: 'bg-gray-900 rounded-lg shadow-xl hover:shadow-2xl overflow-hidden border border-yellow-500',
@@ -308,7 +308,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-gray-100",
-  features: [t("common.dinamik_tasarım"), "Neon Detaylar", t("common.kalın_fontlar")],
+  features: ["Dinamik Tasarım", "Neon Detaylar", "Kalın Fontlar"],
   cardConfig: {
     layout: 'grid-3',
     cardClass: 'bg-black rounded-lg shadow-lg hover:shadow-xl overflow-hidden border border-red-500',
@@ -344,7 +344,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-green-50",
-  features: [t("common.sade_tasarım"), t("common.boşluklu_yerleşim"), t("common.düz_çizgiler")],
+  features: ["Sade Tasarım", "Boşluklu Yerleşim", "Düz Çizgiler"],
   cardConfig: {
     layout: 'grid-4',
     cardClass: 'bg-white shadow-sm overflow-hidden',
@@ -416,7 +416,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-purple-100",
-  features: [t("common.simetrik_tasarım"), t("common.renk_seçenekleri"), t("common.yumuşak_çizgiler")],
+  features: ["Simetrik Tasarım", "Renk Seçenekleri", "Yumuşak Çizgiler"],
   cardConfig: {
     layout: 'grid-3',
     cardClass: 'bg-white rounded-lg shadow-sm hover:shadow-md overflow-hidden',
@@ -452,7 +452,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-yellow-100",
-  features: [t("common.renkli_kenarlıklar"), t("common.yaş_rozeti"), "Animasyonlu Butonlar"],
+  features: ["Renkli Kenarlıklar", "Yaş Rozeti", "Animasyonlu Butonlar"],
   cardConfig: {
     layout: 'grid-2',
     cardClass: 'bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border-4 border-yellow-300',
@@ -488,7 +488,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-red-100",
-  features: [t("common.kampanya_odaklı"), "% Etiketi", t("common.yoğun_görsel")],
+  features: ["Kampanya Odaklı", "% Etiketi", "Yoğun Görsel"],
   cardConfig: {
     layout: 'grid-4',
     cardClass: 'bg-red-50 rounded-lg shadow-md hover:shadow-lg overflow-hidden border-2 border-red-300',
@@ -524,7 +524,7 @@ export const THEMES: ThemeDefinition[] = [
   available: true,
   preview: "https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=400",
   color: "bg-green-100",
-  features: [t("common.organik_i_konlar"), "Sertifika Rozeti", t("common.doğa_dostu")],
+  features: ["Organik İkonlar", "Sertifika Rozeti", "Doğa Dostu"],
   cardConfig: {
     layout: 'grid-3',
     cardClass: 'bg-white rounded-lg shadow-sm hover:shadow-md overflow-hidden border border-green-200',
