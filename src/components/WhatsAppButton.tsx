@@ -8,15 +8,18 @@ interface WhatsAppButtonProps {
 }
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   phoneNumber = '905555555555',
-  message = t("common.merhaba_size_nasıl_yardımcı_olabilirim"),
+  message,
   theme = 'default'
 }) => {
   const {
     t
   } = useTranslation();
+  
+  // Eğer message prop'u gelmezse default mesajı kullan
+  const defaultMessage = message || t("common.merhaba_size_nasıl_yardımcı_olabilirim");
   const [isHovered, setIsHovered] = useState(false);
   const handleWhatsAppClick = () => {
-    const encodedMessage = encodeURIComponent(message);
+    const encodedMessage = encodeURIComponent(defaultMessage);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
