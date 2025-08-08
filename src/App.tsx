@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import AdminLogin from './components/AdminLogin';
@@ -59,7 +58,9 @@ function App() {
   const {
     t
   } = useTranslation();
-  return <Router>
+  
+  return (
+    <Router>
       {/* WhatsApp Button - Her zaman görünür olmalı */}
       <div style={{
       position: 'fixed',
@@ -124,6 +125,7 @@ function App() {
         <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </Router>;
+    </Router>
+  );
 }
 export default App;
