@@ -1,6 +1,5 @@
 // 🎯 Form State Yönetimi
 import { useState, useCallback } from 'react';
-import { useTranslation } from "react-i18next";
 export interface FormData {
   // Kategori Bilgileri
   mainCategory: string;
@@ -72,7 +71,7 @@ export const initialFormData: FormData = {
   invoiceNumber: '',
   stock: 0,
   vatRate: '%20',
-  preparationTime: t("common.1_gün"),
+  preparationTime: "1 Gün",
   selectedSizes: [],
   selectedColors: [],
   fabricType: '',
