@@ -32,7 +32,7 @@ function UrunListesi() {
     sales: 156
   }, {
     id: 2,
-    name: 'Vintage Denim Ceket',
+    name: t("common.vintage_denim_ceket"),
     brand: 'H&M',
     category: 'Ceket',
     price: 899,
