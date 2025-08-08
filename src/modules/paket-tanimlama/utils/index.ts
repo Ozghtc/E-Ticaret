@@ -2,6 +2,7 @@
 import { Paket } from '../types';
 
 // Renk sınıfları tanımları
+import { useTranslation } from "react-i18next";
 export const colorClasses = {
   blue: 'from-blue-500 to-blue-600 border-blue-200',
   green: 'from-green-500 to-green-600 border-green-200',
@@ -48,20 +49,31 @@ export const calculateSmsPrice = (totalPrice: number, smsCount: number): string 
 };
 
 // Form doğrulama
-export const validatePaketForm = (formData: any, ozellikler: any[]): { isValid: boolean; message?: string } => {
+export const validatePaketForm = (formData: any, ozellikler: any[]): {
+  isValid: boolean;
+  message?: string;
+} => {
   if (!formData.adi.trim()) {
-    return { isValid: false, message: 'Paket adı zorunludur!' };
+    return {
+      isValid: false,
+      message: t("common.paket_adı_zorunludur")
+    };
   }
-  
   if (formData.fiyat <= 0) {
-    return { isValid: false, message: 'Geçerli bir fiyat giriniz!' };
+    return {
+      isValid: false,
+      message: t("common.geçerli_bir_fiyat_giriniz")
+    };
   }
-  
   if (ozellikler.length === 0) {
-    return { isValid: false, message: 'En az bir özellik eklemelisiniz!' };
+    return {
+      isValid: false,
+      message: t("common.en_az_bir_özellik_eklemelisiniz")
+    };
   }
-  
-  return { isValid: true };
+  return {
+    isValid: true
+  };
 };
 
 // LocalStorage paket işlemleri
@@ -70,10 +82,9 @@ export const saveToLocalStorage = (key: string, data: Paket[]) => {
     localStorage.setItem(key, JSON.stringify(data));
     console.log(`${data.length} paket localStorage'a kaydedildi`);
   } catch (error) {
-    console.error('LocalStorage kaydetme hatası:', error);
+    console.error(t("common.localstorage_kaydetme_hatası"), error);
   }
 };
-
 export const loadFromLocalStorage = (key: string): Paket[] | null => {
   try {
     const stored = localStorage.getItem(key);
@@ -83,16 +94,15 @@ export const loadFromLocalStorage = (key: string): Paket[] | null => {
       return parsed;
     }
   } catch (error) {
-    console.error('LocalStorage yükleme hatası:', error);
+    console.error(t("common.localstorage_yükleme_hatası"), error);
   }
   return null;
 };
-
 export const clearLocalStorage = (key: string) => {
   try {
     localStorage.removeItem(key);
     console.log('LocalStorage temizlendi');
   } catch (error) {
-    console.error('LocalStorage temizleme hatası:', error);
+    console.error(t("common.localstorage_temizleme_hatası"), error);
   }
 };

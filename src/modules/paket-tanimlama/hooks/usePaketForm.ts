@@ -1,7 +1,7 @@
 // Paket Tanımlama Modülü - Form Yönetimi Hook
 import { useState } from 'react';
 import { Paket, PaketFormData, PaketOzellik, YeniOzellik } from '../types';
-
+import { useTranslation } from "react-i18next";
 const initialFormData: PaketFormData = {
   adi: '',
   fiyat: 0,
@@ -13,16 +13,15 @@ const initialFormData: PaketFormData = {
   kategori: 'eticaret',
   smsMiktari: 0,
   smsOzellikler: [],
-  smsGeçerlilikGunu: 30, // Varsayılan 30 gün
+  smsGeçerlilikGunu: 30,
+  // Varsayılan 30 gün
   smsTipi: 'standart' // Varsayılan standart SMS
 };
-
-const initialYeniOzellik: YeniOzellik = { 
-  baslik: '', 
-  aciklama: '', 
-  dahil: true 
+const initialYeniOzellik: YeniOzellik = {
+  baslik: '',
+  aciklama: '',
+  dahil: true
 };
-
 export const usePaketForm = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingPaket, setEditingPaket] = useState<Paket | null>(null);
@@ -70,23 +69,21 @@ export const usePaketForm = () => {
         aciklama: yeniOzellik.aciklama.trim(),
         dahil: yeniOzellik.dahil
       };
-      
       setOzellikler([...ozellikler, yeniPaketOzellik]);
       setYeniOzellik(initialYeniOzellik);
-      console.log('Yeni özellik eklendi:', yeniPaketOzellik);
+      console.log(t("common.yeni_özellik_eklendi"), yeniPaketOzellik);
     }
   };
 
   // Özellik sil
   const handleOzellikSil = (id: string) => {
     setOzellikler(ozellikler.filter(o => o.id !== id));
-    console.log('Özellik silindi:', id);
+    console.log(t("common.özellik_silindi"), id);
   };
 
   // Form verilerinden Paket objesi oluştur
   const createPaketFromForm = (): Paket => {
     const paketId = editingPaket?.id || `paket-${Date.now()}`;
-    
     return {
       id: paketId,
       adi: formData.adi,
@@ -109,36 +106,31 @@ export const usePaketForm = () => {
   // Form validasyonu
   const validateForm = (): boolean => {
     if (!formData.adi.trim()) {
-      alert('Paket adı zorunludur!');
+      alert(t("common.paket_adı_zorunludur"));
       return false;
     }
-    
     if (formData.fiyat <= 0) {
-      alert('Geçerli bir fiyat giriniz!');
+      alert(t("common.geçerli_bir_fiyat_giriniz"));
       return false;
     }
-    
+
     // SMS paketleri için özel validasyon
     if (formData.kategori === 'sms') {
       if (!formData.smsMiktari || formData.smsMiktari <= 0) {
-        alert('SMS paketleri için SMS miktarı zorunludur ve 0\'dan büyük olmalıdır!');
+        alert(t("common.sms_paketleri_için_sms_miktarı_zorunludur_ve_0_dan_büyük_olmalıdır"));
         return false;
       }
-      
       if (formData.smsGeçerlilikGunu <= 0) {
-        alert('SMS geçerlilik günü 0\'dan büyük olmalıdır!');
+        alert(t("common.sms_geçerlilik_günü_0_dan_büyük_olmalıdır"));
         return false;
       }
     }
-    
     if (ozellikler.length === 0) {
-      alert('En az bir özellik eklemelisiniz!');
+      alert(t("common.en_az_bir_özellik_eklemelisiniz"));
       return false;
     }
-    
     return true;
   };
-
   return {
     // State
     showForm,
@@ -146,7 +138,6 @@ export const usePaketForm = () => {
     formData,
     ozellikler,
     yeniOzellik,
-    
     // Actions
     setFormData,
     setOzellikler,

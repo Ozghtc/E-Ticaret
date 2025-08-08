@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { UseLayoutManagerReturn, LayoutMode, CardPositionsMap } from '../types/adminTypes';
 import { showToast, snapToGrid, generateDefaultPositions, generateAlignedPositions } from '../utils/layoutUtils';
-
+import { useTranslation } from "react-i18next";
 export const useLayoutManager = (): UseLayoutManagerReturn => {
   const [layoutMode] = useState<LayoutMode>('grid');
   const [currentLayout, setCurrentLayout] = useState<number>(1);
@@ -11,7 +11,6 @@ export const useLayoutManager = (): UseLayoutManagerReturn => {
   useEffect(() => {
     const savedLayout = localStorage.getItem('adminLayout');
     const savedPositions = localStorage.getItem('adminCardPositions');
-    
     if (savedLayout) {
       setCurrentLayout(parseInt(savedLayout));
     }
@@ -25,7 +24,6 @@ export const useLayoutManager = (): UseLayoutManagerReturn => {
     const layoutNumber = currentLayout;
     localStorage.setItem(`adminLayout_${layoutNumber}`, JSON.stringify(cardPositions));
     localStorage.setItem('adminLayout', layoutNumber.toString());
-    
     showToast(`Düzen ${layoutNumber} kaydedildi!`, '✅', 'green');
   };
 
@@ -37,7 +35,6 @@ export const useLayoutManager = (): UseLayoutManagerReturn => {
       setCardPositions(positions);
       setCurrentLayout(layoutNumber);
       localStorage.setItem('adminLayout', layoutNumber.toString());
-      
       showToast(`Düzen ${layoutNumber} yüklendi!`, '🏗️', 'blue');
     } else {
       // Default positions for new layouts
@@ -58,21 +55,20 @@ export const useLayoutManager = (): UseLayoutManagerReturn => {
     const alignedPositions = generateAlignedPositions();
     setCardPositions(alignedPositions);
     localStorage.setItem('adminCardPositions', JSON.stringify(alignedPositions));
-
-    showToast('Perfect grid düzeni oluşturuldu!', '🎯', 'purple');
+    showToast(t("common.perfect_grid_düzeni_oluşturuldu"), '🎯', 'purple');
   };
 
   // Handle drag stop with magnetic snapping
   const handleDragStop = (cardId: string, _e: any, data: any) => {
     // Manyetik snapping uygula
     const snapped = snapToGrid(data.x, data.y);
-    
-    const newPositions = { ...cardPositions };
+    const newPositions = {
+      ...cardPositions
+    };
     newPositions[cardId] = snapped;
     setCardPositions(newPositions);
     localStorage.setItem('adminCardPositions', JSON.stringify(newPositions));
   };
-
   return {
     layoutMode,
     currentLayout,

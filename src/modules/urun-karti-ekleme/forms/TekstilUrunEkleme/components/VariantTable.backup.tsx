@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Package } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { colors } from '../data/colors';
@@ -92,9 +93,9 @@ export default function VariantTable({ formData, sizeSystem, variants, updateVar
                 <th className="text-left p-3 font-medium text-gray-700">Beden</th>
                 <th className="text-left p-3 font-medium text-gray-700">Renk</th>
                 <th className="text-left p-3 font-medium text-gray-700">Stok</th>
-                <th className="text-left p-3 font-medium text-gray-700">Fiyat (TL)</th>
-                <th className="text-left p-3 font-medium text-gray-700">Eski Fiyat (TL)</th>
-                <th className="text-left p-3 font-medium text-gray-700">KDV Dahil (TL)</th>
+                <th className="text-left p-3 font-medium text-gray-700">Fiyat {t('common.currencyTL')}</th>
+                <th className="text-left p-3 font-medium text-gray-700">Eski Fiyat {t('common.currencyTL')}</th>
+                <th className="text-left p-3 font-medium text-gray-700">KDV Dahil {t('common.currencyTL')}</th>
                 <th className="text-left p-3 font-medium text-gray-700">SKU</th>
               </tr>
             </thead>

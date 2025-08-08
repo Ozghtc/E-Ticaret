@@ -7,16 +7,28 @@ import SizeSelection from './SizeSelection';
 import ColorSelection from './ColorSelection';
 import PriceSection from './PriceSection';
 import VariantTable from './VariantTable';
-
+import { useTranslation } from "react-i18next";
 interface VaryantFiyatStepProps {
   formData: FormData;
   updateFormData: (field: keyof FormData, value: any) => void;
   variantHook: ReturnType<typeof useVariants>; // Varyant hook'u prop olarak al
 }
-
-export default function VaryantFiyatStep({ formData, updateFormData, variantHook }: VaryantFiyatStepProps) {
-  const { sizeSystem } = useSizeSystem(formData.subCategory1);
-  const { variants, generateVariants, updateVariant } = variantHook; // Prop'tan al
+export default function VaryantFiyatStep({
+  formData,
+  updateFormData,
+  variantHook
+}: VaryantFiyatStepProps) {
+  const {
+    t
+  } = useTranslation();
+  const {
+    sizeSystem
+  } = useSizeSystem(formData.subCategory1);
+  const {
+    variants,
+    generateVariants,
+    updateVariant
+  } = variantHook; // Prop'tan al
 
   // Generate variants when sizes/colors change
   useEffect(() => {
@@ -24,59 +36,33 @@ export default function VaryantFiyatStep({ formData, updateFormData, variantHook
       generateVariants(formData.selectedSizes, formData.selectedColors, formData.price);
     }
   }, [formData.selectedSizes, formData.selectedColors, formData.price]);
-
   const handleSizeToggle = (size: string) => {
     const currentSizes = formData.selectedSizes;
-    const newSizes = currentSizes.includes(size)
-      ? currentSizes.filter(s => s !== size)
-      : [...currentSizes, size];
+    const newSizes = currentSizes.includes(size) ? currentSizes.filter(s => s !== size) : [...currentSizes, size];
     updateFormData('selectedSizes', newSizes);
   };
-
   const handleColorToggle = (colorId: string) => {
     const currentColors = formData.selectedColors;
-    const newColors = currentColors.includes(colorId)
-      ? currentColors.filter(c => c !== colorId)
-      : [...currentColors, colorId];
+    const newColors = currentColors.includes(colorId) ? currentColors.filter(c => c !== colorId) : [...currentColors, colorId];
     updateFormData('selectedColors', newColors);
   };
-
-
-
-  return (
-    <div className="space-y-8">
+  return <div className="space-y-8">
       {/* Step Title */}
       <div className="text-center">
         <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
           <Palette className="w-8 h-8 text-purple-600" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Varyantlar & Fiyat</h2>
-        <p className="text-gray-600">Beden, renk, görsel ve fiyat bilgileri</p>
+        <p className="text-gray-600">{t("common.beden_renk_görsel_ve_fiyat_bilgileri")}</p>
       </div>
 
       {/* Modular Components */}
-      <SizeSelection 
-        formData={formData}
-        sizeSystem={sizeSystem}
-        onSizeToggle={handleSizeToggle}
-      />
+      <SizeSelection formData={formData} sizeSystem={sizeSystem} onSizeToggle={handleSizeToggle} />
 
-                <ColorSelection 
-            formData={formData}
-            onColorToggle={handleColorToggle}
-          />
+                <ColorSelection formData={formData} onColorToggle={handleColorToggle} />
 
-          <PriceSection 
-        formData={formData}
-        updateFormData={updateFormData}
-      />
+          <PriceSection formData={formData} updateFormData={updateFormData} />
 
-      <VariantTable 
-        formData={formData}
-        sizeSystem={sizeSystem}
-        variants={variants}
-        updateVariant={updateVariant}
-      />
-    </div>
-  );
+      <VariantTable formData={formData} sizeSystem={sizeSystem} variants={variants} updateVariant={updateVariant} />
+    </div>;
 }

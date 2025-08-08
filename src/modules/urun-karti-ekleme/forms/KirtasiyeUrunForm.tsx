@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Upload, Image, Tag, Star } from 'lucide-react';
-
+import { useTranslation } from "react-i18next";
 function KirtasiyeUrunForm() {
+  const {
+    t
+  } = useTranslation();
   const navigate = useNavigate();
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50">
+  return <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50">
       {/* Header */}
       <header className="bg-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <button
-                onClick={() => navigate('/admin/urun-ekleme-yeni')}
-                className="flex items-center text-white hover:text-emerald-200 mr-6"
-              >
-                <ArrowLeft size={20} className="mr-2" />
-                Kategori Seçimine Dön
-              </button>
+              <button onClick={() => navigate('/admin/urun-ekleme-yeni')} className="flex items-center text-white hover:text-emerald-200 mr-6">
+                <ArrowLeft size={20} className="mr-2" />{t("common.kategori_seçimine_dön")}</button>
               <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                <span className="font-bold text-white">Altıntassoft</span>
+                <span className="font-bold text-white">{t("common.altıntassoft")}</span>
               </div>
             </div>
           </div>
@@ -33,34 +29,30 @@ function KirtasiyeUrunForm() {
           <div className="bg-emerald-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
             <BookOpen className="w-10 h-10 text-emerald-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4 text-center">
-            📚 Kırtasiye & Ofis Ürünü Ekle
-          </h1>
-          <p className="text-gray-600 text-lg mb-8 text-center">
-            Bu form henüz hazırlanıyor...
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4 text-center">{t("common.kırtasiye_ofis_ürünü_ekle")}</h1>
+          <p className="text-gray-600 text-lg mb-8 text-center">{t("common.bu_form_henüz_hazırlanıyor")}</p>
           
           {/* Placeholder Content */}
           <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
-            <h3 className="font-semibold text-emerald-800 mb-4">🎯 Kırtasiye Özel Alanları:</h3>
+            <h3 className="font-semibold text-emerald-800 mb-4">{t("common.kırtasiye_özel_alanları")}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-emerald-700">
               <div>
                 <h4 className="font-medium mb-2">Temel Bilgiler:</h4>
                 <ul className="space-y-1">
-                  <li>• Ürün adı ve açıklama</li>
-                  <li>• Marka ve fiyat</li>
+                  <li>{t("common.ürün_adı_ve_açıklama")}</li>
+                  <li>{t("common.marka_ve_fiyat")}</li>
                   <li>• Stok adedi</li>
-                  <li>• Ürün fotoğrafları</li>
+                  <li>{t("common.ürün_fotoğrafları")}</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-medium mb-2">Kırtasiye Özel:</h4>
+                <h4 className="font-medium mb-2">{t("common.kırtasiye_özel")}</h4>
                 <ul className="space-y-1">
-                  <li>• Yaş grubu uygunluğu</li>
-                  <li>• Kalite sertifikaları</li>
-                  <li>• Eğitim kategorileri</li>
-                  <li>• Toplu satış seçenekleri</li>
-                  <li>• Kağıt/malzeme türü</li>
+                  <li>{t("common.yaş_grubu_uygunluğu")}</li>
+                  <li>{t("common.kalite_sertifikaları")}</li>
+                  <li>{t("common.eğitim_kategorileri")}</li>
+                  <li>{t("common.toplu_satış_seçenekleri")}</li>
+                  <li>{t("common.kağıt_malzeme_türü")}</li>
                   <li>• Boyut/format bilgisi</li>
                 </ul>
               </div>
@@ -68,8 +60,6 @@ function KirtasiyeUrunForm() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default KirtasiyeUrunForm;

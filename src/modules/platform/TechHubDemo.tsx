@@ -1,110 +1,75 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Search, 
-  ShoppingCart, 
-  User, 
-  Heart,
-  Star,
-  Filter,
-  Grid3X3,
-  List,
-  Truck,
-  Shield,
-  RotateCcw,
-  Phone,
-  Zap,
-  Cpu,
-  Smartphone
-} from 'lucide-react';
-
+import { ArrowLeft, Search, ShoppingCart, User, Heart, Star, Filter, Grid3X3, List, Truck, Shield, RotateCcw, Phone, Zap, Cpu, Smartphone } from 'lucide-react';
 function TechHubDemo() {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState('grid');
-
-  const products = [
-    {
-      id: 1,
-      name: "Gaming Laptop RTX 4070",
-      price: 45999,
-      originalPrice: 52999,
-      image: "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=300",
-      rating: 4.8,
-      reviews: 342,
-      discount: 13,
-      specs: ["Intel i7", "16GB RAM", "RTX 4070", "1TB SSD"]
-    },
-    {
-      id: 2,
-      name: "Wireless Gaming Mouse",
-      price: 899,
-      originalPrice: 1199,
-      image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=300",
-      rating: 4.9,
-      reviews: 567,
-      discount: 25,
-      specs: ["25000 DPI", "Wireless", "RGB", "100h Battery"]
-    },
-    {
-      id: 3,
-      name: "4K Gaming Monitor 27\"",
-      price: 8999,
-      originalPrice: 10999,
-      image: "https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=300",
-      rating: 4.7,
-      reviews: 234,
-      discount: 18,
-      specs: ["4K UHD", "144Hz", "1ms", "HDR10"]
-    },
-    {
-      id: 4,
-      name: "Mechanical Keyboard",
-      price: 1299,
-      originalPrice: 1599,
-      image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=300",
-      rating: 4.8,
-      reviews: 445,
-      discount: 19,
-      specs: ["Cherry MX", "RGB", "Wireless", "Hot-swap"]
-    }
-  ];
-
+  const products = [{
+    id: 1,
+    name: "Gaming Laptop RTX 4070",
+    price: 45999,
+    originalPrice: 52999,
+    image: "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=300",
+    rating: 4.8,
+    reviews: 342,
+    discount: 13,
+    specs: ["Intel i7", "16GB RAM", "RTX 4070", "1TB SSD"]
+  }, {
+    id: 2,
+    name: "Wireless Gaming Mouse",
+    price: 899,
+    originalPrice: 1199,
+    image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=300",
+    rating: 4.9,
+    reviews: 567,
+    discount: 25,
+    specs: ["25000 DPI", "Wireless", "RGB", "100h Battery"]
+  }, {
+    id: 3,
+    name: "4K Gaming Monitor 27\"",
+    price: 8999,
+    originalPrice: 10999,
+    image: "https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=300",
+    rating: 4.7,
+    reviews: 234,
+    discount: 18,
+    specs: ["4K UHD", "144Hz", "1ms", "HDR10"]
+  }, {
+    id: 4,
+    name: "Mechanical Keyboard",
+    price: 1299,
+    originalPrice: 1599,
+    image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=300",
+    rating: 4.8,
+    reviews: 445,
+    discount: 19,
+    specs: ["Cherry MX", "RGB", "Wireless", "Hot-swap"]
+  }];
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
-      currency: 'TRY',
+      currency: localStorage.getItem('currency') || 'TRY',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(price);
   };
-
-  return (
-    <div className="min-h-screen bg-gray-900">
+  return <div className="min-h-screen bg-gray-900">
       {/* Header */}
       <header className="bg-gray-800 shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Back Button & Logo */}
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => navigate('/admin/tema-sistemi')}
-                className="flex items-center text-gray-300 hover:text-blue-400 transition-colors"
-              >
-                <ArrowLeft size={20} className="mr-2" />
-                Tema Seçimine Dön
-              </button>
+              <button onClick={() => navigate('/admin/tema-sistemi')} className="flex items-center text-gray-300 hover:text-blue-400 transition-colors">
+                <ArrowLeft size={20} className="mr-2" />{t("common.tema_seçimine_dön")}</button>
               <div className="text-2xl font-bold text-blue-400">TechHub</div>
             </div>
 
             {/* Search Bar */}
             <div className="flex-1 max-w-2xl mx-8">
               <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Teknoloji ürünleri ara..."
-                  className="w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+                <input type="text" placeholder={t("common.teknoloji_ürünleri_ara")} className="w-full px-4 py-3 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                 <button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">
                   <Search size={16} />
                 </button>
@@ -123,7 +88,7 @@ function TechHubDemo() {
               </button>
               <button className="flex items-center space-x-2 text-gray-300 hover:text-blue-400">
                 <User size={24} />
-                <span>Giriş</span>
+                <span>{t("common.giriş")}</span>
               </button>
             </div>
           </div>
@@ -151,11 +116,9 @@ function TechHubDemo() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-900 to-purple-900 py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Gaming Sezonunda Mega İndirimler!</h1>
-          <p className="text-xl text-blue-200 mb-8">En son teknoloji ürünlerinde %50'ye varan indirimler</p>
-          <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-            Fırsatları Keşfet
-          </button>
+          <h1 className="text-4xl font-bold text-white mb-4">{t("common.gaming_sezonunda_mega_i_ndirimler")}</h1>
+          <p className="text-xl text-blue-200 mb-8">{t("common.en_son_teknoloji_ürünlerinde_50_ye_varan_indirimler")}</p>
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">{t("common.fırsatları_keşfet")}</button>
         </div>
       </section>
 
@@ -233,25 +196,19 @@ function TechHubDemo() {
             <div className="bg-gray-800 rounded-lg p-4 mb-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <span className="text-gray-300">{products.length} ürün bulundu</span>
+                  <span className="text-gray-300">{products.length}{t("common.ürün_bulundu")}</span>
                   <select className="bg-gray-700 border border-gray-600 text-white rounded-md px-3 py-1 text-sm">
-                    <option>Önerilen Sıralama</option>
-                    <option>En Düşük Fiyat</option>
-                    <option>En Yüksek Fiyat</option>
-                    <option>En Çok Satan</option>
+                    <option>{t("common.önerilen_sıralama")}</option>
+                    <option>{t("common.en_düşük_fiyat")}</option>
+                    <option>{t("common.en_yüksek_fiyat")}</option>
+                    <option>{t("common.en_çok_satan")}</option>
                   </select>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-400'}`}
-                  >
+                  <button onClick={() => setViewMode('grid')} className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-400'}`}>
                     <Grid3X3 size={16} />
                   </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-400'}`}
-                  >
+                  <button onClick={() => setViewMode('list')} className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-400'}`}>
                     <List size={16} />
                   </button>
                 </div>
@@ -259,19 +216,12 @@ function TechHubDemo() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <div key={product.id} className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-750 transition-colors group">
+              {products.map(product => <div key={product.id} className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-750 transition-colors group">
                   <div className="relative">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    {product.discount > 0 && (
-                      <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-sm font-medium">
+                    <img src={product.image} alt={product.name} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    {product.discount > 0 && <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-sm font-medium">
                         %{product.discount} İndirim
-                      </div>
-                    )}
+                      </div>}
                     <button className="absolute top-2 right-2 p-2 bg-gray-900 bg-opacity-75 rounded-full hover:bg-opacity-100">
                       <Heart size={16} className="text-gray-300 hover:text-blue-400" />
                     </button>
@@ -282,13 +232,7 @@ function TechHubDemo() {
                     
                     <div className="flex items-center mb-2">
                       <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            size={12}
-                            className={`${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`}
-                          />
-                        ))}
+                        {[...Array(5)].map((_, i) => <Star key={i} size={12} className={`${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`} />)}
                       </div>
                       <span className="text-sm text-gray-400 ml-1">({product.reviews})</span>
                     </div>
@@ -296,22 +240,18 @@ function TechHubDemo() {
                     {/* Specs */}
                     <div className="mb-3">
                       <div className="flex flex-wrap gap-1">
-                        {product.specs.slice(0, 2).map((spec, index) => (
-                          <span key={index} className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">
+                        {product.specs.slice(0, 2).map((spec, index) => <span key={index} className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">
                             {spec}
-                          </span>
-                        ))}
+                          </span>)}
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <span className="text-lg font-bold text-white">{formatPrice(product.price)}</span>
-                        {product.originalPrice > product.price && (
-                          <span className="text-sm text-gray-500 line-through ml-2">
+                        {product.originalPrice > product.price && <span className="text-sm text-gray-500 line-through ml-2">
                             {formatPrice(product.originalPrice)}
-                          </span>
-                        )}
+                          </span>}
                       </div>
                     </div>
 
@@ -330,8 +270,7 @@ function TechHubDemo() {
                       Sepete Ekle
                     </button>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </main>
         </div>
@@ -346,40 +285,38 @@ function TechHubDemo() {
                 <Truck className="w-8 h-8 text-blue-400" />
               </div>
               <h3 className="font-semibold text-white mb-2">Ücretsiz Kargo</h3>
-              <p className="text-gray-400 text-sm">500 TL üzeri siparişlerde</p>
+              <p className="text-gray-400 text-sm">{t('common.aboveAmount', {
+                amount: 500
+              })} siparişlerde</p>
             </div>
             <div className="text-center">
               <div className="bg-gray-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-8 h-8 text-blue-400" />
               </div>
               <h3 className="font-semibold text-white mb-2">Güvenli Ödeme</h3>
-              <p className="text-gray-400 text-sm">256-bit SSL şifreleme</p>
+              <p className="text-gray-400 text-sm">{t("common.256_bit_ssl_şifreleme")}</p>
             </div>
             <div className="text-center">
               <div className="bg-gray-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <RotateCcw className="w-8 h-8 text-blue-400" />
               </div>
-              <h3 className="font-semibold text-white mb-2">Kolay İade</h3>
-              <p className="text-gray-400 text-sm">15 gün içinde ücretsiz</p>
+              <h3 className="font-semibold text-white mb-2">{t("common.kolay_i_ade")}</h3>
+              <p className="text-gray-400 text-sm">{t("common.15_gün_içinde_ücretsiz")}</p>
             </div>
             <div className="text-center">
               <div className="bg-gray-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Phone className="w-8 h-8 text-blue-400" />
               </div>
               <h3 className="font-semibold text-white mb-2">Teknik Destek</h3>
-              <p className="text-gray-400 text-sm">7/24 uzman desteği</p>
+              <p className="text-gray-400 text-sm">{t("common.7_24_uzman_desteği")}</p>
             </div>
           </div>
           
           <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-            <p className="text-gray-400 text-sm">
-              &copy; 2025 TechHub - Bu demo Altıntassoft tarafından oluşturulmuştur.
-            </p>
+            <p className="text-gray-400 text-sm">{t("common.2025_techhub_bu_demo_altıntassoft_tarafından_oluşturulmuştur")}</p>
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 }
-
 export default TechHubDemo;

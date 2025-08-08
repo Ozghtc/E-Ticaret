@@ -9,13 +9,15 @@ import UrunBilgileriStep from './components/UrunBilgileriStep';
 import VariantFiyatStep from './components/VariantFiyatStep';
 import UrunGorselleriStep from './components/UrunGorselleriStep';
 import OnizlemeKaydetStep from './components/OnizlemeKaydetStep';
-
+import { useTranslation } from "react-i18next";
 function KozmetikUrunForm() {
+  const {
+    t
+  } = useTranslation();
   const navigate = useNavigate();
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState<'success' | 'error' | 'warning'>('success');
-  
   const {
     formData,
     currentStep,
@@ -26,7 +28,6 @@ function KozmetikUrunForm() {
     resetForm,
     goToStep
   } = useFormData();
-
   const totalSteps = 4; // 4 adımlı sistem
 
   // Toast notification sistemi
@@ -45,11 +46,9 @@ function KozmetikUrunForm() {
       return () => clearTimeout(timer);
     }
   }, [showToast]);
-
   const closeToast = () => {
     setShowToast(false);
   };
-
   const handleNext = () => {
     const errors = validateStep(currentStep, formData);
     if (errors.length > 0) {
@@ -59,83 +58,41 @@ function KozmetikUrunForm() {
     }
     nextStep();
   };
-
   const handleSubmit = () => {
     // Form submission logic here
-    showToastNotification('🎉 Kozmetik ürünü başarıyla eklendi! Ürün Yönetimi sayfasına yönlendiriliyorsunuz...', 'success');
-    
+    showToastNotification(t("common.kozmetik_ürünü_başarıyla_eklendi_ürün_yönetimi_sayfasına_yönlendiriliyorsunuz"), 'success');
+
     // 2 saniye sonra yönlendir
     setTimeout(() => {
       resetForm();
       navigate('/admin/urun-yonetimi');
     }, 2000);
   };
-
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return (
-          <UrunBilgileriStep
-            formData={formData}
-            updateFormData={updateFormData}
-            updateMultipleFields={updateMultipleFields}
-          />
-        );
+        return <UrunBilgileriStep formData={formData} updateFormData={updateFormData} updateMultipleFields={updateMultipleFields} />;
       case 2:
-        return (
-          <VariantFiyatStep
-            formData={formData}
-            updateFormData={updateFormData}
-          />
-        );
+        return <VariantFiyatStep formData={formData} updateFormData={updateFormData} />;
       case 3:
-        return (
-          <UrunGorselleriStep
-            formData={formData}
-            updateFormData={updateFormData}
-          />
-        );
+        return <UrunGorselleriStep formData={formData} updateFormData={updateFormData} />;
       case 4:
-        return (
-          <OnizlemeKaydetStep
-            formData={formData}
-            updateFormData={updateFormData}
-          />
-        );
+        return <OnizlemeKaydetStep formData={formData} updateFormData={updateFormData} />;
       default:
         return null;
     }
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+  return <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
       {/* Toast Notification */}
-      {showToast && (
-        <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg flex items-start space-x-3 max-w-md ${
-          toastType === 'success'
-            ? 'bg-green-500 text-white'
-            : toastType === 'error'
-            ? 'bg-red-500 text-white'
-            : 'bg-orange-500 text-white'
-        } animate-pulse`}>
-          {toastType === 'success' ? (
-            <CheckCircle size={24} className="flex-shrink-0 mt-0.5" />
-          ) : toastType === 'error' ? (
-            <XCircle size={24} className="flex-shrink-0 mt-0.5" />
-          ) : (
-            <AlertTriangle size={24} className="flex-shrink-0 mt-0.5" />
-          )}
+      {showToast && <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg flex items-start space-x-3 max-w-md ${toastType === 'success' ? 'bg-green-500 text-white' : toastType === 'error' ? 'bg-red-500 text-white' : 'bg-orange-500 text-white'} animate-pulse`}>
+          {toastType === 'success' ? <CheckCircle size={24} className="flex-shrink-0 mt-0.5" /> : toastType === 'error' ? <XCircle size={24} className="flex-shrink-0 mt-0.5" /> : <AlertTriangle size={24} className="flex-shrink-0 mt-0.5" />}
           <div className="flex-1">
             <div className="font-medium whitespace-pre-line">{toastMessage}</div>
           </div>
-          <button
-            onClick={closeToast}
-            className="text-white hover:text-gray-200 flex-shrink-0"
-          >
+          <button onClick={closeToast} className="text-white hover:text-gray-200 flex-shrink-0">
             <X size={20} />
           </button>
-        </div>
-      )}
+        </div>}
       
       <FormHeader currentStep={currentStep} totalSteps={totalSteps} />
 
@@ -157,46 +114,21 @@ function KozmetikUrunForm() {
 
           {/* Navigation Buttons */}
           <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-            <button
-              onClick={prevStep}
-              disabled={currentStep === 1}
-              className={`px-6 py-3 rounded-lg font-medium flex items-center space-x-2 ${
-                currentStep === 1
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
+            <button onClick={prevStep} disabled={currentStep === 1} className={`px-6 py-3 rounded-lg font-medium flex items-center space-x-2 ${currentStep === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}>
               <ArrowLeft size={16} />
               <span>Geri</span>
             </button>
 
-            {currentStep < totalSteps ? (
-              <button
-                onClick={handleNext}
-                disabled={!isStepValid(currentStep, formData)}
-                className={`px-6 py-3 rounded-lg font-medium flex items-center space-x-2 ${
-                  isStepValid(currentStep, formData)
-                    ? 'bg-purple-600 text-white hover:bg-purple-700'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                }`}
-              >
-                <span>İleri</span>
+            {currentStep < totalSteps ? <button onClick={handleNext} disabled={!isStepValid(currentStep, formData)} className={`px-6 py-3 rounded-lg font-medium flex items-center space-x-2 ${isStepValid(currentStep, formData) ? 'bg-purple-600 text-white hover:bg-purple-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}>
+                <span>{t("common.i_leri")}</span>
                 <ArrowRight size={16} />
-              </button>
-            ) : (
-              <button
-                onClick={handleSubmit}
-                className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 flex items-center space-x-2"
-              >
+              </button> : <button onClick={handleSubmit} className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 flex items-center space-x-2">
                 <Check size={16} />
-                <span>Ürünü Kaydet</span>
-              </button>
-            )}
+                <span>{t("common.ürünü_kaydet")}</span>
+              </button>}
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default KozmetikUrunForm;

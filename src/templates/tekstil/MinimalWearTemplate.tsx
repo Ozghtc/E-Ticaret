@@ -2,17 +2,20 @@ import React from 'react';
 import { Product } from '../../types/database';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { categoryUIConfig } from '../../config/categoryUIConfig';
-
+import { useTranslation } from "react-i18next";
 interface MinimalWearTemplateProps {
   products: Product[];
   category: string;
 }
-
-export default function MinimalWearTemplate({ products, category }: MinimalWearTemplateProps) {
+export default function MinimalWearTemplate({
+  products,
+  category
+}: MinimalWearTemplateProps) {
+  const {
+    t
+  } = useTranslation();
   const uiConfig = categoryUIConfig[category] || categoryUIConfig.tekstil;
-
-  return (
-    <div className="min-h-screen bg-white">
+  return <div className="min-h-screen bg-white">
       {/* Minimal Header */}
       <header className="bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 py-8">
@@ -29,28 +32,16 @@ export default function MinimalWearTemplate({ products, category }: MinimalWearT
           <h2 className="text-4xl font-light text-gray-900 mb-6">
             Sadelik
           </h2>
-          <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-            Gereksiz detaylardan arınmış, saf tasarım
-          </p>
-          <button className="border border-gray-300 text-gray-700 px-6 py-3 hover:bg-gray-100 transition-colors">
-            Koleksiyonu İncele
-          </button>
+          <p className="text-lg text-gray-600 mb-8 leading-relaxed">{t("common.gereksiz_detaylardan_arınmış_saf_tasarım")}</p>
+          <button className="border border-gray-300 text-gray-700 px-6 py-3 hover:bg-gray-100 transition-colors">{t("common.koleksiyonu_i_ncele")}</button>
         </div>
       </section>
 
       {/* Products - Minimal Layout */}
       <section className="max-w-6xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              category={category}
-              theme="minimal-wear"
-            />
-          ))}
+          {products.map(product => <ProductCard key={product.id} product={product} category={category} theme="minimal-wear" />)}
         </div>
       </section>
-    </div>
-  );
+    </div>;
 }

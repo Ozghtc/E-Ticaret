@@ -3,23 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { LogOut, Bell, Calendar } from 'lucide-react';
 import { getCurrentDate } from '../utils/layoutUtils';
 import LanguageCurrencySelector from '../../../components/LanguageCurrencySelector';
-
+import { useTranslation } from "react-i18next";
 const AdminHeader: React.FC = () => {
+  const {
+    t
+  } = useTranslation();
   const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem('adminLoggedIn');
     navigate('/');
   };
-
-  return (
-    <header className="bg-blue-600 text-white">
+  return <header className="bg-blue-600 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left side - Logo */}
           <div className="flex items-center">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="font-bold text-white">Altıntassoft</span>
+              <span className="font-bold text-white">{t("common.altıntassoft")}</span>
             </div>
           </div>
 
@@ -38,21 +38,16 @@ const AdminHeader: React.FC = () => {
 
             <div className="flex items-center space-x-3">
               <div className="text-right">
-                <p className="font-medium">ÖZGÜR ALTINTAŞ</p>
+                <p className="font-medium">{t("common.özgür_altintaş")}</p>
                 <p className="text-blue-200 text-sm">Admin</p>
               </div>
-              <button
-                onClick={handleLogout}
-                className="p-2 hover:bg-blue-500 rounded-full transition-colors"
-              >
+              <button onClick={handleLogout} className="p-2 hover:bg-blue-500 rounded-full transition-colors">
                 <LogOut size={20} />
               </button>
             </div>
           </div>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default AdminHeader;

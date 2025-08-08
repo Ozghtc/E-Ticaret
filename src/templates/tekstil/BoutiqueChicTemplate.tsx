@@ -1,58 +1,55 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useTheme, Product } from '../../context/ThemeContext';
-import { 
-  Search, 
-  ShoppingBag, 
-  User, 
-  Heart,
-  Star,
-  Filter,
-  Grid3X3,
-  List,
-  Truck,
-  Shield,
-  RotateCcw,
-  Phone,
-  Instagram,
-  Facebook,
-  Twitter,
-  Sparkles,
-  Crown,
-  Gift
-} from 'lucide-react';
-
+import { Search, ShoppingBag, User, Heart, Star, Filter, Grid3X3, List, Truck, Shield, RotateCcw, Phone, Instagram, Facebook, Twitter, Sparkles, Crown, Gift } from 'lucide-react';
 interface BoutiqueChicTemplateProps {
   products: Product[];
   category: string;
 }
-
-export default function BoutiqueChicTemplate({ products, category }: BoutiqueChicTemplateProps) {
-  const { products: allProducts } = useTheme();
+export default function BoutiqueChicTemplate({
+  products,
+  category
+}: BoutiqueChicTemplateProps) {
+  const {
+    products: allProducts
+  } = useTheme();
   const [viewMode, setViewMode] = useState('grid');
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
 
   // Filter only fashion products for Boutique Chic
   const fashionProducts = allProducts.filter(p => p.category === 'fashion');
-
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
-      currency: 'TRY',
+      currency: localStorage.getItem('currency') || 'TRY',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(price);
   };
-
   const getProductTag = (product: Product) => {
-    if (product.isNew) return { text: '#NewArrival', color: 'bg-pink-100 text-pink-700', icon: Sparkles };
-    if (product.isBestseller) return { text: '#Boutique', color: 'bg-purple-100 text-purple-700', icon: Crown };
-    if (product.discount && product.discount > 20) return { text: '#Handmade', color: 'bg-rose-100 text-rose-700', icon: Gift };
-    return { text: '#Boutique', color: 'bg-purple-100 text-purple-700', icon: Crown };
+    if (product.isNew) return {
+      text: '#NewArrival',
+      color: 'bg-pink-100 text-pink-700',
+      icon: Sparkles
+    };
+    if (product.isBestseller) return {
+      text: '#Boutique',
+      color: 'bg-purple-100 text-purple-700',
+      icon: Crown
+    };
+    if (product.discount && product.discount > 20) return {
+      text: '#Handmade',
+      color: 'bg-rose-100 text-rose-700',
+      icon: Gift
+    };
+    return {
+      text: '#Boutique',
+      color: 'bg-purple-100 text-purple-700',
+      icon: Crown
+    };
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50">
+  return <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50">
       {/* Elegant Header */}
       <header className="bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-pink-100">
         {/* Top Bar */}
@@ -60,17 +57,13 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
           <div className="max-w-7xl mx-auto px-4 flex justify-between items-center text-sm">
             <div className="flex items-center space-x-6 text-purple-800">
               <span className="flex items-center">
-                <Sparkles size={14} className="mr-1" />
-                Özel Koleksiyon
-              </span>
+                <Sparkles size={14} className="mr-1" />{t("common.özel_koleksiyon")}</span>
               <span className="flex items-center">
-                <Truck size={14} className="mr-1" />
-                Ücretsiz Kargo - 300 TL Üzeri
-              </span>
+                <Truck size={14} className="mr-1" />{t("common.ücretsiz_kargo_300_tl_üzeri")}</span>
             </div>
             <div className="flex items-center space-x-4 text-purple-800">
               <span>📞 0212 345 67 89</span>
-              <span>✨ Sınırlı Sayı Ürünler</span>
+              <span>{t("common.sınırlı_sayı_ürünler")}</span>
             </div>
           </div>
         </div>
@@ -85,18 +78,14 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
               </div>
               <div>
                 <h1 className="text-3xl font-serif text-purple-800">Boutique Chic</h1>
-                <p className="text-sm text-purple-600 italic">Zarif & Şık Koleksiyon</p>
+                <p className="text-sm text-purple-600 italic">{t("common.zarif_şık_koleksiyon")}</p>
               </div>
             </div>
 
             {/* Search Bar */}
             <div className="flex-1 max-w-xl mx-8">
               <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Zarif parçalar ara..."
-                  className="w-full px-6 py-3 pr-12 border-2 border-pink-200 rounded-full focus:ring-2 focus:ring-purple-300 focus:border-purple-300 bg-white/80 backdrop-blur-sm"
-                />
+                <input type="text" placeholder={t("common.zarif_parçalar_ara")} className="w-full px-6 py-3 pr-12 border-2 border-pink-200 rounded-full focus:ring-2 focus:ring-purple-300 focus:border-purple-300 bg-white/80 backdrop-blur-sm" />
                 <button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-pink-400 to-purple-500 text-white p-2 rounded-full hover:from-pink-500 hover:to-purple-600 transition-all">
                   <Search size={16} />
                 </button>
@@ -107,23 +96,19 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
             <div className="flex items-center space-x-4">
               <button className="p-3 text-purple-600 hover:text-purple-800 relative transition-colors">
                 <Heart size={24} />
-                {wishlist.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {wishlist.length > 0 && <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {wishlist.length}
-                  </span>
-                )}
+                  </span>}
               </button>
               <button className="p-3 text-purple-600 hover:text-purple-800 relative transition-colors">
                 <ShoppingBag size={24} />
-                {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {cart.length > 0 && <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cart.length}
-                  </span>
-                )}
+                  </span>}
               </button>
               <button className="flex items-center space-x-2 text-purple-600 hover:text-purple-800 transition-colors">
                 <User size={24} />
-                <span className="font-medium">Hesabım</span>
+                <span className="font-medium">{t("common.hesabım")}</span>
               </button>
             </div>
           </div>
@@ -142,9 +127,7 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
               <a href="#" className="text-purple-700 hover:text-purple-900 transition-colors font-medium">Etekler</a>
               <a href="#" className="text-purple-700 hover:text-purple-900 transition-colors font-medium">Aksesuarlar</a>
               <a href="#" className="text-pink-600 font-semibold flex items-center">
-                <Crown size={16} className="mr-1" />
-                Özel Tasarım
-              </a>
+                <Crown size={16} className="mr-1" />{t("common.özel_tasarım")}</a>
             </nav>
           </div>
         </div>
@@ -155,21 +138,14 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
         <div className="max-w-6xl mx-auto px-4 text-center">
           <div className="flex items-center justify-center mb-6">
             <Crown className="text-purple-600 mr-3" size={32} />
-            <h1 className="text-5xl font-serif text-purple-900">Zarafet Burada Başlar</h1>
+            <h1 className="text-5xl font-serif text-purple-900">{t("common.zarafet_burada_başlar")}</h1>
             <Crown className="text-purple-600 ml-3" size={32} />
           </div>
-          <p className="text-xl text-purple-700 mb-8 leading-relaxed max-w-3xl mx-auto">
-            Her parça özenle seçilmiş, kadının güzelliğini ortaya çıkaran özel tasarımlar. 
-            El yapımı detaylar ve sınırlı üretim koleksiyonumuzla tarzınızı yansıtın.
-          </p>
+          <p className="text-xl text-purple-700 mb-8 leading-relaxed max-w-3xl mx-auto">{t("common.her_parça_özenle_seçilmiş_kadının_güzelliğini_ortaya_çıkaran_özel_tasarımlar_el_yapımı_detaylar_ve_sınırlı_üretim_koleksiyonumuzla_tarzınızı_yansıtın")}</p>
           <div className="flex items-center justify-center space-x-4">
             <button className="bg-gradient-to-r from-pink-400 to-purple-500 text-white px-8 py-4 rounded-full font-medium hover:from-pink-500 hover:to-purple-600 transition-all transform hover:scale-105 shadow-lg">
-              <Sparkles className="inline mr-2" size={20} />
-              Koleksiyonu Keşfet
-            </button>
-            <button className="border-2 border-purple-300 text-purple-700 px-8 py-4 rounded-full font-medium hover:bg-purple-50 transition-all">
-              Özel Tasarımlar
-            </button>
+              <Sparkles className="inline mr-2" size={20} />{t("common.koleksiyonu_keşfet")}</button>
+            <button className="border-2 border-purple-300 text-purple-700 px-8 py-4 rounded-full font-medium hover:bg-purple-50 transition-all">{t("common.özel_tasarımlar")}</button>
           </div>
         </div>
       </section>
@@ -205,16 +181,12 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
                   <label className="flex items-center group cursor-pointer">
                     <input type="radio" name="category" className="text-purple-600 focus:ring-purple-500 mr-3" />
                     <span className="text-purple-700 group-hover:text-purple-900 transition-colors flex items-center">
-                      <Crown size={14} className="mr-1" />
-                      Özel Tasarım (5)
-                    </span>
+                      <Crown size={14} className="mr-1" />{t("common.özel_tasarım_5")}</span>
                   </label>
                   <label className="flex items-center group cursor-pointer">
                     <input type="radio" name="category" className="text-purple-600 focus:ring-purple-500 mr-3" />
                     <span className="text-purple-700 group-hover:text-purple-900 transition-colors flex items-center">
-                      <Gift size={14} className="mr-1" />
-                      El Yapımı (12)
-                    </span>
+                      <Gift size={14} className="mr-1" />{t("common.el_yapımı_12")}</span>
                   </label>
                 </div>
               </div>
@@ -223,14 +195,9 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
               <div className="mb-8">
                 <h4 className="font-medium text-purple-800 mb-4 text-lg">Beden</h4>
                 <div className="grid grid-cols-3 gap-3">
-                  {['XS', 'S', 'M', 'L', 'XL'].map((size) => (
-                    <button 
-                      key={size} 
-                      className="border-2 border-pink-200 py-3 text-sm font-medium text-purple-700 hover:border-purple-400 hover:bg-purple-50 transition-all rounded-lg"
-                    >
+                  {['XS', 'S', 'M', 'L', 'XL'].map(size => <button key={size} className="border-2 border-pink-200 py-3 text-sm font-medium text-purple-700 hover:border-purple-400 hover:bg-purple-50 transition-all rounded-lg">
                       {size}
-                    </button>
-                  ))}
+                    </button>)}
                 </div>
               </div>
 
@@ -238,26 +205,31 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
               <div className="mb-8">
                 <h4 className="font-medium text-purple-800 mb-4 text-lg">Renk Paleti</h4>
                 <div className="flex flex-wrap gap-3">
-                  {[
-                    { name: 'Pudra', color: 'bg-pink-200' },
-                    { name: 'Krem', color: 'bg-yellow-100' },
-                    { name: 'Bej', color: 'bg-amber-100' },
-                    { name: 'Lila', color: 'bg-purple-200' },
-                    { name: 'Beyaz', color: 'bg-white border-2 border-gray-200' },
-                    { name: 'Siyah', color: 'bg-gray-800' }
-                  ].map((color) => (
-                    <button 
-                      key={color.name} 
-                      className={`w-10 h-10 rounded-full ${color.color} hover:scale-110 transition-transform shadow-md hover:shadow-lg`} 
-                      title={color.name}
-                    ></button>
-                  ))}
+                  {[{
+                  name: 'Pudra',
+                  color: 'bg-pink-200'
+                }, {
+                  name: 'Krem',
+                  color: 'bg-yellow-100'
+                }, {
+                  name: 'Bej',
+                  color: 'bg-amber-100'
+                }, {
+                  name: 'Lila',
+                  color: 'bg-purple-200'
+                }, {
+                  name: 'Beyaz',
+                  color: 'bg-white border-2 border-gray-200'
+                }, {
+                  name: 'Siyah',
+                  color: 'bg-gray-800'
+                }].map(color => <button key={color.name} className={`w-10 h-10 rounded-full ${color.color} hover:scale-110 transition-transform shadow-md hover:shadow-lg`} title={color.name}></button>)}
                 </div>
               </div>
 
               {/* Price Range */}
               <div className="mb-8">
-                <h4 className="font-medium text-purple-800 mb-4 text-lg">Fiyat Aralığı</h4>
+                <h4 className="font-medium text-purple-800 mb-4 text-lg">{t("common.fiyat_aralığı")}</h4>
                 <div className="space-y-3">
                   <label className="flex items-center group cursor-pointer">
                     <input type="checkbox" className="text-purple-600 focus:ring-purple-500 mr-3" />
@@ -277,15 +249,9 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
               {/* Special Offers */}
               <div className="bg-gradient-to-br from-pink-100 to-purple-100 rounded-xl p-6 border border-pink-200">
                 <h4 className="font-serif text-lg text-purple-900 mb-3 flex items-center">
-                  <Gift className="mr-2" size={20} />
-                  Özel Fırsatlar
-                </h4>
-                <p className="text-sm text-purple-700 mb-4">
-                  Sınırlı sayıda el yapımı parçalar için özel indirimler
-                </p>
-                <button className="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-2 rounded-lg font-medium hover:from-pink-500 hover:to-purple-600 transition-all">
-                  Fırsatları Gör
-                </button>
+                  <Gift className="mr-2" size={20} />{t("common.özel_fırsatlar")}</h4>
+                <p className="text-sm text-purple-700 mb-4">{t("common.sınırlı_sayıda_el_yapımı_parçalar_için_özel_indirimler")}</p>
+                <button className="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-2 rounded-lg font-medium hover:from-pink-500 hover:to-purple-600 transition-all">{t("common.fırsatları_gör")}</button>
               </div>
             </div>
           </aside>
@@ -296,35 +262,21 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-8 border border-pink-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-6">
-                  <span className="text-purple-800 font-medium" data-product-count>{fashionProducts.length + 6} zarif parça bulundu</span>
+                  <span className="text-purple-800 font-medium" data-product-count>{fashionProducts.length + 6}{t("common.zarif_parça_bulundu")}</span>
                   <select className="border-2 border-pink-200 rounded-lg px-4 py-2 text-sm font-medium text-purple-700 focus:ring-2 focus:ring-purple-300 bg-white/80">
-                    <option>Önerilen Sıralama</option>
+                    <option>{t("common.önerilen_sıralama")}</option>
                     <option>En Zarif</option>
-                    <option>En Düşük Fiyat</option>
-                    <option>En Yüksek Fiyat</option>
+                    <option>{t("common.en_düşük_fiyat")}</option>
+                    <option>{t("common.en_yüksek_fiyat")}</option>
                     <option>Yeni Gelenler</option>
-                    <option>El Yapımı Önce</option>
+                    <option>{t("common.el_yapımı_önce")}</option>
                   </select>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => setViewMode('grid')}
-                    className={`p-3 rounded-lg transition-all ${
-                      viewMode === 'grid' 
-                        ? 'bg-purple-100 text-purple-700 shadow-md' 
-                        : 'text-purple-400 hover:text-purple-600'
-                    }`}
-                  >
+                  <button onClick={() => setViewMode('grid')} className={`p-3 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-purple-100 text-purple-700 shadow-md' : 'text-purple-400 hover:text-purple-600'}`}>
                     <Grid3X3 size={18} />
                   </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`p-3 rounded-lg transition-all ${
-                      viewMode === 'list' 
-                        ? 'bg-purple-100 text-purple-700 shadow-md' 
-                        : 'text-purple-400 hover:text-purple-600'
-                    }`}
-                  >
+                  <button onClick={() => setViewMode('list')} className={`p-3 rounded-lg transition-all ${viewMode === 'list' ? 'bg-purple-100 text-purple-700 shadow-md' : 'text-purple-400 hover:text-purple-600'}`}>
                     <List size={18} />
                   </button>
                 </div>
@@ -333,28 +285,20 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
 
             {/* Boutique Products Grid */}
             <div className="grid grid-cols-1 gap-8">
-              {fashionProducts.map((product) => {
-                const tag = getProductTag(product);
-                const TagIcon = tag.icon;
-                
-                return (
-                  <div key={product.id} className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden border border-pink-200 group max-w-4xl">
+              {fashionProducts.map(product => {
+              const tag = getProductTag(product);
+              const TagIcon = tag.icon;
+              return <div key={product.id} className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden border border-pink-200 group max-w-4xl">
                     <div className="flex h-80">
                       {/* Product Image - Sol */}
                       <div className="w-1/2 relative overflow-hidden">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
+                        <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         
                         {/* Elegant Badges */}
                         <div className="absolute top-4 left-4 flex flex-col space-y-2">
-                          {product.discount && product.discount > 0 && (
-                            <div className="bg-gradient-to-r from-pink-400 to-rose-500 text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg">
+                          {product.discount && product.discount > 0 && <div className="bg-gradient-to-r from-pink-400 to-rose-500 text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg">
                               %{product.discount} İndirim
-                            </div>
-                          )}
+                            </div>}
                           <div className={`${tag.color} px-3 py-1 rounded-full text-xs font-medium shadow-md flex items-center`}>
                             <TagIcon size={12} className="mr-1" />
                             {tag.text}
@@ -377,11 +321,9 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
                       <div className="w-1/2 p-6 flex flex-col justify-between">
                         <div>
                           {/* Brand */}
-                          {product.brand && (
-                            <div className="text-sm text-purple-500 mb-2 uppercase tracking-wide font-medium">
+                          {product.brand && <div className="text-sm text-purple-500 mb-2 uppercase tracking-wide font-medium">
                               {product.brand}
-                            </div>
-                          )}
+                            </div>}
                           
                           {/* Product Name */}
                           <h3 className="text-xl font-serif text-purple-900 mb-3 leading-tight">
@@ -396,15 +338,9 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
                           {/* Rating & Reviews */}
                           <div className="flex items-center mb-4">
                             <div className="flex items-center">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  size={14}
-                                  className={`${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
-                                />
-                              ))}
+                              {[...Array(5)].map((_, i) => <Star key={i} size={14} className={`${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />)}
                             </div>
-                            <span className="text-sm text-purple-500 ml-2">({product.reviews} değerlendirme)</span>
+                            <span className="text-sm text-purple-500 ml-2">({product.reviews}{t("common.değerlendirme")}</span>
                           </div>
 
                           {/* Price */}
@@ -413,30 +349,22 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
                               <span className="text-2xl font-bold text-purple-900">
                                 {formatPrice(product.price)}
                               </span>
-                              {product.originalPrice && product.originalPrice > product.price && (
-                                <span className="text-lg text-gray-500 line-through">
+                              {product.originalPrice && product.originalPrice > product.price && <span className="text-lg text-gray-500 line-through">
                                   {formatPrice(product.originalPrice)}
-                                </span>
-                              )}
+                                </span>}
                             </div>
-                            {product.originalPrice && product.originalPrice > product.price && (
-                              <p className="text-xs text-pink-600 mt-1 italic">indirimli fiyat</p>
-                            )}
+                            {product.originalPrice && product.originalPrice > product.price && <p className="text-xs text-pink-600 mt-1 italic">indirimli fiyat</p>}
                           </div>
 
                           {/* Sizes */}
-                          {product.sizes && (
-                            <div className="mb-6">
+                          {product.sizes && <div className="mb-6">
                               <p className="text-sm text-purple-600 mb-2 font-medium">Mevcut Bedenler:</p>
                               <div className="flex space-x-2">
-                                {product.sizes.slice(0, 4).map((size) => (
-                                  <span key={size} className="px-3 py-1 border border-purple-300 rounded text-sm text-purple-700 bg-purple-50">
+                                {product.sizes.slice(0, 4).map(size => <span key={size} className="px-3 py-1 border border-purple-300 rounded text-sm text-purple-700 bg-purple-50">
                                     {size}
-                                  </span>
-                                ))}
+                                  </span>)}
                               </div>
-                            </div>
-                          )}
+                            </div>}
                         </div>
 
                         {/* Action Buttons */}
@@ -452,21 +380,18 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  </div>;
+            })}
             </div>
 
             {/* Empty State */}
-            {fashionProducts.length === 0 && (
-              <div className="text-center py-16">
+            {fashionProducts.length === 0 && <div className="text-center py-16">
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-12 border border-pink-200">
                   <Crown size={48} className="mx-auto text-purple-300 mb-4" />
-                  <h3 className="text-xl font-serif text-purple-800 mb-2">Henüz Ürün Bulunmuyor</h3>
-                  <p className="text-purple-600">Fashion kategorisinde ürün ekleyin</p>
+                  <h3 className="text-xl font-serif text-purple-800 mb-2">{t("common.henüz_ürün_bulunmuyor")}</h3>
+                  <p className="text-purple-600">{t("common.fashion_kategorisinde_ürün_ekleyin")}</p>
                 </div>
-              </div>
-            )}
+              </div>}
           </main>
         </div>
       </div>
@@ -479,22 +404,24 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
               <div className="bg-gradient-to-br from-pink-100 to-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <Truck className="w-8 h-8 text-purple-600" />
               </div>
-              <h3 className="font-serif text-lg text-purple-900 mb-2">Özenli Kargo</h3>
-              <p className="text-purple-600 text-sm">300 TL üzeri ücretsiz, özel ambalaj</p>
+              <h3 className="font-serif text-lg text-purple-900 mb-2">{t("common.özenli_kargo")}</h3>
+              <p className="text-purple-600 text-sm">{t('common.aboveAmount', {
+                amount: 300
+              })} ücretsiz, özel ambalaj</p>
             </div>
             <div className="text-center">
               <div className="bg-gradient-to-br from-pink-100 to-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <Shield className="w-8 h-8 text-purple-600" />
               </div>
               <h3 className="font-serif text-lg text-purple-900 mb-2">Kalite Garantisi</h3>
-              <p className="text-purple-600 text-sm">El yapımı kalite sertifikası</p>
+              <p className="text-purple-600 text-sm">{t("common.el_yapımı_kalite_sertifikası")}</p>
             </div>
             <div className="text-center">
               <div className="bg-gradient-to-br from-pink-100 to-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <RotateCcw className="w-8 h-8 text-purple-600" />
               </div>
-              <h3 className="font-serif text-lg text-purple-900 mb-2">Kolay Değişim</h3>
-              <p className="text-purple-600 text-sm">30 gün içinde ücretsiz değişim</p>
+              <h3 className="font-serif text-lg text-purple-900 mb-2">{t("common.kolay_değişim")}</h3>
+              <p className="text-purple-600 text-sm">{t("common.30_gün_içinde_ücretsiz_değişim")}</p>
             </div>
             <div className="text-center">
               <div className="bg-gradient-to-br from-pink-100 to-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -511,18 +438,10 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
       <section className="bg-gradient-to-r from-purple-600 to-pink-600 py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Crown className="mx-auto text-white mb-4" size={32} />
-          <h2 className="text-3xl font-serif text-white mb-4">
-            Özel Koleksiyonlardan İlk Siz Haberdar Olun
-          </h2>
-          <p className="text-purple-100 mb-8 text-lg">
-            Sınırlı sayıda üretilen el yapımı parçalar ve özel tasarımlar için e-bülten
-          </p>
+          <h2 className="text-3xl font-serif text-white mb-4">{t("common.özel_koleksiyonlardan_i_lk_siz_haberdar_olun")}</h2>
+          <p className="text-purple-100 mb-8 text-lg">{t("common.sınırlı_sayıda_üretilen_el_yapımı_parçalar_ve_özel_tasarımlar_için_e_bülten")}</p>
           <div className="flex max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="E-posta adresiniz"
-              className="flex-1 px-6 py-4 rounded-l-full focus:outline-none bg-white/90 backdrop-blur-sm"
-            />
+            <input type="email" placeholder="E-posta adresiniz" className="flex-1 px-6 py-4 rounded-l-full focus:outline-none bg-white/90 backdrop-blur-sm" />
             <button className="bg-white text-purple-600 px-8 py-4 rounded-r-full hover:bg-gray-50 transition-colors font-medium">
               <Sparkles className="inline mr-2" size={16} />
               Abone Ol
@@ -540,9 +459,7 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
                 <Crown className="text-pink-400" size={28} />
                 <h3 className="text-2xl font-serif">Boutique Chic</h3>
               </div>
-              <p className="text-purple-200 mb-6 leading-relaxed">
-                Kadının zarafetini ortaya çıkaran, el yapımı detaylarla süslenmiş özel tasarımlar.
-              </p>
+              <p className="text-purple-200 mb-6 leading-relaxed">{t("common.kadının_zarafetini_ortaya_çıkaran_el_yapımı_detaylarla_süslenmiş_özel_tasarımlar")}</p>
               <div className="flex space-x-4">
                 <Instagram className="w-6 h-6 text-purple-300 hover:text-pink-400 cursor-pointer transition-colors" />
                 <Facebook className="w-6 h-6 text-purple-300 hover:text-pink-400 cursor-pointer transition-colors" />
@@ -553,27 +470,25 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
               <h4 className="font-serif text-lg mb-6">Koleksiyonlar</h4>
               <ul className="space-y-3 text-purple-200">
                 <li><a href="#" className="hover:text-white transition-colors flex items-center"><Sparkles size={14} className="mr-2" />Yeni Koleksiyon</a></li>
-                <li><a href="#" className="hover:text-white transition-colors flex items-center"><Crown size={14} className="mr-2" />Özel Tasarım</a></li>
-                <li><a href="#" className="hover:text-white transition-colors flex items-center"><Gift size={14} className="mr-2" />El Yapımı</a></li>
+                <li><a href="#" className="hover:text-white transition-colors flex items-center"><Crown size={14} className="mr-2" />{t("common.özel_tasarım")}</a></li>
+                <li><a href="#" className="hover:text-white transition-colors flex items-center"><Gift size={14} className="mr-2" />{t("common.el_yapımı")}</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Aksesuarlar</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-serif text-lg mb-6">Hizmetlerimiz</h4>
               <ul className="space-y-3 text-purple-200">
-                <li><a href="#" className="hover:text-white transition-colors">Kişisel Stil Danışmanlığı</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Özel Dikim</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">VIP Müşteri Hizmetleri</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">{t("common.kişisel_stil_danışmanlığı")}</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">{t("common.özel_dikim")}</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">{t("common.vip_müşteri_hizmetleri")}</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Beden Rehberi</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-serif text-lg mb-6">İletişim</h4>
+              <h4 className="font-serif text-lg mb-6">{t("common.i_letişim")}</h4>
               <ul className="space-y-3 text-purple-200">
                 <li className="flex items-center">
-                  <span className="mr-2">📍</span>
-                  Nişantaşı, İstanbul
-                </li>
+                  <span className="mr-2">📍</span>{t("common.nişantaşı_i_stanbul")}</li>
                 <li className="flex items-center">
                   <span className="mr-2">📞</span>
                   0212 345 67 89
@@ -591,12 +506,9 @@ export default function BoutiqueChicTemplate({ products, category }: BoutiqueChi
           </div>
           
           <div className="border-t border-purple-800 mt-12 pt-8 text-center">
-            <p className="text-purple-300">
-              &copy; 2025 Boutique Chic - Zarafet ve şıklığın adresi. Bu demo Altıntassoft tarafından oluşturulmuştur.
-            </p>
+            <p className="text-purple-300">{t("common.2025_boutique_chic_zarafet_ve_şıklığın_adresi_bu_demo_altıntassoft_tarafından_oluşturulmuştur")}</p>
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 }

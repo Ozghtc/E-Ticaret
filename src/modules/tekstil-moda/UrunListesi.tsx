@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  List, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  Download,
-  Plus,
-  Package,
-  Star,
-  ShoppingBag
-} from 'lucide-react';
-
+import { ArrowLeft, List, Search, Filter, Edit, Trash2, Eye, Download, Plus, Package, Star, ShoppingBag } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 function UrunListesi() {
+  const {
+    t
+  } = useTranslation();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
-
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('adminLoggedIn');
     if (!isLoggedIn) {
@@ -28,90 +17,81 @@ function UrunListesi() {
   }, [navigate]);
 
   // Demo ürün verileri
-  const products = [
-    {
-      id: 1,
-      name: 'Zarif Şifon Bluz',
-      brand: 'Zara',
-      category: 'Bluz',
-      price: 299,
-      stock: 25,
-      status: 'Aktif',
-      image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=100',
-      sizes: ['S', 'M', 'L'],
-      colors: ['Beyaz', 'Siyah', 'Pembe'],
-      rating: 4.8,
-      sales: 156
-    },
-    {
-      id: 2,
-      name: 'Vintage Denim Ceket',
-      brand: 'H&M',
-      category: 'Ceket',
-      price: 899,
-      stock: 12,
-      status: 'Aktif',
-      image: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=100',
-      sizes: ['S', 'M', 'L', 'XL'],
-      colors: ['Mavi', 'Siyah'],
-      rating: 4.9,
-      sales: 89
-    },
-    {
-      id: 3,
-      name: 'Bohem Tarzı Elbise',
-      brand: 'Mango',
-      category: 'Elbise',
-      price: 649,
-      stock: 8,
-      status: 'Stok Az',
-      image: 'https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&w=100',
-      sizes: ['XS', 'S', 'M'],
-      colors: ['Beyaz', 'Bej'],
-      rating: 4.7,
-      sales: 234
-    }
-  ];
-
+  const products = [{
+    id: 1,
+    name: t("common.zarif_şifon_bluz"),
+    brand: 'Zara',
+    category: 'Bluz',
+    price: 299,
+    stock: 25,
+    status: 'Aktif',
+    image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=100',
+    sizes: ['S', 'M', 'L'],
+    colors: ['Beyaz', 'Siyah', 'Pembe'],
+    rating: 4.8,
+    sales: 156
+  }, {
+    id: 2,
+    name: 'Vintage Denim Ceket',
+    brand: 'H&M',
+    category: 'Ceket',
+    price: 899,
+    stock: 12,
+    status: 'Aktif',
+    image: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=100',
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Mavi', 'Siyah'],
+    rating: 4.9,
+    sales: 89
+  }, {
+    id: 3,
+    name: t("common.bohem_tarzı_elbise"),
+    brand: 'Mango',
+    category: 'Elbise',
+    price: 649,
+    stock: 8,
+    status: 'Stok Az',
+    image: 'https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&w=100',
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Beyaz', 'Bej'],
+    rating: 4.7,
+    sales: 234
+  }];
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
-      currency: 'TRY',
+      currency: localStorage.getItem('currency') || 'TRY',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(price);
   };
-
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Aktif': return 'bg-green-100 text-green-700';
-      case 'Stok Az': return 'bg-yellow-100 text-yellow-700';
-      case 'Pasif': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'Aktif':
+        return 'bg-green-100 text-green-700';
+      case 'Stok Az':
+        return 'bg-yellow-100 text-yellow-700';
+      case 'Pasif':
+        return 'bg-red-100 text-red-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
     }
   };
-
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.brand.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = selectedFilter === 'all' || 
-                         product.status.toLowerCase() === selectedFilter.toLowerCase();
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || product.brand.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = selectedFilter === 'all' || product.status.toLowerCase() === selectedFilter.toLowerCase();
     return matchesSearch && matchesFilter;
   });
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+  return <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
       {/* Header */}
       <header className="bg-purple-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Link to="/admin/tekstil-moda" className="flex items-center text-white hover:text-purple-200 mr-6">
-                <ArrowLeft size={20} className="mr-2" />
-                Tekstil Modülüne Dön
-              </Link>
+                <ArrowLeft size={20} className="mr-2" />{t("common.tekstil_modülüne_dön")}</Link>
               <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                <span className="font-bold text-white">Altıntassoft</span>
+                <span className="font-bold text-white">{t("common.altıntassoft")}</span>
               </div>
             </div>
             <div className="text-white text-sm">
@@ -128,12 +108,8 @@ function UrunListesi() {
           <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
             <List className="w-10 h-10 text-purple-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            👕 Tekstil Ürün Listesi
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Eklenen tekstil ürünlerini görüntüle, düzenle ve yönet
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">{t("common.tekstil_ürün_listesi")}</h1>
+          <p className="text-gray-600 text-lg">{t("common.eklenen_tekstil_ürünlerini_görüntüle_düzenle_ve_yönet")}</p>
         </div>
 
         {/* Toolbar */}
@@ -143,23 +119,13 @@ function UrunListesi() {
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               {/* Search */}
               <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Ürün ara..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 w-full sm:w-64"
-                />
+                <input type="text" placeholder={t("common.ürün_ara")} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 w-full sm:w-64" />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
               </div>
 
               {/* Filter */}
-              <select
-                value={selectedFilter}
-                onChange={(e) => setSelectedFilter(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-              >
-                <option value="all">Tüm Durumlar</option>
+              <select value={selectedFilter} onChange={e => setSelectedFilter(e.target.value)} className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                <option value="all">{t("common.tüm_durumlar")}</option>
                 <option value="aktif">Aktif</option>
                 <option value="stok az">Stok Az</option>
                 <option value="pasif">Pasif</option>
@@ -168,16 +134,13 @@ function UrunListesi() {
 
             {/* Right Side - Actions */}
             <div className="flex space-x-3">
-              <button
-                onClick={() => navigate('/admin/urun-ekleme/tekstil')}
-                className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors flex items-center space-x-2"
-              >
+              <button onClick={() => navigate('/admin/urun-ekleme/tekstil')} className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors flex items-center space-x-2">
                 <Plus size={16} />
-                <span>Yeni Ürün</span>
+                <span>{t("common.yeni_ürün")}</span>
               </button>
               <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
                 <Download size={16} />
-                <span>Excel İndir</span>
+                <span>{t("common.excel_i_ndir")}</span>
               </button>
             </div>
           </div>
@@ -191,7 +154,7 @@ function UrunListesi() {
                 <Package className="w-6 h-6 text-blue-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Toplam Ürün</p>
+                <p className="text-sm font-medium text-gray-600">{t("common.toplam_ürün")}</p>
                 <p className="text-2xl font-bold text-gray-900">{products.length}</p>
               </div>
             </div>
@@ -203,7 +166,7 @@ function UrunListesi() {
                 <ShoppingBag className="w-6 h-6 text-green-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Toplam Satış</p>
+                <p className="text-sm font-medium text-gray-600">{t("common.toplam_satış")}</p>
                 <p className="text-2xl font-bold text-gray-900">{products.reduce((sum, p) => sum + p.sales, 0)}</p>
               </div>
             </div>
@@ -240,8 +203,7 @@ function UrunListesi() {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900">
-              Ürün Listesi ({filteredProducts.length} ürün)
-            </h3>
+              Ürün Listesi ({filteredProducts.length}{t("common.ürün")}</h3>
           </div>
 
           <div className="overflow-x-auto">
@@ -254,19 +216,14 @@ function UrunListesi() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Puan</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("common.i_şlemler")}</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredProducts.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-50">
+                {filteredProducts.map(product => <tr key={product.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-12 h-12 rounded-lg object-cover mr-4"
-                        />
+                        <img src={product.image} alt={product.name} className="w-12 h-12 rounded-lg object-cover mr-4" />
                         <div>
                           <div className="text-sm font-medium text-gray-900">{product.name}</div>
                           <div className="text-sm text-gray-500">{product.brand}</div>
@@ -309,69 +266,51 @@ function UrunListesi() {
                         </button>
                       </div>
                     </td>
-                  </tr>
-                ))}
+                  </tr>)}
               </tbody>
             </table>
           </div>
 
           {/* Empty State */}
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-12">
+          {filteredProducts.length === 0 && <div className="text-center py-12">
               <Package size={48} className="mx-auto text-gray-300 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Ürün bulunamadı</h3>
-              <p className="text-gray-500 mb-6">Arama kriterlerinize uygun ürün bulunmuyor</p>
-              <button
-                onClick={() => navigate('/admin/urun-ekleme/tekstil')}
-                className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors flex items-center space-x-2 mx-auto"
-              >
+              <h3 className="text-lg font-medium text-gray-900 mb-2">{t("common.ürün_bulunamadı")}</h3>
+              <p className="text-gray-500 mb-6">{t("common.arama_kriterlerinize_uygun_ürün_bulunmuyor")}</p>
+              <button onClick={() => navigate('/admin/urun-ekleme/tekstil')} className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors flex items-center space-x-2 mx-auto">
                 <Plus size={16} />
-                <span>İlk Ürünü Ekle</span>
+                <span>{t("common.i_lk_ürünü_ekle")}</span>
               </button>
-            </div>
-          )}
+            </div>}
         </div>
 
         {/* Bulk Actions */}
         <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Toplu İşlemler</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t("common.toplu_i_şlemler")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <button className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm">
-              Toplu Fiyat Güncelle
-            </button>
-            <button className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors text-sm">
-              Stok Güncelle
-            </button>
-            <button className="bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition-colors text-sm">
-              Kategori Değiştir
-            </button>
-            <button className="bg-orange-600 text-white px-4 py-3 rounded-lg hover:bg-orange-700 transition-colors text-sm">
-              SEO Güncelle
-            </button>
+            <button className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm">{t("common.toplu_fiyat_güncelle")}</button>
+            <button className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors text-sm">{t("common.stok_güncelle")}</button>
+            <button className="bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition-colors text-sm">{t("common.kategori_değiştir")}</button>
+            <button className="bg-orange-600 text-white px-4 py-3 rounded-lg hover:bg-orange-700 transition-colors text-sm">{t("common.seo_güncelle")}</button>
           </div>
         </div>
 
         {/* Development Notice */}
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center mt-8">
-          <h3 className="font-semibold text-purple-800 mb-2">🎯 Tekstil Ürün Listesi Modülü</h3>
-          <p className="text-purple-700 text-sm mb-4">
-            Demo veriler gösteriliyor. Database bağlantısı sonrası gerçek ürünler listelenecek.
-          </p>
+          <h3 className="font-semibold text-purple-800 mb-2">{t("common.tekstil_ürün_listesi_modülü")}</h3>
+          <p className="text-purple-700 text-sm mb-4">{t("common.demo_veriler_gösteriliyor_database_bağlantısı_sonrası_gerçek_ürünler_listelenecek")}</p>
           <div className="bg-purple-100 rounded-lg p-4 text-left max-w-2xl mx-auto">
-            <h4 className="font-semibold text-purple-800 mb-2">Gelecek Özellikler:</h4>
+            <h4 className="font-semibold text-purple-800 mb-2">{t("common.gelecek_özellikler")}</h4>
             <ul className="text-sm text-purple-700 space-y-1">
-              <li>• Gerçek ürün veritabanı entegrasyonu</li>
-              <li>• Gelişmiş filtreleme ve sıralama</li>
-              <li>• Toplu düzenleme işlemleri</li>
-              <li>• Ürün performans analizi</li>
-              <li>• Stok uyarı sistemi</li>
-              <li>• Excel/PDF dışa aktarma</li>
+              <li>{t("common.gerçek_ürün_veritabanı_entegrasyonu")}</li>
+              <li>{t("common.gelişmiş_filtreleme_ve_sıralama")}</li>
+              <li>{t("common.toplu_düzenleme_işlemleri")}</li>
+              <li>{t("common.ürün_performans_analizi")}</li>
+              <li>{t("common.stok_uyarı_sistemi")}</li>
+              <li>{t("common.excel_pdf_dışa_aktarma")}</li>
             </ul>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default UrunListesi;

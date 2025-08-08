@@ -54,17 +54,20 @@ import DestekBildirimler from './modules/magaza-paneli/modules/DestekBildirimler
 import MagazaListesi from './modules/magaza-listesi/MagazaListesi';
 import PaketTanimlama from './modules/paket-tanimlama/PaketTanimlama';
 import Iletisim from './modules/iletisim/Iletisim';
-
+import { useTranslation } from "react-i18next";
 function App() {
-  return (
-    <Router>
+  const {
+    t
+  } = useTranslation();
+  return <Router>
       {/* WhatsApp Button - Her zaman görünür olmalı */}
-      <div style={{ position: 'fixed', zIndex: 9999, bottom: 0, right: 0 }}>
-        <WhatsAppButton 
-          phoneNumber="905555555555"
-          message="Merhaba! E-ticaret sistemimiz hakkında bilgi almak ister misiniz?"
-          theme="default"
-        />
+      <div style={{
+      position: 'fixed',
+      zIndex: 9999,
+      bottom: 0,
+      right: 0
+    }}>
+        <WhatsAppButton phoneNumber="905555555555" message={t("common.merhaba_e_ticaret_sistemimiz_hakkında_bilgi_almak_ister_misiniz")} theme="default" />
       </div>
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -121,8 +124,6 @@ function App() {
         <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </Router>
-  );
+    </Router>;
 }
-
 export default App;

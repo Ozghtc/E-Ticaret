@@ -1,25 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Search, MapPin } from 'lucide-react';
 import { TURKIYE_ILLERI, getPopulerIller, searchIller, type Il } from '../data/il-ilce';
-
+import { useTranslation } from "react-i18next";
 interface IlSelectorProps {
   value?: number;
   onChange: (ilId: number, ilName: string) => void;
   placeholder?: string;
   disabled?: boolean;
 }
-
 const IlSelector: React.FC<IlSelectorProps> = ({
   value,
   onChange,
-  placeholder = "İl ara ve seç...",
+  placeholder = t("common.i_l_ara_ve_seç"),
   disabled = false
 }) => {
+  const {
+    t
+  } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [selectedIl, setSelectedIl] = useState<Il | null>(null);
-  
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -50,9 +51,7 @@ const IlSelector: React.FC<IlSelectorProps> = ({
 
     // Eğer tam eşleşme varsa otomatik seç
     if (term.length > 2) {
-      const exactMatch = TURKIYE_ILLERI.find(
-        il => il.name.toLowerCase() === term.toLowerCase()
-      );
+      const exactMatch = TURKIYE_ILLERI.find(il => il.name.toLowerCase() === term.toLowerCase());
       if (exactMatch) {
         setSelectedIl(exactMatch);
         onChange(exactMatch.id, exactMatch.name);
@@ -78,21 +77,15 @@ const IlSelector: React.FC<IlSelectorProps> = ({
         return;
       }
     }
-
     const allIller = searchTerm.length > 0 ? filteredIller : [...popularIller, ...TURKIYE_ILLERI];
-
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setHighlightedIndex(prev => 
-          prev < allIller.length - 1 ? prev + 1 : 0
-        );
+        setHighlightedIndex(prev => prev < allIller.length - 1 ? prev + 1 : 0);
         break;
       case 'ArrowUp':
         e.preventDefault();
-        setHighlightedIndex(prev => 
-          prev > 0 ? prev - 1 : allIller.length - 1
-        );
+        setHighlightedIndex(prev => prev > 0 ? prev - 1 : allIller.length - 1);
         break;
       case 'Enter':
         e.preventDefault();
@@ -111,82 +104,40 @@ const IlSelector: React.FC<IlSelectorProps> = ({
   // Click outside detection
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        inputRef.current &&
-        !inputRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) && inputRef.current && !inputRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
         setHighlightedIndex(-1);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  return (
-    <div className="relative">
+  return <div className="relative">
       {/* Input Field */}
       <div className="relative">
-        <input
-          ref={inputRef}
-          type="text"
-          value={searchTerm}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setShowDropdown(true)}
-          disabled={disabled}
-          className={`w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-            disabled ? 'bg-gray-100 cursor-not-allowed' : ''
-          }`}
-          placeholder={placeholder}
-          autoComplete="off"
-        />
+        <input ref={inputRef} type="text" value={searchTerm} onChange={handleInputChange} onKeyDown={handleKeyDown} onFocus={() => setShowDropdown(true)} disabled={disabled} className={`w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`} placeholder={placeholder} autoComplete="off" />
         
         {/* Icons */}
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-          {searchTerm && (
-            <Search size={16} className="text-gray-400" />
-          )}
-          <ChevronDown 
-            size={16} 
-            className={`text-gray-400 transition-transform ${showDropdown ? 'rotate-180' : ''}`}
-          />
+          {searchTerm && <Search size={16} className="text-gray-400" />}
+          <ChevronDown size={16} className={`text-gray-400 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
         </div>
       </div>
 
       {/* Selected Il Confirmation */}
-      {selectedIl && !showDropdown && (
-        <div className="mt-2 flex items-center text-sm text-green-600">
+      {selectedIl && !showDropdown && <div className="mt-2 flex items-center text-sm text-green-600">
           <MapPin size={14} className="mr-1" />
           <span>✓ {selectedIl.name} ({selectedIl.plateCode}) - {selectedIl.region}</span>
-        </div>
-      )}
+        </div>}
 
       {/* Dropdown */}
-      {showDropdown && (
-        <div
-          ref={dropdownRef}
-          className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto"
-        >
-          {searchTerm.length > 0 ? (
-            /* Arama Sonuçları */
-            <>
-              {filteredIller.length > 0 ? (
-                <>
-                  <div className="px-3 py-2 text-xs font-medium text-gray-500 bg-gray-50 border-b">
-                    🔍 Arama Sonuçları ({filteredIller.length})
+      {showDropdown && <div ref={dropdownRef} className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-y-auto">
+          {searchTerm.length > 0 ? (/* Arama Sonuçları */
+      <>
+              {filteredIller.length > 0 ? <>
+                  <div className="px-3 py-2 text-xs font-medium text-gray-500 bg-gray-50 border-b">{t("common.arama_sonuçları")}{filteredIller.length})
                   </div>
-                  {filteredIller.map((il, index) => (
-                    <div
-                      key={il.id}
-                      className={`px-4 py-3 cursor-pointer hover:bg-gray-50 ${
-                        index === highlightedIndex ? 'bg-green-50 text-green-700' : ''
-                      }`}
-                      onClick={() => handleSelectIl(il)}
-                    >
+                  {filteredIller.map((il, index) => <div key={il.id} className={`px-4 py-3 cursor-pointer hover:bg-gray-50 ${index === highlightedIndex ? 'bg-green-50 text-green-700' : ''}`} onClick={() => handleSelectIl(il)}>
                       <div className="flex items-center justify-between">
                         <div>
                           <span className="font-medium">{il.name}</span>
@@ -194,32 +145,17 @@ const IlSelector: React.FC<IlSelectorProps> = ({
                         </div>
                         <span className="text-xs text-gray-400">{il.region}</span>
                       </div>
-                    </div>
-                  ))}
-                </>
-              ) : (
-                <div className="px-4 py-3 text-center text-gray-500">
+                    </div>)}
+                </> : <div className="px-4 py-3 text-center text-gray-500">
                   <Search size={20} className="mx-auto mb-2 text-gray-300" />
-                  <p>"{searchTerm}" için sonuç bulunamadı</p>
-                  <p className="text-xs mt-1">Türkiye'deki 81 il arasından arayın</p>
-                </div>
-              )}
-            </>
-          ) : (
-            /* Popüler + Tüm İller */
-            <>
+                  <p>"{searchTerm}{t("common.için_sonuç_bulunamadı")}</p>
+                  <p className="text-xs mt-1">{t("common.türkiye_deki_81_il_arasından_arayın")}</p>
+                </div>}
+            </>) : (/* Popüler + Tüm İller */
+      <>
               {/* Popüler İller */}
-              <div className="px-3 py-2 text-xs font-medium text-gray-500 bg-gray-50 border-b">
-                🏙️ Popüler İller
-              </div>
-              {popularIller.map((il, index) => (
-                <div
-                  key={il.id}
-                  className={`px-4 py-3 cursor-pointer hover:bg-gray-50 ${
-                    index === highlightedIndex ? 'bg-green-50 text-green-700' : ''
-                  }`}
-                  onClick={() => handleSelectIl(il)}
-                >
+              <div className="px-3 py-2 text-xs font-medium text-gray-500 bg-gray-50 border-b">{t("common.popüler_i_ller")}</div>
+              {popularIller.map((il, index) => <div key={il.id} className={`px-4 py-3 cursor-pointer hover:bg-gray-50 ${index === highlightedIndex ? 'bg-green-50 text-green-700' : ''}`} onClick={() => handleSelectIl(il)}>
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="font-medium">{il.name}</span>
@@ -227,23 +163,14 @@ const IlSelector: React.FC<IlSelectorProps> = ({
                     </div>
                     <span className="text-xs text-gray-400">{il.region}</span>
                   </div>
-                </div>
-              ))}
+                </div>)}
 
               {/* Ayırıcı */}
-              <div className="px-3 py-2 text-xs font-medium text-gray-500 bg-gray-50 border-b border-t">
-                🇹🇷 Tüm İller (A-Z) - {TURKIYE_ILLERI.length} il
+              <div className="px-3 py-2 text-xs font-medium text-gray-500 bg-gray-50 border-b border-t">{t("common.tüm_i_ller_a_z")}{TURKIYE_ILLERI.length} il
               </div>
 
               {/* Tüm İller */}
-              {TURKIYE_ILLERI.map((il, index) => (
-                <div
-                  key={il.id}
-                  className={`px-4 py-3 cursor-pointer hover:bg-gray-50 ${
-                    index + popularIller.length === highlightedIndex ? 'bg-green-50 text-green-700' : ''
-                  }`}
-                  onClick={() => handleSelectIl(il)}
-                >
+              {TURKIYE_ILLERI.map((il, index) => <div key={il.id} className={`px-4 py-3 cursor-pointer hover:bg-gray-50 ${index + popularIller.length === highlightedIndex ? 'bg-green-50 text-green-700' : ''}`} onClick={() => handleSelectIl(il)}>
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="font-medium">{il.name}</span>
@@ -251,14 +178,9 @@ const IlSelector: React.FC<IlSelectorProps> = ({
                     </div>
                     <span className="text-xs text-gray-400">{il.region}</span>
                   </div>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
+                </div>)}
+            </>)}
+        </div>}
+    </div>;
 };
-
 export default IlSelector;

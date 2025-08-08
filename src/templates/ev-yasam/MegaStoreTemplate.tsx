@@ -2,17 +2,20 @@ import React from 'react';
 import { Product } from '../types/database';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { categoryUIConfig } from '../../config/categoryUIConfig';
-
+import { useTranslation } from "react-i18next";
 interface MegaStoreTemplateProps {
   products: Product[];
   category: string;
 }
-
-export default function MegaStoreTemplate({ products, category }: MegaStoreTemplateProps) {
+export default function MegaStoreTemplate({
+  products,
+  category
+}: MegaStoreTemplateProps) {
+  const {
+    t
+  } = useTranslation();
   const uiConfig = categoryUIConfig[category] || categoryUIConfig.tekstil;
-
-  return (
-    <div className="min-h-screen bg-gray-50">
+  return <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         {/* Top Bar */}
@@ -20,12 +23,12 @@ export default function MegaStoreTemplate({ products, category }: MegaStoreTempl
           <div className="max-w-7xl mx-auto px-4 flex justify-between items-center text-sm">
             <div className="flex items-center space-x-4">
               <span>📞 444 0 123</span>
-              <span>🚚 Ücretsiz Kargo</span>
+              <span>{t("common.ücretsiz_kargo")}</span>
               <span>⚡ Aynı Gün Teslimat</span>
             </div>
             <div className="flex items-center space-x-4">
-              <span>Satıcı Ol</span>
-              <span>Yardım</span>
+              <span>{t("common.satıcı_ol")}</span>
+              <span>{t("common.yardım")}</span>
             </div>
           </div>
         </div>
@@ -38,11 +41,7 @@ export default function MegaStoreTemplate({ products, category }: MegaStoreTempl
             {/* Search Bar */}
             <div className="flex-1 max-w-2xl mx-8">
               <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Ürün, kategori veya marka ara..."
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                />
+                <input type="text" placeholder={t("common.ürün_kategori_veya_marka_ara")} className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500" />
               </div>
             </div>
 
@@ -55,7 +54,7 @@ export default function MegaStoreTemplate({ products, category }: MegaStoreTempl
                 Sepet
               </button>
               <button className="flex items-center space-x-2 text-gray-600 hover:text-red-600">
-                <span>Giriş Yap</span>
+                <span>{t("common.giriş_yap")}</span>
               </button>
             </div>
           </div>
@@ -70,7 +69,7 @@ export default function MegaStoreTemplate({ products, category }: MegaStoreTempl
               <a href="#" className="text-gray-700 hover:text-red-600 transition-colors">Ev & Yaşam</a>
               <a href="#" className="text-gray-700 hover:text-red-600 transition-colors">Spor</a>
               <a href="#" className="text-gray-700 hover:text-red-600 transition-colors">Kozmetik</a>
-              <a href="#" className="text-red-600 font-medium">🔥 Fırsatlar</a>
+              <a href="#" className="text-red-600 font-medium">{t("common.fırsatlar")}</a>
             </nav>
           </div>
         </div>
@@ -80,11 +79,9 @@ export default function MegaStoreTemplate({ products, category }: MegaStoreTempl
       <section className="bg-gradient-to-r from-red-600 to-pink-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">Mega İndirimler Başladı!</h1>
-            <p className="text-xl mb-6">Tüm kategorilerde %70'e varan indirimler</p>
-            <button className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Fırsatları Keşfet
-            </button>
+            <h1 className="text-4xl font-bold mb-4">{t("common.mega_i_ndirimler_başladı")}</h1>
+            <p className="text-xl mb-6">{t("common.tüm_kategorilerde_70_e_varan_indirimler")}</p>
+            <button className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">{t("common.fırsatları_keşfet")}</button>
           </div>
         </div>
       </section>
@@ -111,14 +108,14 @@ export default function MegaStoreTemplate({ products, category }: MegaStoreTempl
                   </label>
                   <label className="flex items-center">
                     <input type="checkbox" className="text-red-600 focus:ring-red-500" />
-                    <span className="ml-2 text-sm text-gray-600">Ev & Yaşam (189)</span>
+                    <span className="ml-2 text-sm text-gray-600">{t("common.ev_yaşam_189")}</span>
                   </label>
                 </div>
               </div>
 
               {/* Price Range */}
               <div className="mb-6">
-                <h4 className="font-medium text-gray-700 mb-3">Fiyat Aralığı</h4>
+                <h4 className="font-medium text-gray-700 mb-3">{t("common.fiyat_aralığı")}</h4>
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input type="checkbox" className="text-red-600 focus:ring-red-500" />
@@ -142,36 +139,23 @@ export default function MegaStoreTemplate({ products, category }: MegaStoreTempl
             {/* Toolbar */}
             <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">{products.length} ürün bulundu</span>
+                <span className="text-gray-600">{products.length}{t("common.ürün_bulundu")}</span>
                 <select className="border border-gray-300 rounded-md px-3 py-1 text-sm">
-                  <option>Önerilen Sıralama</option>
-                  <option>En Düşük Fiyat</option>
-                  <option>En Yüksek Fiyat</option>
-                  <option>En Çok Satan</option>
+                  <option>{t("common.önerilen_sıralama")}</option>
+                  <option>{t("common.en_düşük_fiyat")}</option>
+                  <option>{t("common.en_yüksek_fiyat")}</option>
+                  <option>{t("common.en_çok_satan")}</option>
                   <option>En Yeni</option>
                 </select>
               </div>
             </div>
 
             {/* Products Grid */}
-            <div className={`grid gap-6 ${
-              uiConfig.cardLayout === 'grid-4' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4' :
-              uiConfig.cardLayout === 'grid-3' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
-              uiConfig.cardLayout === 'grid-2' ? 'grid-cols-1 md:grid-cols-2' :
-              'grid-cols-1'
-            }`}>
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  category={category}
-                  theme="mega-store"
-                />
-              ))}
+            <div className={`grid gap-6 ${uiConfig.cardLayout === 'grid-4' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4' : uiConfig.cardLayout === 'grid-3' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : uiConfig.cardLayout === 'grid-2' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+              {products.map(product => <ProductCard key={product.id} product={product} category={category} theme="mega-store" />)}
             </div>
           </main>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }

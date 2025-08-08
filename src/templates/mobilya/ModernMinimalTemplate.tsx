@@ -2,17 +2,20 @@ import React from 'react';
 import { Product } from '../../types/database';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { categoryUIConfig } from '../../config/categoryUIConfig';
-
+import { useTranslation } from "react-i18next";
 interface ModernMinimalTemplateProps {
   products: Product[];
   category: string;
 }
-
-export default function ModernMinimalTemplate({ products, category }: ModernMinimalTemplateProps) {
+export default function ModernMinimalTemplate({
+  products,
+  category
+}: ModernMinimalTemplateProps) {
+  const {
+    t
+  } = useTranslation();
   const uiConfig = categoryUIConfig[category] || categoryUIConfig.mobilya;
-
-  return (
-    <div className="min-h-screen bg-gray-50">
+  return <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -22,11 +25,7 @@ export default function ModernMinimalTemplate({ products, category }: ModernMini
             {/* Search Bar */}
             <div className="flex-1 max-w-xl mx-8">
               <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Ürün ara..."
-                  className="w-full px-4 py-2 border border-gray-200 rounded-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400"
-                />
+                <input type="text" placeholder={t("common.ürün_ara")} className="w-full px-4 py-2 border border-gray-200 rounded-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400" />
               </div>
             </div>
 
@@ -52,7 +51,7 @@ export default function ModernMinimalTemplate({ products, category }: ModernMini
               <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors text-sm uppercase tracking-wide">Ev</a>
               <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors text-sm uppercase tracking-wide">Ofis</a>
               <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors text-sm uppercase tracking-wide">Dekorasyon</a>
-              <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors text-sm uppercase tracking-wide">Aydınlatma</a>
+              <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors text-sm uppercase tracking-wide">{t("common.aydınlatma")}</a>
               <a href="#" className="text-gray-900 font-medium text-sm uppercase tracking-wide">İndirim</a>
             </nav>
           </div>
@@ -62,13 +61,9 @@ export default function ModernMinimalTemplate({ products, category }: ModernMini
       {/* Hero Section */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-5xl font-light text-gray-900 mb-6">Minimal Tasarım</h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Sadelik ve işlevselliği bir araya getiren özel koleksiyon
-          </p>
-          <button className="bg-gray-900 text-white px-8 py-3 hover:bg-gray-800 transition-colors text-sm uppercase tracking-wide">
-            Koleksiyonu Keşfet
-          </button>
+          <h1 className="text-5xl font-light text-gray-900 mb-6">{t("common.minimal_tasarım")}</h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">{t("common.sadelik_ve_işlevselliği_bir_araya_getiren_özel_koleksiyon")}</p>
+          <button className="bg-gray-900 text-white px-8 py-3 hover:bg-gray-800 transition-colors text-sm uppercase tracking-wide">{t("common.koleksiyonu_keşfet")}</button>
         </div>
       </section>
 
@@ -91,9 +86,7 @@ export default function ModernMinimalTemplate({ products, category }: ModernMini
                       Mobilya
                     </label>
                     <label className="flex items-center text-sm">
-                      <input type="checkbox" className="mr-2" />
-                      Aydınlatma
-                    </label>
+                      <input type="checkbox" className="mr-2" />{t("common.aydınlatma")}</label>
                     <label className="flex items-center text-sm">
                       <input type="checkbox" className="mr-2" />
                       Dekorasyon
@@ -128,31 +121,18 @@ export default function ModernMinimalTemplate({ products, category }: ModernMini
               <div className="flex items-center justify-between">
                 <span className="text-gray-600 text-sm">{products.length} ürün</span>
                 <select className="border border-gray-200 px-3 py-1 text-sm">
-                  <option>Önerilen</option>
-                  <option>En Düşük Fiyat</option>
-                  <option>En Yüksek Fiyat</option>
+                  <option>{t("common.önerilen")}</option>
+                  <option>{t("common.en_düşük_fiyat")}</option>
+                  <option>{t("common.en_yüksek_fiyat")}</option>
                 </select>
               </div>
             </div>
 
-            <div className={`grid gap-8 ${
-              uiConfig.cardLayout === 'grid-4' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4' :
-              uiConfig.cardLayout === 'grid-3' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
-              uiConfig.cardLayout === 'grid-2' ? 'grid-cols-1 md:grid-cols-2' :
-              'grid-cols-1'
-            }`}>
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  category={category}
-                  theme="modern-minimal"
-                />
-              ))}
+            <div className={`grid gap-8 ${uiConfig.cardLayout === 'grid-4' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4' : uiConfig.cardLayout === 'grid-3' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : uiConfig.cardLayout === 'grid-2' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+              {products.map(product => <ProductCard key={product.id} product={product} category={category} theme="modern-minimal" />)}
             </div>
           </main>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }

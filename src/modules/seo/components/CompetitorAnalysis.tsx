@@ -1,36 +1,33 @@
 import React from 'react';
 import { Users, ExternalLink, Star } from 'lucide-react';
-
+import { useTranslation } from "react-i18next";
 export default function CompetitorAnalysis() {
-  const competitors = [
-    {
-      name: 'Rakip Mağaza 1',
-      domain: 'rakip1.com',
-      seoScore: 85,
-      keywords: 1250,
-      backlinks: 3400,
-      traffic: '125K/ay'
-    },
-    {
-      name: 'Rakip Mağaza 2', 
-      domain: 'rakip2.com',
-      seoScore: 78,
-      keywords: 980,
-      backlinks: 2100,
-      traffic: '89K/ay'
-    },
-    {
-      name: 'Rakip Mağaza 3',
-      domain: 'rakip3.com', 
-      seoScore: 72,
-      keywords: 750,
-      backlinks: 1800,
-      traffic: '67K/ay'
-    }
-  ];
-
-  return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
+  const {
+    t
+  } = useTranslation();
+  const competitors = [{
+    name: t("common.rakip_mağaza_1"),
+    domain: 'rakip1.com',
+    seoScore: 85,
+    keywords: 1250,
+    backlinks: 3400,
+    traffic: '125K/ay'
+  }, {
+    name: t("common.rakip_mağaza_2"),
+    domain: 'rakip2.com',
+    seoScore: 78,
+    keywords: 980,
+    backlinks: 2100,
+    traffic: '89K/ay'
+  }, {
+    name: t("common.rakip_mağaza_3"),
+    domain: 'rakip3.com',
+    seoScore: 72,
+    keywords: 750,
+    backlinks: 1800,
+    traffic: '67K/ay'
+  }];
+  return <div className="bg-white rounded-lg shadow-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900 flex items-center">
           <Users className="mr-2" size={24} />
@@ -39,8 +36,7 @@ export default function CompetitorAnalysis() {
       </div>
 
       <div className="space-y-4">
-        {competitors.map((competitor, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+        {competitors.map((competitor, index) => <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center">
                 <h3 className="font-semibold text-gray-900">{competitor.name}</h3>
@@ -68,9 +64,7 @@ export default function CompetitorAnalysis() {
                 <div className="font-bold text-purple-600">{competitor.traffic}</div>
               </div>
             </div>
-          </div>
-        ))}
+          </div>)}
       </div>
-    </div>
-  );
+    </div>;
 }

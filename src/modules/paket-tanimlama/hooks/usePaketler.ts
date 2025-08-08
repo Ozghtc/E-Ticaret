@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Paket, PaketKategori } from '../types';
 import { createDefaultPackages } from '../data/defaultPaketler';
-
+import { useTranslation } from "react-i18next";
 export const usePaketler = () => {
   const [paketler, setPaketler] = useState<Paket[]>([]);
   const [loading, setLoading] = useState(true);
@@ -12,28 +12,27 @@ export const usePaketler = () => {
   const loadPaketler = async () => {
     try {
       setLoading(true);
-      console.log('Paketler yükleniyor...');
-      
+      console.log(t("common.paketler_yükleniyor"));
+
       // TODO: HZM API'den paketleri çek
       // Şimdilik localStorage'dan yüklüyoruz
       const storedPaketler = localStorage.getItem('sistemPaketleri');
       console.log('LocalStorage veri:', storedPaketler);
-      
       if (storedPaketler && storedPaketler !== '[]') {
         const parsedPakets = JSON.parse(storedPaketler);
         console.log('Mevcut paketler bulundu:', parsedPakets.length);
         setPaketler(parsedPakets);
       } else {
         // Varsayılan profesyonel paketleri oluştur
-        console.log('Varsayılan paketler oluşturuluyor...');
+        console.log(t("common.varsayılan_paketler_oluşturuluyor"));
         const defaultPaketler = await createDefaultPackages();
-        console.log('Oluşturulan paketler:', defaultPaketler.length);
+        console.log(t("common.oluşturulan_paketler"), defaultPaketler.length);
         setPaketler(defaultPaketler);
         localStorage.setItem('sistemPaketleri', JSON.stringify(defaultPaketler));
         console.log('Paketler localStorage\'a kaydedildi');
       }
     } catch (error) {
-      console.error('Paketler yüklenirken hata:', error);
+      console.error(t("common.paketler_yüklenirken_hata"), error);
       // Hata durumunda da varsayılan paketleri yükle
       const defaultPaketler = await createDefaultPackages();
       setPaketler(defaultPaketler);
@@ -43,18 +42,13 @@ export const usePaketler = () => {
   };
 
   // Paket kaydet (yeni veya güncelle)
-  const handlePaketKaydet = (
-    editingPaket: Paket | null,
-    yeniPaket: Paket
-  ) => {
+  const handlePaketKaydet = (editingPaket: Paket | null, yeniPaket: Paket) => {
     if (editingPaket) {
       // Mevcut paketi güncelle
-      const updatedPaketler = paketler.map(p =>
-        p.id === editingPaket.id ? yeniPaket : p
-      );
+      const updatedPaketler = paketler.map(p => p.id === editingPaket.id ? yeniPaket : p);
       setPaketler(updatedPaketler);
       localStorage.setItem('sistemPaketleri', JSON.stringify(updatedPaketler));
-      console.log('Paket güncellendi:', yeniPaket.adi);
+      console.log(t("common.paket_güncellendi"), yeniPaket.adi);
     } else {
       // Yeni paket ekle
       const updatedPaketler = [...paketler, yeniPaket];
@@ -66,7 +60,7 @@ export const usePaketler = () => {
 
   // Paket sil
   const handlePaketSil = async (id: string) => {
-    if (window.confirm('Bu paketi silmek istediğinizden emin misiniz?')) {
+    if (window.confirm(t("common.bu_paketi_silmek_istediğinizden_emin_misiniz"))) {
       const updatedPaketler = paketler.filter(p => p.id !== id);
       setPaketler(updatedPaketler);
       localStorage.setItem('sistemPaketleri', JSON.stringify(updatedPaketler));
@@ -90,13 +84,11 @@ export const usePaketler = () => {
   useEffect(() => {
     loadPaketler();
   }, []);
-
   return {
     // State
     paketler,
     loading,
     activeTab,
-    
     // Actions
     setActiveTab,
     loadPaketler,

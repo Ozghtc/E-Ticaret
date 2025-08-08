@@ -2,7 +2,7 @@
 import React from 'react';
 import { Plus, Save, CheckCircle, Trash2 } from 'lucide-react';
 import { PaketFormProps } from '../types';
-
+import { useTranslation } from "react-i18next";
 const PaketForm: React.FC<PaketFormProps> = ({
   formData,
   setFormData,
@@ -14,7 +14,9 @@ const PaketForm: React.FC<PaketFormProps> = ({
   onSave,
   onCancel
 }) => {
-  
+  const {
+    t
+  } = useTranslation();
   const handleOzellikEkle = () => {
     if (yeniOzellik.baslik.trim()) {
       const yeniId = Date.now().toString();
@@ -24,28 +26,25 @@ const PaketForm: React.FC<PaketFormProps> = ({
         aciklama: yeniOzellik.aciklama.trim(),
         dahil: yeniOzellik.dahil
       };
-      
       setOzellikler([...ozellikler, yeniPaketOzellik]);
-      setYeniOzellik({ baslik: '', aciklama: '', dahil: true });
-      console.log('Yeni özellik eklendi:', yeniPaketOzellik);
+      setYeniOzellik({
+        baslik: '',
+        aciklama: '',
+        dahil: true
+      });
+      console.log(t("common.yeni_özellik_eklendi"), yeniPaketOzellik);
     }
   };
-
   const handleOzellikSil = (id: string) => {
     setOzellikler(ozellikler.filter(o => o.id !== id));
-    console.log('Özellik silindi:', id);
+    console.log(t("common.özellik_silindi"), id);
   };
-
-  return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+  return <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-900">
-          {editingPaket ? 'Paket Düzenle' : 'Yeni Paket Oluştur'}
+          {editingPaket ? t("common.paket_düzenle") : t("common.yeni_paket_oluştur")}
         </h2>
-        <button
-          onClick={onCancel}
-          className="text-gray-400 hover:text-gray-600"
-        >
+        <button onClick={onCancel} className="text-gray-400 hover:text-gray-600">
           ✕
         </button>
       </div>
@@ -55,98 +54,69 @@ const PaketForm: React.FC<PaketFormProps> = ({
         {/* Temel Bilgiler */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Paket Adı *
-            </label>
-            <input
-              type="text"
-              value={formData.adi}
-              onChange={(e) => setFormData({ ...formData, adi: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-              placeholder="Örn: Advantage, Premier, Advance"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.paket_adı")}</label>
+            <input type="text" value={formData.adi} onChange={e => setFormData({
+            ...formData,
+            adi: e.target.value
+          })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500" placeholder={t("common.örn_advantage_premier_advance")} />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Güncel Fiyat (₺) *
-            </label>
-            <input
-              type="number"
-              value={formData.fiyat}
-              onChange={(e) => setFormData({ ...formData, fiyat: Number(e.target.value) })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-              placeholder="2499"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.güncel_fiyat")}</label>
+            <input type="number" value={formData.fiyat} onChange={e => setFormData({
+            ...formData,
+            fiyat: Number(e.target.value)
+          })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500" placeholder="2499" />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Eski Fiyat (₺) <span className="text-gray-500">- İndirim gösterimi için</span>
+              Eski Fiyat (₺) <span className="text-gray-500">{t("common.i_ndirim_gösterimi_için")}</span>
             </label>
-            <input
-              type="number"
-              value={formData.eskiFiyat}
-              onChange={(e) => setFormData({ ...formData, eskiFiyat: Number(e.target.value) })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-              placeholder="3490"
-            />
+            <input type="number" value={formData.eskiFiyat} onChange={e => setFormData({
+            ...formData,
+            eskiFiyat: Number(e.target.value)
+          })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500" placeholder="3490" />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {formData.kategori === 'sms' ? 'Paket Türü' : 'Dönem'}
+              {formData.kategori === 'sms' ? t("common.paket_türü") : t("common.dönem")}
             </label>
-            <select
-              value={formData.donem}
-              onChange={(e) => setFormData({ ...formData, donem: e.target.value as 'aylık' | 'yıllık' | 'adet' })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-            >
-              {formData.kategori === 'sms' ? (
-                <option value="adet">Adet Bazlı</option>
-              ) : (
-                <>
-                  <option value="aylık">Aylık</option>
-                  <option value="yıllık">Yıllık</option>
-                </>
-              )}
+            <select value={formData.donem} onChange={e => setFormData({
+            ...formData,
+            donem: e.target.value as 'aylık' | 'yıllık' | 'adet'
+          })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500">
+              {formData.kategori === 'sms' ? <option value="adet">{t("common.adet_bazlı")}</option> : <>
+                  <option value="aylık">{t("common.aylık")}</option>
+                  <option value="yıllık">{t("common.yıllık")}</option>
+                </>}
             </select>
-            {formData.kategori === 'sms' && (
-              <div className="mt-1 text-sm text-gray-500">
-                SMS paketleri adet bazlı satılır
-              </div>
-            )}
+            {formData.kategori === 'sms' && <div className="mt-1 text-sm text-gray-500">{t("common.sms_paketleri_adet_bazlı_satılır")}</div>}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Kampanya Metni
             </label>
-            <input
-              type="text"
-              value={formData.kampanya}
-              onChange={(e) => setFormData({ ...formData, kampanya: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-              placeholder="Temel pakete ek olarak"
-            />
+            <input type="text" value={formData.kampanya} onChange={e => setFormData({
+            ...formData,
+            kampanya: e.target.value
+          })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500" placeholder={t("common.temel_pakete_ek_olarak")} />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Paket Kategorisi *
             </label>
-            <select
-              value={formData.kategori}
-              onChange={(e) => {
-                const newKategori = e.target.value as 'eticaret' | 'premium' | 'sms';
-                setFormData({ 
-                  ...formData, 
-                  kategori: newKategori,
-                  donem: newKategori === 'sms' ? 'adet' : 'aylık' // SMS seçildiğinde otomatik 'adet' yap
-                });
-              }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-            >
+            <select value={formData.kategori} onChange={e => {
+            const newKategori = e.target.value as 'eticaret' | 'premium' | 'sms';
+            setFormData({
+              ...formData,
+              kategori: newKategori,
+              donem: newKategori === 'sms' ? 'adet' : 'aylık' // SMS seçildiğinde otomatik 'adet' yap
+            });
+          }} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500">
               <option value="eticaret">E-Ticaret Paketleri</option>
               <option value="premium">Premium Paketleri</option>
               <option value="sms">SMS Paketleri</option>
@@ -154,129 +124,89 @@ const PaketForm: React.FC<PaketFormProps> = ({
           </div>
 
           {/* SMS Özellikleri - Sadece SMS paketleri için göster */}
-          {formData.kategori === 'sms' && (
-            <>
+          {formData.kategori === 'sms' && <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  SMS Miktarı (Adet) *
-                </label>
-                <input
-                  type="number"
-                  value={formData.smsMiktari}
-                  onChange={(e) => setFormData({ ...formData, smsMiktari: Number(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-                  placeholder="1000"
-                />
-                <div className="mt-1 text-sm text-gray-500">
-                  Bu pakette toplam gönderebilecek SMS adedi
-                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.sms_miktarı_adet")}</label>
+                <input type="number" value={formData.smsMiktari} onChange={e => setFormData({
+              ...formData,
+              smsMiktari: Number(e.target.value)
+            })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500" placeholder="1000" />
+                <div className="mt-1 text-sm text-gray-500">{t("common.bu_pakette_toplam_gönderebilecek_sms_adedi")}</div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Geçerlilik Süresi (Gün) *
-                </label>
-                <input
-                  type="number"
-                  value={formData.smsGeçerlilikGunu}
-                  onChange={(e) => setFormData({ ...formData, smsGeçerlilikGunu: Number(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-                  placeholder="30"
-                />
-                <div className="mt-1 text-sm text-gray-500">
-                  SMS kredilerinin geçerlilik süresi
-                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.geçerlilik_süresi_gün")}</label>
+                <input type="number" value={formData.smsGeçerlilikGunu} onChange={e => setFormData({
+              ...formData,
+              smsGeçerlilikGunu: Number(e.target.value)
+            })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500" placeholder="30" />
+                <div className="mt-1 text-sm text-gray-500">{t("common.sms_kredilerinin_geçerlilik_süresi")}</div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  SMS Türü
-                </label>
-                <select
-                  value={formData.smsTipi}
-                  onChange={(e) => setFormData({ ...formData, smsTipi: e.target.value as 'standart' | 'toplu' | 'otomatik' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-                >
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.sms_türü")}</label>
+                <select value={formData.smsTipi} onChange={e => setFormData({
+              ...formData,
+              smsTipi: e.target.value as 'standart' | 'toplu' | 'otomatik'
+            })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500">
                   <option value="standart">Standart SMS</option>
                   <option value="toplu">Toplu SMS</option>
                   <option value="otomatik">Otomatik SMS</option>
                 </select>
-                <div className="mt-1 text-sm text-gray-500">
-                  SMS gönderim türü ve özellikler
-                </div>
+                <div className="mt-1 text-sm text-gray-500">{t("common.sms_gönderim_türü_ve_özellikler")}</div>
               </div>
-            </>
-          )}
+            </>}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Paket Rengi
             </label>
-            <select
-              value={formData.renk}
-              onChange={(e) => setFormData({ ...formData, renk: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500"
-            >
+            <select value={formData.renk} onChange={e => setFormData({
+            ...formData,
+            renk: e.target.value
+          })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500">
               <option value="blue">Mavi</option>
-              <option value="green">Yeşil</option>
+              <option value="green">{t("common.yeşil")}</option>
               <option value="purple">Mor</option>
               <option value="orange">Turuncu</option>
-              <option value="red">Kırmızı</option>
-              <option value="indigo">İndigo</option>
+              <option value="red">{t("common.kırmızı")}</option>
+              <option value="indigo">{t("common.i_ndigo")}</option>
             </select>
           </div>
 
           <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="populer"
-              checked={formData.populer}
-              onChange={(e) => setFormData({ ...formData, populer: e.target.checked })}
-              className="mr-2"
-            />
-            <label htmlFor="populer" className="text-sm text-gray-700">
-              Popüler paket olarak işaretle
-            </label>
+            <input type="checkbox" id="populer" checked={formData.populer} onChange={e => setFormData({
+            ...formData,
+            populer: e.target.checked
+          })} className="mr-2" />
+            <label htmlFor="populer" className="text-sm text-gray-700">{t("common.popüler_paket_olarak_işaretle")}</label>
           </div>
         </div>
 
         {/* Özellik Ekleme */}
         <div>
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Paket Özellikleri</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">{t("common.paket_özellikleri")}</h3>
           
           <div className="bg-gray-50 p-4 rounded-lg mb-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Özellik Başlığı
-                </label>
-                <input
-                  type="text"
-                  value={yeniOzellik.baslik}
-                  onChange={(e) => setYeniOzellik({ ...yeniOzellik, baslik: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 text-sm"
-                  placeholder="Örn: 100 Ürün"
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("common.özellik_başlığı")}</label>
+                <input type="text" value={yeniOzellik.baslik} onChange={e => setYeniOzellik({
+                ...yeniOzellik,
+                baslik: e.target.value
+              })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 text-sm" placeholder={t("common.örn_100_ürün")} />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Açıklama
-                </label>
-                <input
-                  type="text"
-                  value={yeniOzellik.aciklama}
-                  onChange={(e) => setYeniOzellik({ ...yeniOzellik, aciklama: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 text-sm"
-                  placeholder="Detaylı açıklama"
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("common.açıklama")}</label>
+                <input type="text" value={yeniOzellik.aciklama} onChange={e => setYeniOzellik({
+                ...yeniOzellik,
+                aciklama: e.target.value
+              })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-rose-500 focus:border-rose-500 text-sm" placeholder={t("common.detaylı_açıklama")} />
               </div>
 
               <div className="flex items-end">
-                <button
-                  onClick={handleOzellikEkle}
-                  className="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
-                >
+                <button onClick={handleOzellikEkle} className="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
                   <Plus size={16} />
                   <span>Ekle</span>
                 </button>
@@ -285,50 +215,31 @@ const PaketForm: React.FC<PaketFormProps> = ({
           </div>
 
           {/* Özellik Listesi */}
-          {ozellikler.length > 0 && (
-            <div className="space-y-2">
-              {ozellikler.map((ozellik) => (
-                <div key={ozellik.id} className="flex items-center justify-between bg-white p-3 rounded-lg border">
+          {ozellikler.length > 0 && <div className="space-y-2">
+              {ozellikler.map(ozellik => <div key={ozellik.id} className="flex items-center justify-between bg-white p-3 rounded-lg border">
                   <div className="flex items-center space-x-2">
                     <CheckCircle className="w-5 h-5 text-green-500" />
                     <div>
                       <span className="font-medium text-gray-900">{ozellik.baslik}</span>
-                      {ozellik.aciklama && (
-                        <p className="text-sm text-gray-500">{ozellik.aciklama}</p>
-                      )}
+                      {ozellik.aciklama && <p className="text-sm text-gray-500">{ozellik.aciklama}</p>}
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleOzellikSil(ozellik.id)}
-                    className="text-red-500 hover:text-red-700 p-1"
-                  >
+                  <button onClick={() => handleOzellikSil(ozellik.id)} className="text-red-500 hover:text-red-700 p-1">
                     <Trash2 size={16} />
                   </button>
-                </div>
-              ))}
-            </div>
-          )}
+                </div>)}
+            </div>}
         </div>
 
         {/* Form Buttons */}
         <div className="flex justify-end space-x-4 pt-6">
-          <button
-            onClick={onCancel}
-            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            İptal
-          </button>
-          <button
-            onClick={onSave}
-            className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors"
-          >
+          <button onClick={onCancel} className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">{t("common.i_ptal")}</button>
+          <button onClick={onSave} className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors">
             <Save size={16} />
-            <span>{editingPaket ? 'Güncelle' : 'Kaydet'}</span>
+            <span>{editingPaket ? t("common.güncelle") : 'Kaydet'}</span>
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default PaketForm;

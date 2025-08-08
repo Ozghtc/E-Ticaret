@@ -1,9 +1,8 @@
+import { useTranslation } from "react-i18next";
 // 🚀 HZM API Service - E-Ticaret Mağaza Sistemi
 // API Integration Layer for HZM Database
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://hzmbackendveritabani-production.up.railway.app/api/v1'
-  : 'https://hzmbackendveritabani-production.up.railway.app/api/v1'; // Her iki durumda da production kullan
+const API_BASE_URL = process.env.NODE_ENV === 'production' ? 'https://hzmbackendveritabani-production.up.railway.app/api/v1' : 'https://hzmbackendveritabani-production.up.railway.app/api/v1'; // Her iki durumda da production kullan
 
 // 🔐 Environment Variables - Hardcoded credential yasak (KURAL 17)
 const API_CONFIG = {
@@ -18,13 +17,7 @@ const API_CONFIG = {
 };
 
 // 🚨 Environment Variables Validation (KURAL 17)
-const requiredEnvVars = [
-  'REACT_APP_HZM_API_KEY',
-  'REACT_APP_HZM_USER_EMAIL', 
-  'REACT_APP_HZM_PROJECT_PASSWORD',
-  'REACT_APP_HZM_PROJECT_ID'
-];
-
+const requiredEnvVars = ['REACT_APP_HZM_API_KEY', 'REACT_APP_HZM_USER_EMAIL', 'REACT_APP_HZM_PROJECT_PASSWORD', 'REACT_APP_HZM_PROJECT_ID'];
 const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 if (missingVars.length > 0) {
   console.error('❌ Missing environment variables:', missingVars);
@@ -67,7 +60,6 @@ class APIService {
   // HTTP Request Wrapper
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
-    
     try {
       const response = await fetch(url, {
         ...options,
@@ -76,12 +68,10 @@ class APIService {
           ...options.headers
         }
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
       }
-
       const data = await response.json();
       return data;
     } catch (error) {
@@ -93,12 +83,10 @@ class APIService {
   // 🔧 Tablo ID'sini Al veya Oluştur
   private async ensureTable(): Promise<string> {
     if (this.tableId) return this.tableId;
-
     try {
       // Mevcut tabloları kontrol et
       const response = await this.request<any>(`/tables/project/${API_CONFIG.projectId}`);
       const magazaTable = response.data?.tables?.find((table: any) => table.name === 'magazalar');
-
       if (magazaTable) {
         this.tableId = magazaTable.id;
         return this.tableId;
@@ -109,19 +97,17 @@ class APIService {
         method: 'POST',
         body: JSON.stringify({
           name: 'magazalar',
-          description: 'E-ticaret mağaza bilgileri tablosu'
+          description: t("common.e_ticaret_mağaza_bilgileri_tablosu")
         })
       });
-
       this.tableId = createResponse.data?.table?.id;
       if (!this.tableId) {
-        throw new Error('Tablo oluşturulamadı');
+        throw new Error(t("common.tablo_oluşturulamadı"));
       }
-
       return this.tableId;
     } catch (error) {
-      console.error('Tablo oluşturma hatası:', error);
-      throw new Error('Veritabanı bağlantısı kurulamadı');
+      console.error(t("common.tablo_oluşturma_hatası"), error);
+      throw new Error(t("common.veritabanı_bağlantısı_kurulamadı"));
     }
   }
 
@@ -135,7 +121,6 @@ class APIService {
       return this.fallbackId();
     }
   }
-
   private fallbackId(): string {
     return `magaza_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
@@ -145,16 +130,15 @@ class APIService {
     try {
       const tableId = await this.ensureTable();
       const response = await this.request<any>(`/data/table/${tableId}`);
-      
       const rows = response.data?.rows || [];
       return rows.map((row: any) => this.transformFromAPI(row));
     } catch (error) {
-      console.error('🚨 KRİTİK API HATASI: Backend düzeltmesi gerekli');
+      console.error(t("common.kri_ti_k_api_hatasi_backend_düzeltmesi_gerekli"));
       console.error('❌ SORUN:', error);
-      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: API connection/authentication');
-      
+      console.error(t("common.backend_de_düzelti_lmesi_gereken_api_connection_authentication"));
+
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error('API servisi çalışmıyor. Backend düzeltmesi gerekli.');
+      throw new Error(t("common.api_servisi_çalışmıyor_backend_düzeltmesi_gerekli"));
     }
   }
 
@@ -163,26 +147,23 @@ class APIService {
     try {
       const tableId = await this.ensureTable();
       const id = await this.generateId();
-
       const apiData = this.transformToAPI({
         ...data,
         id,
         createdAt: new Date().toISOString()
       });
-
       const response = await this.request<any>(`/data/table/${tableId}/rows`, {
         method: 'POST',
         body: JSON.stringify(apiData)
       });
-
       return this.transformFromAPI(response.data?.row || apiData);
     } catch (error) {
-      console.error('🚨 KRİTİK API HATASI: Mağaza oluşturulamadı');
+      console.error(t("common.kri_ti_k_api_hatasi_mağaza_oluşturulamadı"));
       console.error('❌ SORUN:', error);
-      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: CREATE operation/table structure');
-      
+      console.error(t("common.backend_de_düzelti_lmesi_gereken_create_operation_table_structure"));
+
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error('Mağaza oluşturulamadı. Backend düzeltmesi gerekli.');
+      throw new Error(t("common.mağaza_oluşturulamadı_backend_düzeltmesi_gerekli"));
     }
   }
 
@@ -190,25 +171,22 @@ class APIService {
   async updateMagaza(id: string, data: Partial<MagazaData>): Promise<MagazaData> {
     try {
       const tableId = await this.ensureTable();
-      
       const apiData = this.transformToAPI({
         ...data,
         updatedAt: new Date().toISOString()
       });
-
       const response = await this.request<any>(`/data/table/${tableId}/rows/${id}`, {
         method: 'PUT',
         body: JSON.stringify(apiData)
       });
-
       return this.transformFromAPI(response.data?.row);
     } catch (error) {
-      console.error('🚨 KRİTİK API HATASI: Mağaza güncellenemedi');
+      console.error(t("common.kri_ti_k_api_hatasi_mağaza_güncellenemedi"));
       console.error('❌ SORUN:', error);
-      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: UPDATE operation');
-      
+      console.error(t("common.backend_de_düzelti_lmesi_gereken_update_operation"));
+
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error('Mağaza güncellenemedi. Backend düzeltmesi gerekli.');
+      throw new Error(t("common.mağaza_güncellenemedi_backend_düzeltmesi_gerekli"));
     }
   }
 
@@ -216,23 +194,24 @@ class APIService {
   async deleteMagaza(id: string): Promise<void> {
     try {
       const tableId = await this.ensureTable();
-      
       await this.request<any>(`/data/table/${tableId}/rows/${id}`, {
         method: 'DELETE'
       });
     } catch (error) {
-      console.error('🚨 KRİTİK API HATASI: Mağaza silinemedi');
+      console.error(t("common.kri_ti_k_api_hatasi_mağaza_silinemedi"));
       console.error('❌ SORUN:', error);
-      console.error('✅ BACKEND\'DE DÜZELTİLMESİ GEREKEN: DELETE operation');
-      
+      console.error(t("common.backend_de_düzelti_lmesi_gereken_delete_operation"));
+
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error('Mağaza silinemedi. Backend düzeltmesi gerekli.');
+      throw new Error(t("common.mağaza_silinemedi_backend_düzeltmesi_gerekli"));
     }
   }
 
   // 📊 Mağaza Durumu Güncelle (Convenience method)
   async updateMagazaStatus(id: string, status: MagazaData['status']): Promise<MagazaData> {
-    return this.updateMagaza(id, { status });
+    return this.updateMagaza(id, {
+      status
+    });
   }
 
   // 🔄 API ↔ Frontend Data Transformation
@@ -263,7 +242,6 @@ class APIService {
       updated_at: data.updatedAt
     };
   }
-
   private transformFromAPI(data: any): MagazaData {
     return {
       id: data.id,

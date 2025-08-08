@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Globe } from 'lucide-react';
-
+import { useTranslation } from "react-i18next";
 function Platform() {
+  const {
+    t
+  } = useTranslation();
   const navigate = useNavigate();
-
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('adminLoggedIn');
     if (!isLoggedIn) {
       navigate('/admin/login');
     }
   }, [navigate]);
-
-  return (
-    <div className="min-h-screen bg-gray-50">
+  return <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-green-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,7 +24,7 @@ function Platform() {
                 Geri Dön
               </Link>
               <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                <span className="font-bold text-white">Altıntassoft</span>
+                <span className="font-bold text-white">{t("common.altıntassoft")}</span>
               </div>
             </div>
           </div>
@@ -37,22 +37,14 @@ function Platform() {
           <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
             <Globe className="w-10 h-10 text-green-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Altyapı / Platform
-          </h1>
-          <p className="text-gray-600 text-lg mb-4">
-            Bu sayfa henüz geliştirilme aşamasındadır.
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">{t("common.altyapı_platform")}</h1>
+          <p className="text-gray-600 text-lg mb-4">{t("common.bu_sayfa_henüz_geliştirilme_aşamasındadır")}</p>
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-left max-w-md mx-auto">
-            <h3 className="font-semibold text-green-800 mb-2">Modül Açıklaması:</h3>
-            <p className="text-sm text-green-700">
-              Backend (gizli yapı) - Sipariş akışı, log tutma, trafik ve sistem raporları
-            </p>
+            <h3 className="font-semibold text-green-800 mb-2">{t("common.modül_açıklaması")}</h3>
+            <p className="text-sm text-green-700">{t("common.backend_gizli_yapı_sipariş_akışı_log_tutma_trafik_ve_sistem_raporları")}</p>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default Platform;

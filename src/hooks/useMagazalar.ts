@@ -3,25 +3,24 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { apiService, type MagazaData } from '../services/apiService';
-
+import { useTranslation } from "react-i18next";
 interface UseMagazalarReturn {
   // Data
   magazalar: MagazaData[];
   loading: boolean;
   error: string | null;
-  
+
   // Actions
   loadMagazalar: () => Promise<void>;
   createMagaza: (data: Omit<MagazaData, 'id' | 'createdAt' | 'updatedAt'>) => Promise<MagazaData>;
   updateMagaza: (id: string, data: Partial<MagazaData>) => Promise<MagazaData>;
   updateMagazaStatus: (id: string, status: MagazaData['status']) => Promise<MagazaData>;
   deleteMagaza: (id: string) => Promise<void>;
-  
+
   // Utilities
   retry: () => Promise<void>;
   isOnline: boolean;
 }
-
 export const useMagazalar = (): UseMagazalarReturn => {
   // 📊 State
   const [magazalar, setMagazalar] = useState<MagazaData[]>([]);
@@ -37,18 +36,15 @@ export const useMagazalar = (): UseMagazalarReturn => {
     try {
       setLoading(true);
       setError(null);
-      
       console.log('🔄 Loading magazalar...');
       const data = await apiService.getMagazalar();
-      
       setMagazalar(data);
       console.log(`✅ Loaded ${data.length} magazalar from API`);
-      
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Bilinmeyen hata';
-      console.error('🚨 KRİTİK API HATASI:', errorMessage);
+      console.error(t("common.kri_ti_k_api_hatasi"), errorMessage);
       setError(`API Hatası: ${errorMessage}`);
-      
+
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
       // LocalStorage fallback kaldırıldı
       setMagazalar([]); // Boş liste göster
@@ -62,16 +58,13 @@ export const useMagazalar = (): UseMagazalarReturn => {
     try {
       setLoading(true);
       setError(null);
-      
       console.log('➕ Creating magaza:', data.storeName);
       const newMagaza = await apiService.createMagaza(data);
-      
       setMagazalar(prev => [...prev, newMagaza]);
       console.log('✅ Magaza created:', newMagaza.id);
-      
       return newMagaza;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Mağaza oluşturulamadı';
+      const errorMessage = err instanceof Error ? err.message : t("common.mağaza_oluşturulamadı");
       console.error('❌ Create magaza failed:', errorMessage);
       setError(errorMessage);
       throw err;
@@ -84,18 +77,13 @@ export const useMagazalar = (): UseMagazalarReturn => {
   const updateMagaza = useCallback(async (id: string, data: Partial<MagazaData>) => {
     try {
       setError(null);
-      
       console.log('🔄 Updating magaza:', id);
       const updatedMagaza = await apiService.updateMagaza(id, data);
-      
-      setMagazalar(prev => 
-        prev.map(m => m.id === id ? updatedMagaza : m)
-      );
+      setMagazalar(prev => prev.map(m => m.id === id ? updatedMagaza : m));
       console.log('✅ Magaza updated:', id);
-      
       return updatedMagaza;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Mağaza güncellenemedi';
+      const errorMessage = err instanceof Error ? err.message : t("common.mağaza_güncellenemedi");
       console.error('❌ Update magaza failed:', errorMessage);
       setError(errorMessage);
       throw err;
@@ -106,16 +94,17 @@ export const useMagazalar = (): UseMagazalarReturn => {
   const updateMagazaStatus = useCallback(async (id: string, status: MagazaData['status']) => {
     try {
       console.log(`📊 Updating magaza status: ${id} → ${status}`);
-      const updatedMagaza = await updateMagaza(id, { status });
-      
+      const updatedMagaza = await updateMagaza(id, {
+        status
+      });
+
       // Show success message based on status
       const statusMessages = {
-        pending: '⏳ Mağaza onay bekleme durumuna alındı',
-        approved: '✅ Mağaza onaylandı',
-        rejected: '❌ Mağaza reddedildi',
-        active: '🚀 Mağaza aktifleştirildi'
+        pending: t("common.mağaza_onay_bekleme_durumuna_alındı"),
+        approved: t("common.mağaza_onaylandı"),
+        rejected: t("common.mağaza_reddedildi"),
+        active: t("common.mağaza_aktifleştirildi")
       };
-      
       console.log(statusMessages[status]);
       return updatedMagaza;
     } catch (err) {
@@ -128,15 +117,12 @@ export const useMagazalar = (): UseMagazalarReturn => {
   const deleteMagaza = useCallback(async (id: string) => {
     try {
       setError(null);
-      
       console.log('🗑️ Deleting magaza:', id);
       await apiService.deleteMagaza(id);
-      
       setMagazalar(prev => prev.filter(m => m.id !== id));
       console.log('✅ Magaza deleted:', id);
-      
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Mağaza silinemedi';
+      const errorMessage = err instanceof Error ? err.message : t("common.mağaza_silinemedi");
       console.error('❌ Delete magaza failed:', errorMessage);
       setError(errorMessage);
       throw err;
@@ -162,14 +148,12 @@ export const useMagazalar = (): UseMagazalarReturn => {
     magazalar,
     loading,
     error,
-    
     // Actions
     loadMagazalar,
     createMagaza,
     updateMagaza,
     updateMagazaStatus,
     deleteMagaza,
-    
     // Utilities
     retry,
     isOnline
@@ -182,26 +166,22 @@ interface UseMagazalarWithFiltersOptions {
   statusFilter?: MagazaData['status'] | 'all';
   categoryFilter?: string;
 }
-
 export const useMagazalarWithFilters = (options: UseMagazalarWithFiltersOptions = {}) => {
   const magazaHook = useMagazalar();
-  const { searchTerm = '', statusFilter = 'all', categoryFilter = 'all' } = options;
-
+  const {
+    searchTerm = '',
+    statusFilter = 'all',
+    categoryFilter = 'all'
+  } = options;
   const filteredMagazalar = magazaHook.magazalar.filter(magaza => {
     // Search filter
-    const matchesSearch = !searchTerm || 
-      magaza.storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      magaza.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      magaza.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      magaza.cityName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      magaza.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    const matchesSearch = !searchTerm || magaza.storeName.toLowerCase().includes(searchTerm.toLowerCase()) || magaza.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || magaza.lastName.toLowerCase().includes(searchTerm.toLowerCase()) || magaza.cityName.toLowerCase().includes(searchTerm.toLowerCase()) || magaza.email.toLowerCase().includes(searchTerm.toLowerCase());
+
     // Status filter
     const matchesStatus = statusFilter === 'all' || magaza.status === statusFilter;
-    
+
     // Category filter
     const matchesCategory = categoryFilter === 'all' || magaza.storeCategory === categoryFilter;
-    
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
@@ -214,7 +194,6 @@ export const useMagazalarWithFilters = (options: UseMagazalarWithFiltersOptions 
     approved: magazaHook.magazalar.filter(m => m.status === 'approved').length,
     rejected: magazaHook.magazalar.filter(m => m.status === 'rejected').length
   };
-
   return {
     ...magazaHook,
     filteredMagazalar,

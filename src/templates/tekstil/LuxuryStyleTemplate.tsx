@@ -2,17 +2,20 @@ import React from 'react';
 import { Product } from '../../types/database';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { categoryUIConfig } from '../../config/categoryUIConfig';
-
+import { useTranslation } from "react-i18next";
 interface LuxuryStyleTemplateProps {
   products: Product[];
   category: string;
 }
-
-export default function LuxuryStyleTemplate({ products, category }: LuxuryStyleTemplateProps) {
+export default function LuxuryStyleTemplate({
+  products,
+  category
+}: LuxuryStyleTemplateProps) {
+  const {
+    t
+  } = useTranslation();
   const uiConfig = categoryUIConfig[category] || categoryUIConfig.tekstil;
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
+  return <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
       {/* Luxury Header */}
       <header className="bg-black/80 backdrop-blur-sm border-b border-yellow-500/30">
         <div className="max-w-7xl mx-auto px-4 py-8">
@@ -29,9 +32,7 @@ export default function LuxuryStyleTemplate({ products, category }: LuxuryStyleT
           <h2 className="text-6xl font-serif text-white mb-6">
             EXCLUSIVE LUXURY
           </h2>
-          <p className="text-2xl text-yellow-200 mb-8 leading-relaxed">
-            Premium kalite, eşsiz tasarım, sınırlı koleksiyon
-          </p>
+          <p className="text-2xl text-yellow-200 mb-8 leading-relaxed">{t("common.premium_kalite_eşsiz_tasarım_sınırlı_koleksiyon")}</p>
           <button className="bg-yellow-500 text-black px-12 py-4 font-bold text-lg tracking-wide hover:bg-yellow-400 transition-colors">
             KOLEKSIYONU KEŞFET
           </button>
@@ -41,16 +42,8 @@ export default function LuxuryStyleTemplate({ products, category }: LuxuryStyleT
       {/* Products - Luxury Layout */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              category={category}
-              theme="luxury-style"
-            />
-          ))}
+          {products.map(product => <ProductCard key={product.id} product={product} category={category} theme="luxury-style" />)}
         </div>
       </section>
-    </div>
-  );
+    </div>;
 }

@@ -1,12 +1,12 @@
 // 🎯 Form State Yönetimi
 import { useState, useCallback } from 'react';
-
+import { useTranslation } from "react-i18next";
 export interface FormData {
   // Kategori Bilgileri
   mainCategory: string;
   subCategory1: string;
   subCategory2: string;
-  
+
   // Temel Ürün Bilgileri
   name: string;
   brand: string;
@@ -17,7 +17,7 @@ export interface FormData {
   gender: string;
   ageGroup: string;
   description: string;
-  
+
   // Fiyat & Stok
   price: number;
   originalPrice: number;
@@ -26,11 +26,11 @@ export interface FormData {
   stock: number;
   vatRate: string;
   preparationTime: string;
-  
+
   // Varyantlar
   selectedSizes: string[];
   selectedColors: string[];
-  
+
   // Özellikler
   fabricType: string;
   fitType: string;
@@ -39,19 +39,20 @@ export interface FormData {
   sleeveType: string;
   closureType: string;
   careInstructions: string[];
-  
+
   // Görseller
   images: File[];
-  
+
   // Fotoğraf-Varyant Mapping (index-based)
-  imageVariantMapping: { [imageIndex: number]: string }; // imageIndex -> variantId
-  
+  imageVariantMapping: {
+    [imageIndex: number]: string;
+  }; // imageIndex -> variantId
+
   // SEO
   seoTitle: string;
   seoDescription: string;
   seoKeywords: string[];
 }
-
 export const initialFormData: FormData = {
   mainCategory: '',
   subCategory1: '',
@@ -71,7 +72,7 @@ export const initialFormData: FormData = {
   invoiceNumber: '',
   stock: 0,
   vatRate: '%20',
-  preparationTime: '1 Gün',
+  preparationTime: t("common.1_gün"),
   selectedSizes: [],
   selectedColors: [],
   fabricType: '',
@@ -82,47 +83,40 @@ export const initialFormData: FormData = {
   closureType: '',
   careInstructions: [],
   images: [],
-  imageVariantMapping: {}, // Başlangıçta boş
+  imageVariantMapping: {},
+  // Başlangıçta boş
   seoTitle: '',
   seoDescription: '',
   seoKeywords: []
 };
-
 export function useFormData() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [currentStep, setCurrentStep] = useState(1);
-
   const updateFormData = useCallback((field: keyof FormData, value: any) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   }, []);
-
   const updateMultipleFields = useCallback((updates: Partial<FormData>) => {
     setFormData(prev => ({
       ...prev,
       ...updates
     }));
   }, []);
-
   const resetForm = useCallback(() => {
     setFormData(initialFormData);
     setCurrentStep(1);
   }, []);
-
   const nextStep = useCallback(() => {
     setCurrentStep(prev => Math.min(prev + 1, 4));
   }, []);
-
   const prevStep = useCallback(() => {
     setCurrentStep(prev => Math.max(prev - 1, 1));
   }, []);
-
   const goToStep = useCallback((step: number) => {
     setCurrentStep(Math.max(1, Math.min(step, 4)));
   }, []);
-
   return {
     formData,
     currentStep,

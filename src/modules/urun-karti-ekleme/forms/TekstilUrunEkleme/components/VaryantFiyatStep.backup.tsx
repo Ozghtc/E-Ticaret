@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Palette, Ruler, Upload, Camera, DollarSign, Package } from 'lucide-react';
 import { FormData } from '../hooks/useFormData';
 import { useSizeSystem } from '../hooks/useSizeSystem';
@@ -349,7 +350,7 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div>
               <label className="block text-sm font-medium text-green-700 mb-2">
-                Satış Fiyatı (TL) *
+                Satış Fiyatı {t('common.currencyTL')} *
               </label>
               <input
                 type="number"
@@ -378,7 +379,7 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
             
             <div>
               <label className="block text-sm font-medium text-green-700 mb-2">
-                Eski Fiyat (TL)
+                Eski Fiyat {t('common.currencyTL')}
               </label>
               <input
                 type="number"
@@ -415,7 +416,7 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
 
             <div>
               <label className="block text-sm font-medium text-green-700 mb-2">
-                KDV Dahil Fiyat (TL)
+                KDV Dahil Fiyat {t('common.currencyTL')}
               </label>
               <input
                 type="number"
@@ -496,7 +497,7 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
 
             <div>
               <label className="block text-sm font-medium text-blue-700 mb-2">
-                💰 Alış Fiyatı (TL)
+                💰 Alış Fiyatı {t('common.currencyTL')}
               </label>
               <input
                 type="number"
@@ -647,9 +648,9 @@ export default function VaryantFiyatStep({ formData, updateFormData }: VaryantFi
                   <th className="text-left p-3 font-medium text-gray-700">Beden</th>
                   <th className="text-left p-3 font-medium text-gray-700">Renk</th>
                   <th className="text-left p-3 font-medium text-gray-700">Stok</th>
-                  <th className="text-left p-3 font-medium text-gray-700">Fiyat (TL)</th>
-                  <th className="text-left p-3 font-medium text-gray-700">Eski Fiyat (TL)</th>
-                  <th className="text-left p-3 font-medium text-gray-700">KDV Dahil (TL)</th>
+                  <th className="text-left p-3 font-medium text-gray-700">Fiyat {t('common.currencyTL')}</th>
+                  <th className="text-left p-3 font-medium text-gray-700">Eski Fiyat {t('common.currencyTL')}</th>
+                  <th className="text-left p-3 font-medium text-gray-700">KDV Dahil {t('common.currencyTL')}</th>
                   <th className="text-left p-3 font-medium text-gray-700">SKU</th>
                 </tr>
               </thead>
