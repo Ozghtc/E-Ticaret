@@ -1,0 +1,104 @@
+{
+  "dashboard": {
+    "title": "Admin Paneli",
+    "welcome": "Hoş Geldiniz",
+    "subtitle": "Modern E-Ticaret Yönetim Sistemi",
+    "systemActive": "Sistem Aktif",
+    "modulesCount": "{{count}}+ Modül",
+    "hzmPartnership": "HZM İşbirliği ile"
+  },
+  "layout": {
+    "tips": {
+      "grid": "Sayfa Düzeni ile sürükleyerek taşıyabilirsiniz!",
+      "free": "Dağınık yerleştirin, Perfect Hizala ile 4x3 grid yapın! 🎯"
+    },
+    "buttons": {
+      "horizontalRow": "Yatay Satır",
+      "pageLayout": "Sayfa Düzeni",
+      "perfectAlign": "Perfect Hizala",
+      "save": "Kaydet",
+      "reset": "Sıfırla"
+    }
+  },
+  "modules": {
+    "userManagement": {
+      "title": "Kullanıcı Yönetimi",
+      "description": "Giriş yapma, yetki seviyesi belirleme"
+    },
+    "storePanel": {
+      "title": "Mağaza Paneli",
+      "description": "Ürün ekleme, sipariş takibi, tema seçimi"
+    },
+    "platform": {
+      "title": "Altyapı / Platform",
+      "description": "Sipariş akışı, log tutma, trafik ve sistem raporları"
+    },
+    "storeOpening": {
+      "title": "Mağaza Açılış Paneli",
+      "description": "Yeni mağaza başvuruları, onay süreçleri"
+    },
+    "endUserSite": {
+      "title": "Son Kullanıcı Sitesi",
+      "description": "Ürünleri görür, sepete ekler, satın alır"
+    },
+    "themeSystem": {
+      "title": "Tema Sistemi",
+      "description": "Mağaza vitrinlerinin görünümünü özelleştirir (7-8 tema)"
+    },
+    "authorization": {
+      "title": "Yetkilendirme",
+      "description": "Rol ve yetki yönetimi, güvenlik ayarları"
+    },
+    "reports": {
+      "title": "Raporlar",
+      "description": "Satış, kullanıcı ve sistem raporları"
+    },
+    "systemDefinitions": {
+      "title": "Sistem Tanımlamaları",
+      "description": "Kategoriler, bedenler, renkler, markalar"
+    },
+    "productAdd": {
+      "title": "Ürün Ekleme",
+      "description": "Kategori bazlı profesyonel ürün ekleme sistemi"
+    },
+    "seo": {
+      "title": "SEO",
+      "description": "Arama motoru optimizasyonu ve analiz araçları"
+    },
+    "packageDefinition": {
+      "title": "Paket Tanımlama",
+      "description": "Sistem özellikleri yazarak fiyat belirleme ve paket oluşturma"
+    },
+    "contact": {
+      "title": "İletişim",
+      "description": "Müşteri iletişimi, destek sistemi ve mesaj yönetimi"
+    }
+  },
+  "groups": {
+    "management": {
+      "title": "YÖNETİM PANELİ",
+      "moduleCount": "{{count}} modül"
+    },
+    "storeProduct": {
+      "title": "MAĞAZA & ÜRÜN YÖNETİMİ",
+      "moduleCount": "{{count}} modül"
+    },
+    "technicalInfra": {
+      "title": "TEKNİK & ALTYAPI",
+      "moduleCount": "{{count}} modül"
+    },
+    "subscriptionPackages": {
+      "title": "ABONELİK & PAKETLER",
+      "moduleCount": "{{count}} modül"
+    }
+  },
+  "status": {
+    "inProgress": "Yapım Aşamasında",
+    "notStarted": "Henüz Başlanmadı",
+    "completed": "Hazır",
+    "selectStatus": "Durum Seçin",
+    "changeStatus": "Durum Değiştir",
+    "showDetails": "Detayları Göster",
+    "hideDetails": "Detayları Gizle"
+  }
+}

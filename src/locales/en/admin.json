@@ -1,0 +1,104 @@
+{
+  "dashboard": {
+    "title": "Admin Panel",
+    "welcome": "Welcome",
+    "subtitle": "Modern E-Commerce Management System",
+    "systemActive": "System Active",
+    "modulesCount": "{{count}}+ Modules",
+    "hzmPartnership": "With HZM Partnership"
+  },
+  "layout": {
+    "tips": {
+      "grid": "You can drag and drop with Page Layout!",
+      "free": "Place scattered, use Perfect Align for 4x3 grid! 🎯"
+    },
+    "buttons": {
+      "horizontalRow": "Horizontal Row",
+      "pageLayout": "Page Layout",
+      "perfectAlign": "Perfect Align",
+      "save": "Save",
+      "reset": "Reset"
+    }
+  },
+  "modules": {
+    "userManagement": {
+      "title": "User Management",
+      "description": "Login, permission level settings"
+    },
+    "storePanel": {
+      "title": "Store Panel",
+      "description": "Product addition, order tracking, theme selection"
+    },
+    "platform": {
+      "title": "Infrastructure / Platform",
+      "description": "Order flow, logging, traffic and system reports"
+    },
+    "storeOpening": {
+      "title": "Store Opening Panel",
+      "description": "New store applications, approval processes"
+    },
+    "endUserSite": {
+      "title": "End User Site",
+      "description": "View products, add to cart, purchase"
+    },
+    "themeSystem": {
+      "title": "Theme System",
+      "description": "Customize store showcase appearance (7-8 themes)"
+    },
+    "authorization": {
+      "title": "Authorization",
+      "description": "Role and permission management, security settings"
+    },
+    "reports": {
+      "title": "Reports",
+      "description": "Sales, user and system reports"
+    },
+    "systemDefinitions": {
+      "title": "System Definitions",
+      "description": "Categories, sizes, colors, brands"
+    },
+    "productAdd": {
+      "title": "Product Add",
+      "description": "Category-based professional product adding system"
+    },
+    "seo": {
+      "title": "SEO",
+      "description": "Search engine optimization and analysis tools"
+    },
+    "packageDefinition": {
+      "title": "Package Definition",
+      "description": "System features writing, pricing and package creation"
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Customer communication, support system and message management"
+    }
+  },
+  "groups": {
+    "management": {
+      "title": "MANAGEMENT PANEL",
+      "moduleCount": "{{count}} modules"
+    },
+    "storeProduct": {
+      "title": "STORE & PRODUCT MANAGEMENT",
+      "moduleCount": "{{count}} modules"
+    },
+    "technicalInfra": {
+      "title": "TECHNICAL & INFRASTRUCTURE",
+      "moduleCount": "{{count}} modules"
+    },
+    "subscriptionPackages": {
+      "title": "SUBSCRIPTION & PACKAGES",
+      "moduleCount": "{{count}} modules"
+    }
+  },
+  "status": {
+    "inProgress": "In Progress",
+    "notStarted": "Not Started",
+    "completed": "Ready",
+    "selectStatus": "Select Status",
+    "changeStatus": "Change Status",
+    "showDetails": "Show Details",
+    "hideDetails": "Hide Details"
+  }
+}
