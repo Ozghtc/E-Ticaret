@@ -15,9 +15,10 @@ import AdminDashboard from '../modules/admin-panel/AdminDashboard';
 
 // Özel sistem dashboardları (lazy loading)
 const RestaurantDashboard = React.lazy(() => import('../modules/custom-systems/restaurant/RestaurantDashboard'));
-const HealthcareDashboard = React.lazy(() => import('../modules/custom-systems/healthcare/HealthcareDashboard')); 
-const RealEstateDashboard = React.lazy(() => import('../modules/custom-systems/real-estate/RealEstateDashboard'));
-const WorkshopDashboard = React.lazy(() => import('../modules/custom-systems/workshop/WorkshopDashboard'));
+// TODO: Aşağıdaki dosyalar henüz oluşturulmadı
+// const HealthcareDashboard = React.lazy(() => import('../modules/custom-systems/healthcare/HealthcareDashboard')); 
+// const RealEstateDashboard = React.lazy(() => import('../modules/custom-systems/real-estate/RealEstateDashboard'));
+// const WorkshopDashboard = React.lazy(() => import('../modules/custom-systems/workshop/WorkshopDashboard'));
 
 interface DynamicMagazaRendererProps {
   magazaId: string;
@@ -65,32 +66,26 @@ export default function DynamicMagazaRenderer({ magazaId }: DynamicMagazaRendere
         
       case 'healthcare':
         return (
-          <React.Suspense fallback={Fallback}>
-            <HealthcareDashboard 
-              magazaId={magazaId}
-              config={customSystem}
-            />
-          </React.Suspense>
+          <div className="p-8 text-center">
+            <h2 className="text-2xl font-bold mb-4">Healthcare Dashboard</h2>
+            <p className="text-gray-600">Bu modül henüz geliştirilmekte...</p>
+          </div>
         );
         
       case 'real-estate':
         return (
-          <React.Suspense fallback={Fallback}>
-            <RealEstateDashboard 
-              magazaId={magazaId}
-              config={customSystem}
-            />
-          </React.Suspense>
+          <div className="p-8 text-center">
+            <h2 className="text-2xl font-bold mb-4">Real Estate Dashboard</h2>
+            <p className="text-gray-600">Bu modül henüz geliştirilmekte...</p>
+          </div>
         );
         
       case 'workshop':
         return (
-          <React.Suspense fallback={Fallback}>
-            <WorkshopDashboard 
-              magazaId={magazaId}
-              config={customSystem}
-            />
-          </React.Suspense>
+          <div className="p-8 text-center">
+            <h2 className="text-2xl font-bold mb-4">Workshop Dashboard</h2>
+            <p className="text-gray-600">Bu modül henüz geliştirilmekte...</p>
+          </div>
         );
         
       default:

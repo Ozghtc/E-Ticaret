@@ -14,7 +14,7 @@ const themeConfigs = {
     headerClass: 'bg-white shadow-sm',
     logoClass: 'text-pink-600',
     buttonClass: 'bg-pink-600 hover:bg-pink-700',
-    categories: ['Yeni Gelenler', t("common.kadın"), 'Erkek', t("common.ayakkabı"), 'Aksesuar', '🔥 İndirim']
+    categories: ['Yeni Gelenler', 'Kadın', 'Erkek', 'Ayakkabı', 'Aksesuar', '🔥 İndirim']
   },
   'boutique-chic': {
     name: 'Boutique Chic',
@@ -23,7 +23,7 @@ const themeConfigs = {
     headerClass: 'bg-white/80 backdrop-blur-sm shadow-sm',
     logoClass: 'text-purple-600',
     buttonClass: 'bg-purple-600 hover:bg-purple-700',
-    categories: ['Zarif Koleksiyon', t("common.kadın"), 'Elbise', 'Aksesuar', t("common.özel_tasarım"), '✨ Yeni']
+    categories: ['Zarif Koleksiyon', 'Kadın', 'Elbise', 'Aksesuar', 'Özel Tasarım', '✨ Yeni']
   },
   'luxury-style': {
     name: 'Luxury Style',
@@ -32,7 +32,7 @@ const themeConfigs = {
     headerClass: 'bg-black/80 backdrop-blur-sm border-b border-yellow-500/30',
     logoClass: 'text-yellow-400',
     buttonClass: 'bg-yellow-500 hover:bg-yellow-400',
-    categories: ['Premium', t("common.lüks_koleksiyon"), t("common.özel_tasarım"), t("common.sınırlı_üretim"), 'VIP', '💎 Exclusive']
+    categories: ['Premium', 'Lüks Koleksiyon', 'Özel Tasarım', 'Sınırlı Üretim', 'VIP', '💎 Exclusive']
   },
   'urban-street': {
     name: 'Urban Street',
@@ -68,7 +68,7 @@ const themeConfigs = {
     headerClass: 'bg-white shadow-sm border-b border-purple-200',
     logoClass: 'text-purple-800',
     buttonClass: 'bg-purple-600 hover:bg-purple-700',
-    categories: [t("common.tesettür"), 'Hijab', 'Modest', 'Zarif', 'Modern', 'İndirim']
+    categories: ['Tesettür', 'Hijab', 'Modest', 'Zarif', 'Modern', 'İndirim']
   },
   'kids-wear': {
     name: 'Kids Wear',
@@ -77,7 +77,7 @@ const themeConfigs = {
     headerClass: 'bg-white/90 backdrop-blur-sm shadow-lg border-b-4 border-yellow-300',
     logoClass: 'text-blue-600',
     buttonClass: 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600',
-    categories: [t("common.çocuk"), 'Bebek', 'Okul', 'Oyun', 'Renkli', t("common.eğlenceli")]
+    categories: ['Çocuk', 'Bebek', 'Okul', 'Oyun', 'Renkli', 'Eğlenceli']
   },
   'outlet-zone': {
     name: 'Outlet Zone',
@@ -86,7 +86,7 @@ const themeConfigs = {
     headerClass: 'bg-red-600 text-white',
     logoClass: 'text-white',
     buttonClass: 'bg-yellow-400 hover:bg-yellow-300 text-red-600',
-    categories: ['Outlet', 'İndirim', 'Kampanya', t("common.fırsat"), 'Ucuz', t("common.mega_i_ndirim")]
+    categories: ['Outlet', 'İndirim', 'Kampanya', 'Fırsat', 'Ucuz', 'Mega İndirim']
   },
   'eco-textile': {
     name: 'Eco Textile',
@@ -95,7 +95,7 @@ const themeConfigs = {
     headerClass: 'bg-white shadow-sm border-b border-green-200',
     logoClass: 'text-green-800',
     buttonClass: 'bg-green-600 hover:bg-green-700',
-    categories: ['Organik', 'Eco', t("common.sürdürülebilir"), t("common.doğal"), t("common.çevre_dostu"), '🌿 Green']
+    categories: ['Organik', 'Eco', 'Sürdürülebilir', 'Doğal', 'Çevre Dostu', '🌿 Green']
   },
   'mega-store': {
     name: 'MegaStore',
@@ -104,7 +104,7 @@ const themeConfigs = {
     headerClass: 'bg-white shadow-sm',
     logoClass: 'text-red-600',
     buttonClass: 'bg-red-600 hover:bg-red-700',
-    categories: ['Elektronik', 'Moda', 'Ev & Yaşam', 'Spor', 'Kozmetik', t("common.fırsatlar")]
+    categories: ['Elektronik', 'Moda', 'Ev & Yaşam', 'Spor', 'Kozmetik', 'Fırsatlar']
   },
   'tech-hub': {
     name: 'TechHub',
@@ -122,7 +122,7 @@ const themeConfigs = {
     headerClass: 'bg-white shadow-sm',
     logoClass: 'text-green-600',
     buttonClass: 'bg-green-600 hover:bg-green-700',
-    categories: ['Meyve & Sebze', t("common.süt_ürünleri"), 'Et & Tavuk', t("common.tahıllar"), t("common.i_çecekler"), '🌿 Organik']
+    categories: ['Meyve & Sebze', 'Süt Ürünleri', 'Et & Tavuk', 'Tahıllar', 'İçecekler', '🌿 Organik']
   },
   'modern-minimal': {
     name: 'Minimal Store',
@@ -131,7 +131,7 @@ const themeConfigs = {
     headerClass: 'bg-white shadow-sm',
     logoClass: 'text-gray-900',
     buttonClass: 'bg-gray-900 hover:bg-gray-800',
-    categories: ['Ev', 'Ofis', 'Dekorasyon', t("common.aydınlatma"), 'Mobilya', 'İndirim']
+    categories: ['Ev', 'Ofis', 'Dekorasyon', 'Aydınlatma', 'Mobilya', 'İndirim']
   }
 };
 export default function UnifiedDemo() {
