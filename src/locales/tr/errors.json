@@ -1,0 +1,66 @@
+{
+  "general": {
+    "unknownError": "Bilinmeyen bir hata oluştu",
+    "tryAgain": "Lütfen tekrar deneyin",
+    "contactSupport": "Sorun devam ederse destek ekibiyle iletişime geçin"
+  },
+  "network": {
+    "connectionError": "Bağlantı hatası",
+    "timeout": "İstek zaman aşımına uğradı",
+    "offline": "İnternet bağlantınızı kontrol edin",
+    "serverError": "Sunucu hatası",
+    "badRequest": "Geçersiz istek",
+    "unauthorized": "Yetkilendirme hatası",
+    "forbidden": "Bu işlem için yetkiniz yok",
+    "notFound": "Sayfa bulunamadı",
+    "tooManyRequests": "Çok fazla istek gönderildi"
+  },
+  "validation": {
+    "required": "Bu alan zorunludur",
+    "email": "Geçerli bir e-posta adresi girin",
+    "phone": "Geçerli bir telefon numarası girin",
+    "minLength": "En az {{min}} karakter olmalıdır",
+    "maxLength": "En fazla {{max}} karakter olabilir",
+    "pattern": "Geçersiz format",
+    "number": "Geçerli bir sayı girin",
+    "positive": "Pozitif bir sayı olmalıdır",
+    "integer": "Tam sayı olmalıdır",
+    "decimal": "Ondalık sayı olmalıdır",
+    "date": "Geçerli bir tarih girin",
+    "futureDate": "İleri bir tarih seçmelisiniz",
+    "pastDate": "Geçmiş bir tarih seçmelisiniz",
+    "dateRange": "Tarih aralığı geçersiz",
+    "file": {
+      "size": "Dosya boyutu {{max}} MB'dan küçük olmalıdır",
+      "type": "Desteklenmeyen dosya tipi",
+      "required": "Dosya seçmelisiniz"
+    }
+  },
+  "auth": {
+    "loginFailed": "Giriş başarısız",
+    "invalidCredentials": "Kullanıcı adı veya şifre hatalı",
+    "accountLocked": "Hesabınız kilitlendi",
+    "accountNotFound": "Hesap bulunamadı",
+    "emailNotVerified": "E-posta adresinizi doğrulayın",
+    "sessionExpired": "Oturumunuz sona erdi",
+    "tokenInvalid": "Geçersiz token",
+    "tokenExpired": "Token süresi doldu",
+    "passwordResetFailed": "Şifre sıfırlama başarısız",
+    "registrationFailed": "Kayıt işlemi başarısız",
+    "emailAlreadyExists": "Bu e-posta adresi zaten kullanılıyor",
+    "weakPassword": "Şifre çok zayıf"
+  },
+  "business": {
+    "insufficientStock": "Yetersiz stok",
+    "productNotAvailable": "Ürün mevcut değil",
+    "priceChanged": "Fiyat değişti",
+    "orderNotFound": "Sipariş bulunamadı",
+    "paymentFailed": "Ödeme başarısız",
+    "refundFailed": "İade işlemi başarısız",
+    "couponInvalid": "Geçersiz kupon kodu",
+    "couponExpired": "Kupon süresi doldu",
+    "shippingNotAvailable": "Bu adrese kargo gönderilemiyor",
+    "storeNotActive": "Mağaza aktif değil",
+    "quotaExceeded": "Kotanız doldu"
+  }
+}

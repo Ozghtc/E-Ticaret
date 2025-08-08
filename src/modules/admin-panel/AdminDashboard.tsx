@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // Hooks
 import { useAdminState } from './hooks/useAdminState';
@@ -18,6 +19,7 @@ import { adminCards } from './data/adminCards';
 
 function AdminDashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation('admin');
 
   // Custom hooks
   const {
@@ -100,17 +102,17 @@ function AdminDashboard() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-800 mb-3">
-                Hoş Geldiniz <span className="text-blue-700 drop-shadow-md">Admin Paneli</span>
+                {t('dashboard.welcome')} <span className="text-blue-700 drop-shadow-md">{t('dashboard.title')}</span>
               </h1>
               <p className="text-gray-700 text-lg font-medium">
-                �� Modern E-Ticaret Yönetim Sistemi
+                🚀 {t('dashboard.subtitle')}
               </p>
               <div className="mt-4 flex items-center space-x-4 text-sm">
                 <span className="bg-green-100/80 text-green-700 px-3 py-1 rounded-full backdrop-blur-sm">
-                  ✅ Sistem Aktif
+                  ✅ {t('dashboard.systemActive')}
                 </span>
                 <span className="bg-blue-100/80 text-blue-700 px-3 py-1 rounded-full backdrop-blur-sm">
-                  📊 16+ Modül
+                  📊 {t('dashboard.modulesCount', { count: 16 })}
                 </span>
               </div>
             </div>
@@ -176,7 +178,7 @@ function AdminDashboard() {
         <div className="text-center">
           <div className="inline-block backdrop-blur-md bg-gradient-to-r from-blue-500/80 to-purple-500/80 hover:from-blue-600/90 hover:to-purple-600/90 text-white px-8 py-4 rounded-full cursor-pointer transition-all duration-300 shadow-2xl border border-white/30 transform hover:scale-105">
             <div className="flex items-center space-x-2">
-              <span className="font-semibold">🚀 HZM İşbirliği ile</span>
+              <span className="font-semibold">🚀 {t('dashboard.hzmPartnership')}</span>
               <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></div>
             </div>
           </div>

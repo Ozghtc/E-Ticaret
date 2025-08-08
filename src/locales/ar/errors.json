@@ -1,0 +1,66 @@
+{
+  "general": {
+    "unknownError": "حدث خطأ غير معروف",
+    "tryAgain": "يرجى المحاولة مرة أخرى",
+    "contactSupport": "إذا استمرت المشكلة، اتصل بالدعم"
+  },
+  "network": {
+    "connectionError": "خطأ في الاتصال",
+    "timeout": "انتهت مهلة الطلب",
+    "offline": "تحقق من اتصالك بالإنترنت",
+    "serverError": "خطأ في الخادم",
+    "badRequest": "طلب غير صالح",
+    "unauthorized": "خطأ في المصادقة",
+    "forbidden": "ليس لديك الصلاحية لهذا الإجراء",
+    "notFound": "الصفحة غير موجودة",
+    "tooManyRequests": "تم إرسال طلبات كثيرة جدًا"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "email": "أدخل عنوان بريد إلكتروني صالح",
+    "phone": "أدخل رقم هاتف صالح",
+    "minLength": "يجب أن يكون {{min}} حرفًا على الأقل",
+    "maxLength": "لا يمكن أن يتجاوز {{max}} حرفًا",
+    "pattern": "تنسيق غير صالح",
+    "number": "أدخل رقمًا صالحًا",
+    "positive": "يجب أن يكون رقمًا موجبًا",
+    "integer": "يجب أن يكون عددًا صحيحًا",
+    "decimal": "يجب أن يكون رقمًا عشريًا",
+    "date": "أدخل تاريخًا صالحًا",
+    "futureDate": "يجب عليك اختيار تاريخ مستقبلي",
+    "pastDate": "يجب عليك اختيار تاريخ سابق",
+    "dateRange": "نطاق تاريخ غير صالح",
+    "file": {
+      "size": "يجب أن يكون حجم الملف أقل من {{max}} ميجابايت",
+      "type": "نوع ملف غير مدعوم",
+      "required": "يجب عليك اختيار ملف"
+    }
+  },
+  "auth": {
+    "loginFailed": "فشل تسجيل الدخول",
+    "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+    "accountLocked": "تم قفل حسابك",
+    "accountNotFound": "الحساب غير موجود",
+    "emailNotVerified": "يرجى التحقق من عنوان بريدك الإلكتروني",
+    "sessionExpired": "انتهت صلاحية جلستك",
+    "tokenInvalid": "رمز غير صالح",
+    "tokenExpired": "انتهت صلاحية الرمز",
+    "passwordResetFailed": "فشل إعادة تعيين كلمة المرور",
+    "registrationFailed": "فشل التسجيل",
+    "emailAlreadyExists": "عنوان البريد الإلكتروني هذا قيد الاستخدام بالفعل",
+    "weakPassword": "كلمة المرور ضعيفة جدًا"
+  },
+  "business": {
+    "insufficientStock": "المخزون غير كافٍ",
+    "productNotAvailable": "المنتج غير متاح",
+    "priceChanged": "تغير السعر",
+    "orderNotFound": "الطلب غير موجود",
+    "paymentFailed": "فشل الدفع",
+    "refundFailed": "فشل الاسترداد",
+    "couponInvalid": "رمز القسيمة غير صالح",
+    "couponExpired": "انتهت صلاحية القسيمة",
+    "shippingNotAvailable": "الشحن غير متاح لهذا العنوان",
+    "storeNotActive": "المتجر غير نشط",
+    "quotaExceeded": "تم تجاوز الحصة الخاصة بك"
+  }
+}

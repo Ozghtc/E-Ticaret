@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, Bell, Calendar } from 'lucide-react';
 import { getCurrentDate } from '../utils/layoutUtils';
+import LanguageCurrencySelector from '../../../components/LanguageCurrencySelector';
 
 const AdminHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const AdminHeader: React.FC = () => {
 
           {/* Right side - User info and actions */}
           <div className="flex items-center space-x-4">
+            <LanguageCurrencySelector />
+            
             <div className="bg-blue-500 px-3 py-1 rounded-full text-sm">
               <Calendar className="inline w-4 h-4 mr-1" />
               {getCurrentDate()}
