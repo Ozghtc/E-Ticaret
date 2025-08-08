@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 // 🇹🇷 Türkiye İl-İlçe Listesi - TSX Format
 // Tüm 81 il ve ilçeleri için merkezi veri kaynağı
 
@@ -28,9 +27,9 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '01'
 }, {
   id: 2,
-  name: t("common.adıyaman"),
+  name: "Adıyaman",
   code: 'adiyaman',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '02'
 }, {
   id: 3,
@@ -40,15 +39,15 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '03'
 }, {
   id: 4,
-  name: t("common.ağrı"),
+  name: "Ağrı",
   code: 'agri',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '04'
 }, {
   id: 5,
   name: 'Aksaray',
   code: 'aksaray',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '68'
 }, {
   id: 6,
@@ -60,7 +59,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 7,
   name: 'Ankara',
   code: 'ankara',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '06'
 }, {
   id: 8,
@@ -72,7 +71,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 9,
   name: 'Ardahan',
   code: 'ardahan',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '75'
 }, {
   id: 10,
@@ -82,19 +81,19 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '08'
 }, {
   id: 11,
-  name: t("common.aydın"),
+  name: "aydın",
   code: 'aydin',
   region: 'Ege',
   plateCode: '09'
 }, {
   id: 12,
-  name: t("common.balıkesir"),
+  name: "balıkesir",
   code: 'balikesir',
   region: 'Marmara',
   plateCode: '10'
 }, {
   id: 13,
-  name: t("common.bartın"),
+  name: "bartın",
   code: 'bartin',
   region: 'Karadeniz',
   plateCode: '74'
@@ -102,7 +101,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 14,
   name: 'Batman',
   code: 'batman',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '72'
 }, {
   id: 15,
@@ -118,15 +117,15 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '11'
 }, {
   id: 17,
-  name: t("common.bingöl"),
+  name: "bingöl",
   code: 'bingol',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '12'
 }, {
   id: 18,
   name: 'Bitlis',
   code: 'bitlis',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '13'
 }, {
   id: 19,
@@ -148,19 +147,19 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '16'
 }, {
   id: 22,
-  name: t("common.çanakkale"),
+  name: "çanakkale",
   code: 'canakkale',
   region: 'Marmara',
   plateCode: '17'
 }, {
   id: 23,
-  name: t("common.çankırı"),
+  name: "çankırı",
   code: 'cankiri',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '18'
 }, {
   id: 24,
-  name: t("common.çorum"),
+  name: "çorum",
   code: 'corum',
   region: 'Karadeniz',
   plateCode: '19'
@@ -172,13 +171,13 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '20'
 }, {
   id: 26,
-  name: t("common.diyarbakır"),
+  name: "Diyarbakır",
   code: 'diyarbakir',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '21'
 }, {
   id: 27,
-  name: t("common.düzce"),
+  name: "düzce",
   code: 'duzce',
   region: 'Karadeniz',
   plateCode: '81'
@@ -190,33 +189,33 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '22'
 }, {
   id: 29,
-  name: t("common.elazığ"),
+  name: "elazığ",
   code: 'elazig',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '23'
 }, {
   id: 30,
   name: 'Erzincan',
   code: 'erzincan',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '24'
 }, {
   id: 31,
   name: 'Erzurum',
   code: 'erzurum',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '25'
 }, {
   id: 32,
-  name: t("common.eskişehir"),
+  name: "eskişehir",
   code: 'eskisehir',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '26'
 }, {
   id: 33,
   name: 'Gaziantep',
   code: 'gaziantep',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '27'
 }, {
   id: 34,
@@ -226,7 +225,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '28'
 }, {
   id: 35,
-  name: t("common.gümüşhane"),
+  name: "gümüşhane",
   code: 'gumushane',
   region: 'Karadeniz',
   plateCode: '29'
@@ -234,7 +233,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 36,
   name: 'Hakkari',
   code: 'hakkari',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '30'
 }, {
   id: 37,
@@ -244,9 +243,9 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '31'
 }, {
   id: 38,
-  name: t("common.iğdır"),
+  name: "iğdır",
   code: 'igdir',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '76'
 }, {
   id: 39,
@@ -256,25 +255,25 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '32'
 }, {
   id: 40,
-  name: t("common.i_stanbul"),
+  name: "İstanbul",
   code: 'istanbul',
   region: 'Marmara',
   plateCode: '34'
 }, {
   id: 41,
-  name: t("common.i_zmir"),
+  name: "İzmir",
   code: 'izmir',
   region: 'Ege',
   plateCode: '35'
 }, {
   id: 42,
-  name: t("common.kahramanmaraş"),
+  name: "kahramanmaraş",
   code: 'kahramanmaras',
   region: 'Akdeniz',
   plateCode: '46'
 }, {
   id: 43,
-  name: t("common.karabük"),
+  name: "karabük",
   code: 'karabuk',
   region: 'Karadeniz',
   plateCode: '78'
@@ -282,13 +281,13 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 44,
   name: 'Karaman',
   code: 'karaman',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '70'
 }, {
   id: 45,
   name: 'Kars',
   code: 'kars',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '36'
 }, {
   id: 46,
@@ -300,31 +299,31 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 47,
   name: 'Kayseri',
   code: 'kayseri',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '38'
 }, {
   id: 48,
   name: 'Kilis',
   code: 'kilis',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '79'
 }, {
   id: 49,
-  name: t("common.kırıkkale"),
+  name: "kırıkkale",
   code: 'kirikkale',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '71'
 }, {
   id: 50,
-  name: t("common.kırklareli"),
+  name: "kırklareli",
   code: 'kirklareli',
   region: 'Marmara',
   plateCode: '39'
 }, {
   id: 51,
-  name: t("common.kırşehir"),
+  name: "kırşehir",
   code: 'kirsehir',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '40'
 }, {
   id: 52,
@@ -336,11 +335,11 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 53,
   name: 'Konya',
   code: 'konya',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '42'
 }, {
   id: 54,
-  name: t("common.kütahya"),
+  name: "kütahya",
   code: 'kutahya',
   region: 'Ege',
   plateCode: '43'
@@ -348,7 +347,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 55,
   name: 'Malatya',
   code: 'malatya',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '44'
 }, {
   id: 56,
@@ -360,7 +359,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 57,
   name: 'Mardin',
   code: 'mardin',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '47'
 }, {
   id: 58,
@@ -370,27 +369,27 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '33'
 }, {
   id: 59,
-  name: t("common.muğla"),
+  name: "muğla",
   code: 'mugla',
   region: 'Ege',
   plateCode: '48'
 }, {
   id: 60,
-  name: t("common.muş"),
+  name: "muş",
   code: 'mus',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '49'
 }, {
   id: 61,
-  name: t("common.nevşehir"),
+  name: "nevşehir",
   code: 'nevsehir',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '50'
 }, {
   id: 62,
-  name: t("common.niğde"),
+  name: "niğde",
   code: 'nigde',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '51'
 }, {
   id: 63,
@@ -424,15 +423,15 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '55'
 }, {
   id: 68,
-  name: t("common.şanlıurfa"),
+  name: "şanlıurfa",
   code: 'sanliurfa',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '63'
 }, {
   id: 69,
   name: 'Siirt',
   code: 'siirt',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '56'
 }, {
   id: 70,
@@ -442,19 +441,19 @@ export const TURKIYE_ILLERI: Il[] = [{
   plateCode: '57'
 }, {
   id: 71,
-  name: t("common.şırnak"),
+  name: "şırnak",
   code: 'sirnak',
-  region: t("common.güneydoğu_anadolu"),
+  region: "Güneydoğu Anadolu",
   plateCode: '73'
 }, {
   id: 72,
   name: 'Sivas',
   code: 'sivas',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '58'
 }, {
   id: 73,
-  name: t("common.tekirdağ"),
+  name: "tekirdağ",
   code: 'tekirdag',
   region: 'Marmara',
   plateCode: '59'
@@ -474,11 +473,11 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 76,
   name: 'Tunceli',
   code: 'tunceli',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '62'
 }, {
   id: 77,
-  name: t("common.uşak"),
+  name: "uşak",
   code: 'usak',
   region: 'Ege',
   plateCode: '64'
@@ -486,7 +485,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 78,
   name: 'Van',
   code: 'van',
-  region: t("common.doğu_anadolu"),
+  region: "Doğu Anadolu",
   plateCode: '65'
 }, {
   id: 79,
@@ -498,7 +497,7 @@ export const TURKIYE_ILLERI: Il[] = [{
   id: 80,
   name: 'Yozgat',
   code: 'yozgat',
-  region: t("common.i_ç_anadolu"),
+  region: "İç Anadolu",
   plateCode: '66'
 }, {
   id: 81,
@@ -509,10 +508,10 @@ export const TURKIYE_ILLERI: Il[] = [{
 }];
 
 // 🏙️ Büyük Şehirler (Nüfus 1M+)
-export const BUYUK_SEHIRLER = [t("common.i_stanbul"), 'Ankara', t("common.i_zmir"), 'Bursa', 'Antalya', 'Adana', 'Konya', 'Gaziantep', 'Kayseri', t("common.diyarbakır")];
+export const BUYUK_SEHIRLER = ["İstanbul", 'Ankara', "İzmir", 'Bursa', 'Antalya', 'Adana', 'Konya', 'Gaziantep', 'Kayseri', "Diyarbakır"];
 
 // 🌍 Coğrafi Bölgeler
-export const COGRAFI_BOLGELER = ['Marmara', 'Ege', 'Akdeniz', t("common.i_ç_anadolu"), 'Karadeniz', t("common.doğu_anadolu"), t("common.güneydoğu_anadolu")];
+export const COGRAFI_BOLGELER = ['Marmara', 'Ege', 'Akdeniz', "İç Anadolu", 'Karadeniz', "Doğu Anadolu", "Güneydoğu Anadolu"];
 
 // 🔍 Utility Functions
 export const getIlById = (id: number): Il | undefined => {
@@ -549,7 +548,7 @@ export const getBolgeBazindaIlSayilari = (): {
 };
 
 // 🎯 En Popüler İller (E-ticaret için)
-export const POPULER_ILLER = [t("common.i_stanbul"), 'Ankara', t("common.i_zmir"), 'Bursa', 'Antalya', 'Adana', 'Gaziantep', 'Konya', 'Kayseri', 'Mersin'];
+export const POPULER_ILLER = ["İstanbul", 'Ankara', "İzmir", 'Bursa', 'Antalya', 'Adana', 'Gaziantep', 'Konya', 'Kayseri', 'Mersin'];
 export const getPopulerIller = (): Il[] => {
   return TURKIYE_ILLERI.filter(il => POPULER_ILLER.includes(il.name));
 };
