@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 // 🌍 Environment Configuration System
 // Bu dosya tüm environment variable'ları yönetir ve validate eder
 
@@ -59,7 +58,7 @@ const buildConfig = (): AppConfig => {
 
   // Production'da localhost kontrolü
   if (isProductionLocalhost(apiUrl)) {
-    console.error(t("common.production_ortamında_localhost_kullanılamaz"), apiUrl);
+    console.error("❌ Production ortamında localhost kullanılamaz:", apiUrl);
   }
   const config: AppConfig = {
     api: {
@@ -97,6 +96,6 @@ if (config.app.debug) {
 
 // 🔒 Production Safety Check
 if (ENV === 'production' && config.app.debug) {
-  console.warn(t("common.debug_mode_production_ortamında_aktif"));
+  console.warn("⚠️ Debug mode production ortamında aktif!");
 }
 export default config;
