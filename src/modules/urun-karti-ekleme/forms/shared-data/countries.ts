@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 // 🌍 Ortak Ülke Listesi - Tüm Product Forms İçin
 export interface Country {
   id: string;
@@ -11,7 +10,7 @@ export const countries: Country[] = [
 // Popüler Ülkeler (Üstte gösterilecek)
 {
   id: 'turkiye',
-  name: t("common.türkiye"),
+  name: "Türkiye",
   flag: '🇹🇷',
   region: 'Asya',
   popular: true
@@ -29,19 +28,19 @@ export const countries: Country[] = [
   popular: true
 }, {
   id: 'italya',
-  name: t("common.i_talya"),
+  name: "İtalya",
   flag: '🇮🇹',
   region: 'Avrupa',
   popular: true
 }, {
   id: 'abd',
-  name: t("common.amerika_birleşik_devletleri"),
+  name: "Amerika Birleşik Devletleri",
   flag: '🇺🇸',
   region: 'Amerika',
   popular: true
 }, {
   id: 'guney-kore',
-  name: t("common.güney_kore"),
+  name: "Güney Kore",
   flag: '🇰🇷',
   region: 'Asya',
   popular: true
@@ -53,19 +52,19 @@ export const countries: Country[] = [
   popular: true
 }, {
   id: 'cin',
-  name: t("common.çin"),
+  name: "Çin",
   flag: '🇨🇳',
   region: 'Asya',
   popular: true
 }, {
   id: 'ingiltere',
-  name: t("common.i_ngiltere"),
+  name: "İngiltere",
   flag: '🇬🇧',
   region: 'Avrupa',
   popular: true
 }, {
   id: 'ispanya',
-  name: t("common.i_spanya"),
+  name: "İspanya",
   flag: '🇪🇸',
   region: 'Avrupa',
   popular: true
@@ -78,7 +77,7 @@ export const countries: Country[] = [
   region: 'Avrupa'
 }, {
   id: 'belcika',
-  name: t("common.belçika"),
+  name: "Belçika",
   flag: '🇧🇪',
   region: 'Avrupa'
 }, {
@@ -88,17 +87,17 @@ export const countries: Country[] = [
   region: 'Avrupa'
 }, {
   id: 'isvicre',
-  name: t("common.i_sviçre"),
+  name: "İsviçre",
   flag: '🇨🇭',
   region: 'Avrupa'
 }, {
   id: 'norveç',
-  name: t("common.norveç"),
+  name: "Norveç",
   flag: '🇳🇴',
   region: 'Avrupa'
 }, {
   id: 'isvec',
-  name: t("common.i_sveç"),
+  name: "İsveç",
   flag: '🇸🇪',
   region: 'Avrupa'
 }, {
@@ -138,7 +137,7 @@ export const countries: Country[] = [
   region: 'Avrupa'
 }, {
   id: 'cek-cumhuriyeti',
-  name: t("common.çek_cumhuriyeti"),
+  name: "Çek Cumhuriyeti",
   flag: '🇨🇿',
   region: 'Avrupa'
 }, {
@@ -158,7 +157,7 @@ export const countries: Country[] = [
   region: 'Avrupa'
 }, {
   id: 'hirvatistan',
-  name: t("common.hırvatistan"),
+  name: "Hırvatistan",
   flag: '🇭🇷',
   region: 'Avrupa'
 },
@@ -170,7 +169,7 @@ export const countries: Country[] = [
   region: 'Asya'
 }, {
   id: 'banglades',
-  name: t("common.bangladeş"),
+  name: "Bangladeş",
   flag: '🇧🇩',
   region: 'Asya'
 }, {
@@ -215,7 +214,7 @@ export const countries: Country[] = [
   region: 'Asya'
 }, {
   id: 'kamboçya',
-  name: t("common.kamboçya"),
+  name: "Kamboçya",
   flag: '🇰🇭',
   region: 'Asya'
 }, {
@@ -242,84 +241,84 @@ export const countries: Country[] = [
 // Orta Doğu
 {
   id: 'iran',
-  name: t("common.i_ran"),
+  name: "İran",
   flag: '🇮🇷',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'irak',
   name: 'Irak',
   flag: '🇮🇶',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'suudi-arabistan',
   name: 'Suudi Arabistan',
   flag: '🇸🇦',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'bae',
-  name: t("common.birleşik_arap_emirlikleri"),
+  name: "Birleşik Arap Emirlikleri",
   flag: '🇦🇪',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'katar',
   name: 'Katar',
   flag: '🇶🇦',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'kuveyt',
   name: 'Kuveyt',
   flag: '🇰🇼',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'bahreyn',
   name: 'Bahreyn',
   flag: '🇧🇭',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'uman',
   name: 'Umman',
   flag: '🇴🇲',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'yemen',
   name: 'Yemen',
   flag: '🇾🇪',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'urdun',
-  name: t("common.ürdün"),
+  name: "Ürdün",
   flag: '🇯🇴',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'suriye',
   name: 'Suriye',
   flag: '🇸🇾',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'lubnan',
-  name: t("common.lübnan"),
+  name: "Lübnan",
   flag: '🇱🇧',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'israil',
-  name: t("common.i_srail"),
+  name: "İsrail",
   flag: '🇮🇱',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 }, {
   id: 'filistin',
   name: 'Filistin',
   flag: '🇵🇸',
-  region: t("common.orta_doğu")
+  region: "Orta Doğu"
 },
 // Afrika
 {
   id: 'guney-afrika',
-  name: t("common.güney_afrika"),
+  name: "Güney Afrika",
   flag: '🇿🇦',
   region: 'Afrika'
 }, {
   id: 'misir',
-  name: t("common.mısır"),
+  name: "Mısır",
   flag: '🇪🇬',
   region: 'Afrika'
 }, {
@@ -396,7 +395,7 @@ export const countries: Country[] = [
   region: 'Amerika'
 }, {
   id: 'sili',
-  name: t("common.şili"),
+  name: "Şili",
   flag: '🇨🇱',
   region: 'Amerika'
 }, {

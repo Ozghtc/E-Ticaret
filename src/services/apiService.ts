@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 // 🚀 HZM API Service - E-Ticaret Mağaza Sistemi
 // API Integration Layer for HZM Database
 
@@ -97,17 +96,17 @@ class APIService {
         method: 'POST',
         body: JSON.stringify({
           name: 'magazalar',
-          description: t("common.e_ticaret_mağaza_bilgileri_tablosu")
+          description: "E-ticaret mağaza bilgileri tablosu"
         })
       });
       this.tableId = createResponse.data?.table?.id;
       if (!this.tableId) {
-        throw new Error(t("common.tablo_oluşturulamadı"));
+        throw new Error("Tablo oluşturulamadı");
       }
       return this.tableId;
     } catch (error) {
-      console.error(t("common.tablo_oluşturma_hatası"), error);
-      throw new Error(t("common.veritabanı_bağlantısı_kurulamadı"));
+      console.error("Tablo oluşturma hatası:", error);
+      throw new Error("Veritabanı bağlantısı kurulamadı");
     }
   }
 
@@ -133,12 +132,12 @@ class APIService {
       const rows = response.data?.rows || [];
       return rows.map((row: any) => this.transformFromAPI(row));
     } catch (error) {
-      console.error(t("common.kri_ti_k_api_hatasi_backend_düzeltmesi_gerekli"));
+      console.error("😨 KRİTİK API HATASI: Backend düzeltmesi gerekli");
       console.error('❌ SORUN:', error);
-      console.error(t("common.backend_de_düzelti_lmesi_gereken_api_connection_authentication"));
+      console.error("✅ BACKEND'DE DÜZELTİLMESİ GEREKEN: API connection, authentication");
 
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error(t("common.api_servisi_çalışmıyor_backend_düzeltmesi_gerekli"));
+      throw new Error("API servisi çalışmıyor - Backend düzeltmesi gerekli");
     }
   }
 
@@ -158,12 +157,12 @@ class APIService {
       });
       return this.transformFromAPI(response.data?.row || apiData);
     } catch (error) {
-      console.error(t("common.kri_ti_k_api_hatasi_mağaza_oluşturulamadı"));
+      console.error("😨 KRİTİK API HATASI: Mağaza oluşturulamadı");
       console.error('❌ SORUN:', error);
-      console.error(t("common.backend_de_düzelti_lmesi_gereken_create_operation_table_structure"));
+      console.error("✅ BACKEND'DE DÜZELTİLMESİ GEREKEN: Create operation, table structure");
 
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error(t("common.mağaza_oluşturulamadı_backend_düzeltmesi_gerekli"));
+      throw new Error("Mağaza oluşturulamadı - Backend düzeltmesi gerekli");
     }
   }
 
@@ -181,12 +180,12 @@ class APIService {
       });
       return this.transformFromAPI(response.data?.row);
     } catch (error) {
-      console.error(t("common.kri_ti_k_api_hatasi_mağaza_güncellenemedi"));
+      console.error("😨 KRİTİK API HATASI: Mağaza güncellenemedi");
       console.error('❌ SORUN:', error);
-      console.error(t("common.backend_de_düzelti_lmesi_gereken_update_operation"));
+      console.error("✅ BACKEND'DE DÜZELTİLMESİ GEREKEN: Update operation");
 
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error(t("common.mağaza_güncellenemedi_backend_düzeltmesi_gerekli"));
+      throw new Error("Mağaza güncellenemedi - Backend düzeltmesi gerekli");
     }
   }
 
@@ -198,12 +197,12 @@ class APIService {
         method: 'DELETE'
       });
     } catch (error) {
-      console.error(t("common.kri_ti_k_api_hatasi_mağaza_silinemedi"));
+      console.error("😨 KRİTİK API HATASI: Mağaza silinemedi");
       console.error('❌ SORUN:', error);
-      console.error(t("common.backend_de_düzelti_lmesi_gereken_delete_operation"));
+      console.error("✅ BACKEND'DE DÜZELTİLMESİ GEREKEN: Delete operation");
 
       // KURAL 18: Frontend workaround yasak - Backend düzeltmesi bekle
-      throw new Error(t("common.mağaza_silinemedi_backend_düzeltmesi_gerekli"));
+      throw new Error("Mağaza silinemedi - Backend düzeltmesi gerekli");
     }
   }
 
